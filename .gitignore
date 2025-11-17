@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip
+
+# Logs
+*.log
+
+# Editors
+.vscode/
+.idea/
+
+# Build & deps
+node_modules/
+dist/
+
+# Local data not needed in production
+assets/Product Intake Form/*.xlsx
+assets/Product Intake Form/*.csv

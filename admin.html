@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1e96c8" />
+    <title>Admin Dashboard | Apple Connect</title>
+    <link rel="icon" type="image/png" href="assets/Favicon.png" />
+    <link rel="stylesheet" href="assets/css/loader.css" />
+    <script src="assets/js/loader.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=6" />
+    <link rel="stylesheet" href="assets/css/footer.css" />
+  </head>
+  <body data-page="admin">
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <img class="logo" src="assets/Apple Connect Logo Header.jpg" alt="Apple Connect logo" />
+        </div>
+        <nav class="nav" aria-label="Primary">
+          <button id="navToggle" class="icon-btn" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation">☰</button>
+          <ul id="navMenu" class="nav-menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="iphones.html">iPhones</a></li>
+            <li><a href="ipads.html">iPads</a></li>
+            <li><a href="accessories.html">Accessories</a></li>
+            <li><a href="macbooks.html">MacBooks</a></li>
+            <li><a href="gaming.html">Gaming</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions"></div>
+      </div>
+    </header>
+
+    <main id="content" class="container" style="padding: 24px 16px;">
+      <h1 class="section-title">Admin Dashboard</h1>
+      <div class="sub" style="margin-bottom: 16px;">Add purchases, lay-bys, and promotions. Admins only.</div>
+
+      <div id="adminError" class="error" style="margin-bottom:12px;"></div>
+
+      <section class="card">
+        <h3>User Lookup</h3>
+        <form id="userSearchForm" class="grid-2">
+          <div class="form-row">
+            <label for="searchEmail">User Email</label>
+            <input id="searchEmail" type="email" placeholder="customer@example.com" required />
+          </div>
+          <div class="form-row">
+            <label>&nbsp;</label>
+            <button class="btn btn-primary" type="submit">Find User</button>
+          </div>
+        </form>
+        <div id="userResult" class="muted" style="margin-top:8px;">No user selected.</div>
+      </section>
+
+      <div class="cards-grid" style="margin-top:16px;">
+        <section class="card">
+          <h3>Add Purchase</h3>
+          <form id="purchaseForm" class="grid-2">
+            <div class="form-row">
+              <label for="pItem">Item</label>
+              <input id="pItem" type="text" required />
+            </div>
+            <div class="form-row">
+              <label for="pAmount">Amount</label>
+              <input id="pAmount" type="number" step="0.01" required />
+            </div>
+            <div class="form-row">
+              <label for="pStatus">Status</label>
+              <select id="pStatus">
+                <option value="Completed">Completed</option>
+                <option value="Pending">Pending</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>&nbsp;</label>
+              <button class="btn" type="submit">Save Purchase</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card">
+          <h3>Add Lay-by</h3>
+          <form id="laybyForm" class="grid-2">
+            <div class="form-row">
+              <label for="lItem">Item</label>
+              <input id="lItem" type="text" required />
+            </div>
+            <div class="form-row">
+              <label for="lTotal">Total</label>
+              <input id="lTotal" type="number" step="0.01" required />
+            </div>
+            <div class="form-row">
+              <label for="lPaid">Paid</label>
+              <input id="lPaid" type="number" step="0.01" value="0" required />
+            </div>
+            <div class="form-row">
+              <label for="lStatus">Status</label>
+              <select id="lStatus">
+                <option value="Active">Active</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>&nbsp;</label>
+              <button class="btn" type="submit">Save Lay-by</button>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <section class="card" style="margin-top:16px;">
+        <h3>Add Promotion</h3>
+        <form id="promoForm" class="grid-3">
+          <div class="form-row">
+            <label for="promoTitle">Title</label>
+            <input id="promoTitle" type="text" required />
+          </div>
+          <div class="form-row">
+            <label for="promoDesc">Description</label>
+            <input id="promoDesc" type="text" />
+          </div>
+          <div class="form-row">
+            <label for="promoPublic">Public?</label>
+            <select id="promoPublic">
+              <option value="true">Yes</option>
+              <option value="false">No (targeted)</option>
+            </select>
+          </div>
+          <div class="form-row" id="promoTargetRow" style="display:none;">
+            <label for="promoTarget">Target User ID</label>
+            <input id="promoTarget" type="text" placeholder="Leave blank to use selected user" />
+          </div>
+          <div class="form-row">
+            <label>&nbsp;</label>
+            <button class="btn" type="submit">Save Promotion</button>
+          </div>
+        </form>
+        <div class="muted" style="margin-top:8px;">Tip: Use Firestore console to edit or remove entries manually as needed.</div>
+      </section>
+      
+      <section class="card" style="margin-top:16px;">
+        <h3>Quick Add by UID</h3>
+        <div class="muted" style="margin-bottom:8px;">Directly add to users/{uid} subcollections.</div>
+        <h4>Lay-by</h4>
+        <form id="quickLaybyForm" class="grid-2">
+          <div class="form-row">
+            <label for="qlUid">User UID</label>
+            <input id="qlUid" type="text" placeholder="User UID" required />
+          </div>
+          <div class="form-row">
+            <label for="qlProduct">Product Name</label>
+            <input id="qlProduct" type="text" required />
+          </div>
+          <div class="form-row">
+            <label for="qlTotal">Total Price</label>
+            <input id="qlTotal" type="number" step="0.01" required />
+          </div>
+          <div class="form-row">
+            <label for="qlPaid">Amount Paid</label>
+            <input id="qlPaid" type="number" step="0.01" required />
+          </div>
+          <div class="form-row">
+            <label>&nbsp;</label>
+            <button class="btn" type="submit">Add Lay-by</button>
+          </div>
+        </form>
+
+        <h4 style="margin-top:12px;">Promotion</h4>
+        <form id="quickPromoForm" class="grid-2">
+          <div class="form-row">
+            <label for="qpUid">User UID</label>
+            <input id="qpUid" type="text" placeholder="User UID" required />
+          </div>
+          <div class="form-row">
+            <label for="qpTitle">Promotion Title</label>
+            <input id="qpTitle" type="text" required />
+          </div>
+          <div class="form-row">
+            <label for="qpDetails">Promotion Details</label>
+            <input id="qpDetails" type="text" required />
+          </div>
+          <div class="form-row">
+            <label>&nbsp;</label>
+            <button class="btn" type="submit">Add Promotion</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-bottom">
+        <div>© <span id="year"></span> Apple Connect. All rights reserved.</div>
+      </div>
+    </footer>
+
+    <!-- Firebase compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+
+    <script src="assets/js/app.js?v=6" defer></script>
+    <script src="assets/js/auth.js" defer></script>
+
+    <script>
+      // Admin-only guard using users/{uid}.role === 'admin'
+      // Staff can manually set role to 'admin' in Firestore under users collection.
+      document.addEventListener('DOMContentLoaded', () => {
+        const err = document.getElementById('adminError');
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let selectedUserId = null;
+        let selectedUserEmail = null;
+
+        function showError(e){ err.textContent = (e && e.message) ? e.message : 'Something went wrong.'; err.classList.add('show'); }
+        function clearError(){ err.classList.remove('show'); err.textContent=''; }
+
+        auth.onAuthStateChanged(async (user) => {
+          if (!user) { window.location.href = 'login.html'; return; }
+          try {
+            const usnap = await db.collection('users').doc(user.uid).get();
+            const role = usnap.exists ? (usnap.data().role || 'customer') : 'customer';
+            if (role !== 'admin') { window.location.href = 'account.html'; return; }
+          } catch (e) { showError(e); }
+        });
+
+        // Lookup user by email
+        document.getElementById('userSearchForm').addEventListener('submit', async (e) => {
+          e.preventDefault(); clearError();
+          const email = document.getElementById('searchEmail').value.trim().toLowerCase();
+          try {
+            // We store users by uid, but allow lookup by email via users collection
+            const q = await db.collection('users').where('email','==', email).limit(1).get();
+            if (q.empty) { document.getElementById('userResult').textContent = 'No user found.'; selectedUserId=null; selectedUserEmail=null; return; }
+            const doc = q.docs[0];
+            selectedUserId = doc.id; selectedUserEmail = doc.data().email;
+            document.getElementById('userResult').textContent = `Selected: ${doc.data().firstName || ''} ${doc.data().surname || ''} (${selectedUserEmail})`;
+          } catch (e) { showError(e); }
+        });
+
+        // Add purchase
+        document.getElementById('purchaseForm').addEventListener('submit', async (e) => {
+          e.preventDefault(); clearError();
+          if (!selectedUserId) { showError({message:'Select a user first using User Lookup.'}); return; }
+          try {
+            const item = document.getElementById('pItem').value.trim();
+            const amount = parseFloat(document.getElementById('pAmount').value);
+            const status = document.getElementById('pStatus').value;
+            await db.collection('purchases').add({ userId: selectedUserId, userEmail: selectedUserEmail, item, amount, status, date: firebase.firestore.FieldValue.serverTimestamp() });
+            e.target.reset();
+            alert('Purchase saved');
+          } catch (er) { showError(er); }
+        });
+
+        // Add lay-by
+        document.getElementById('laybyForm').addEventListener('submit', async (e) => {
+          e.preventDefault(); clearError();
+          if (!selectedUserId) { showError({message:'Select a user first using User Lookup.'}); return; }
+          try {
+            const item = document.getElementById('lItem').value.trim();
+            const total = parseFloat(document.getElementById('lTotal').value);
+            const paid = parseFloat(document.getElementById('lPaid').value);
+            const status = document.getElementById('lStatus').value;
+            const balance = (isFinite(total) && isFinite(paid)) ? (total - paid) : null;
+            await db.collection('laybys').add({ userId: selectedUserId, userEmail: selectedUserEmail, item, total, paid, balance, status, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+            e.target.reset();
+            alert('Lay-by saved');
+          } catch (er) { showError(er); }
+        });
+
+        // Promotion public/target toggler
+        const promoPublic = document.getElementById('promoPublic');
+        const promoTargetRow = document.getElementById('promoTargetRow');
+        promoPublic.addEventListener('change', () => {
+          const isPublic = promoPublic.value === 'true';
+          promoTargetRow.style.display = isPublic ? 'none' : '';
+        });
+
+        // Add promotion
+        document.getElementById('promoForm').addEventListener('submit', async (e) => {
+          e.preventDefault(); clearError();
+          try {
+            const title = document.getElementById('promoTitle').value.trim();
+            const description = document.getElementById('promoDesc').value.trim();
+            const isPublic = promoPublic.value === 'true';
+            let targetUserId = document.getElementById('promoTarget').value.trim();
+            if (!isPublic && !targetUserId) targetUserId = selectedUserId || '';
+            await db.collection('promotions').add({ title, description, public: isPublic, targetUserId: isPublic ? null : targetUserId, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+            e.target.reset();
+            alert('Promotion saved');
+          } catch (er) { showError(er); }
+        });
+
+        // Quick add by UID: Lay-by
+        document.getElementById('quickLaybyForm').addEventListener('submit', async (e) => {
+          e.preventDefault(); clearError();
+          try {
+            const uid = document.getElementById('qlUid').value.trim();
+            const product = document.getElementById('qlProduct').value.trim();
+            const totalPrice = parseFloat(document.getElementById('qlTotal').value);
+            const amountPaid = parseFloat(document.getElementById('qlPaid').value);
+            const balance = (isFinite(totalPrice) && isFinite(amountPaid)) ? (totalPrice - amountPaid) : null;
+            await db.collection('users').doc(uid).collection('lay-bys').add({
+              product,
+              totalPrice,
+              amountPaid,
+              balance,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            e.target.reset();
+            alert('Lay-by added successfully!');
+          } catch (er) { showError(er); }
+        });
+
+        // Quick add by UID: Promotion
+        document.getElementById('quickPromoForm').addEventListener('submit', async (e) => {
+          e.preventDefault(); clearError();
+          try {
+            const uid = document.getElementById('qpUid').value.trim();
+            const title = document.getElementById('qpTitle').value.trim();
+            const details = document.getElementById('qpDetails').value.trim();
+            await db.collection('users').doc(uid).collection('promotions').add({
+              title,
+              details,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            e.target.reset();
+            alert('Promotion added successfully!');
+          } catch (er) { showError(er); }
+        });
+      });
+    </script>
+  </body>
+</html>

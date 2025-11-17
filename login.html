@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1e96c8" />
+    <title>Log In | Apple Connect</title>
+    <link rel="icon" type="image/png" href="assets/Favicon.png" />
+    <link rel="stylesheet" href="assets/css/loader.css" />
+    <script src="assets/js/loader.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=6" />
+    <link rel="stylesheet" href="assets/css/footer.css" />
+  </head>
+  <body data-page="login">
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <img class="logo" src="assets/Apple Connect Logo Header.jpg" alt="Apple Connect logo" />
+        </div>
+        <nav class="nav" aria-label="Primary">
+          <button id="navToggle" class="icon-btn" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation">☰</button>
+          <ul id="navMenu" class="nav-menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="iphones.html">iPhones</a></li>
+            <li><a href="ipads.html">iPads</a></li>
+            <li><a href="accessories.html">Accessories</a></li>
+            <li><a href="macbooks.html">MacBooks</a></li>
+            <li><a href="gaming.html">Gaming</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <button class="icon-btn" aria-label="Cart">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M6 6h15l-1.5 9h-12z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
+              <circle cx="9" cy="20" r="1.5" fill="currentColor"/>
+              <circle cx="18" cy="20" r="1.5" fill="currentColor"/>
+              <path d="M6 6L5 3H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="content" class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-head">
+          <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:8px;">
+            <img src="assets/Apple Connect Logo.jpg" alt="Apple Connect" style="width:42px; height:42px; border-radius:10px; object-fit:contain; box-shadow:0 2px 8px rgba(0,0,0,0.1);" />
+            <div style="font-weight:800; letter-spacing:-0.01em;">Apple <span class="brand-accent">Connect</span></div>
+          </div>
+          <h2>Customer Portal Login</h2>
+          <div class="sub">Secure access to your lay-bys and promotions</div>
+        </div>
+        <form id="loginForm">
+          <div class="form-row">
+            <label for="username">Email</label>
+            <input id="username" name="username" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-row">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="Enter your password" required />
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Log In</button>
+            <a href="signup.html" class="btn btn-plain">Create account</a>
+          </div>
+          <div id="loginError" class="error">Invalid credentials. Please try again.</div>
+        </form>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-top">
+        <div class="container footer-grid">
+          <div class="footer-col">
+            <div class="footer-brand">
+              <img class="logo" src="assets/Apple Connect Logo Header.jpg" alt="Apple Connect" />
+              <div class="brand-text">Apple <span class="brand-accent">Connect</span></div>
+            </div>
+            <div class="footer-contact" style="margin-top:10px;">
+              <div class="line">Bulawayo, Zimbabwe</div>
+              <div class="line">Call: +263 77 730 6848</div>
+              <div class="line">Email: info@appleconnect.co.zw</div>
+            </div>
+            <div class="footer-actions" style="margin-top:10px;">
+              <div class="socials" aria-label="Social media">
+                <a class="whatsapp" href="https://wa.me/263777306848" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.86 11.86 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.09 1.52 5.8L0 24l6.35-1.64A11.96 11.96 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zM12 22.06a10 10 0 0 1-5.1-1.39l-.36-.21-3.77.97.99-3.64-.24-.38A10.02 10.02 0 1 1 22.06 12 10.07 10.07 0 0 1 12 22.06zm5.48-7.8c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15s-.77.97-.94 1.17c-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.77-1.67-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.06 2.9 1.2 3.1.15.2 2.09 3.2 5.06 4.49.71.31 1.26.5 1.68.64.71.22 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.08-.12-.27-.2-.57-.35z"/></svg>
+                </a>
+                <a class="facebook" href="https://www.facebook.com/appleconnecttt/" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.4V12h2.4V9.7c0-2.4 1.4-3.7 3.5-3.7 1 0 2 .2 2 .2v2.3h-1.1c-1.1 0-1.5.7-1.5 1.4V12h2.6l-.4 2.9h-2.2v7A10 10 0 0 0 22 12z"/></svg>
+                </a>
+                <a class="instagram" href="https://www.instagram.com/apple_connect_zw" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm0 2h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0  0 1-3-3V7a3 3 0 0 1 3-3zm5 3.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0  0 0 0-9zm0 2a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zm5.25-3a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5z"/>
+                  </svg>
+                </a>
+                <a class="email" href="mailto:info@appleconnect.co.zw" aria-label="Email" title="Email">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18V8l8 6 8-6v10H4z"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="iphones.html">iPhones</a></li>
+              <li><a href="ipads.html">iPads</a></li>
+              <li><a href="accessories.html">Accessories</a></li>
+              <li><a href="macbooks.html">MacBooks</a></li>
+              <li><a href="gaming.html">Gaming</a></li>
+              <li><a href="about.html">About Us</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <div class="footer-contact">
+              <div class="line">WhatsApp: <a href="https://wa.me/263777306848" target="_blank" rel="noopener">+263 77 730 6848</a></div>
+              <div class="line">Instagram: <a href="https://www.instagram.com/apple_connect_zw" target="_blank" rel="noopener">@apple_connect_zw</a></div>
+              <div class="line">Facebook: <a href="https://www.facebook.com/appleconnecttt/" target="_blank" rel="noopener">Apple Connect</a></div>
+              <div class="line">TikTok: <a href="https://www.tiktok.com/@apple_connect_zw" target="_blank" rel="noopener">@apple_connect_zw</a></div>
+            </div>
+          </div>
+          <div class="footer-col footer-newsletter">
+            <h4>Stay Updated</h4>
+            <form onsubmit="event.preventDefault(); try{ alert('Thanks! You\'re subscribed.'); }catch(_){}">
+              <input type="email" placeholder="Your email address" aria-label="Email" required />
+              <button type="submit">Subscribe</button>
+            </form>
+            <div style="font-size:12px; color:#9aa6b2; margin-top:6px;">Get promotions and new stock updates.</div>
+          </div>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <div>© <span id="year"></span> Apple Connect. All rights reserved.</div>
+        <div class="links">
+          <a href="#" aria-label="Privacy Policy">Privacy</a>
+          <a href="#" aria-label="Terms of Service">Terms</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Firebase compat SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore-compat.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    <script src="assets/js/app.js?v=6" defer></script>
+    <script src="assets/js/auth.js" defer></script>
+    <script type="module">
+      import { auth, db } from "./assets/js/firebase-mod.js";
+      import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+      import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+      const form = document.getElementById('loginForm');
+      const err = document.getElementById('loginError');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        err.classList.remove('show');
+        const email = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        try {
+          await signInWithEmailAndPassword(auth, email, password);
+          const u = auth.currentUser;
+          let role = 'customer';
+          try {
+            if (u) {
+              const usnap = await getDoc(doc(db, 'users', u.uid));
+              role = usnap.exists() ? (usnap.data().role || 'customer') : 'customer';
+            }
+          } catch (_) {}
+          window.location.href = (role === 'admin') ? 'admin.html' : 'portal.html';
+        } catch (e) {
+          err.textContent = (e && e.message) ? e.message : 'Login failed. Please try again.';
+          err.classList.add('show');
+        }
+      });
+    </script>
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/690f29fb1bf5c2195a878379/1j9hjo02p';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+  </body>
+</html>

@@ -1,0 +1,59 @@
+[
+  {
+    "id": "ip17p-boxed-hs-1",
+    "category": "iphone",
+    "model": "iPhone 17 Pro",
+    "condition": "New (Boxed)",
+    "truetone": true,
+    "faceId": true,
+    "batteryHealth": "100%",
+    "storage": "256GB",
+    "price": 1599,
+    "currency": "USD",
+    "tags": ["new_stock"],
+    "badge": "Pro",
+    "image": "assets/iphone_17pro__0s6piftg70ym_large_2x.jpg",
+    "warranty": "1 year",
+    "branch": "Haddon & Sly"
+  },
+  {
+    "id": "ip15p-1tb-boxed-1",
+    "category": "iphone",
+    "model": "iPhone 15 Pro",
+    "condition": "New (Boxed)",
+    "truetone": true,
+    "faceId": true,
+    "batteryHealth": "100%",
+    "storage": "1TB",
+    "price": 1899,
+    "currency": "USD",
+    "tags": ["new_stock"],
+    "badge": "Pro",
+    "image": "assets/iphone-card-40-17pro-202509.jpg"
+  },
+  {
+    "id": "ip17-byo-97-1",
+    "category": "iphone",
+    "model": "iPhone 17",
+    "condition": "",
+    "truetone": false,
+    "faceId": true,
+    "batteryHealth": "97%",
+    "storage": "",
+    "price": null,
+    "currency": "USD",
+    "tags": ["new_stock"],
+    "badge": "",
+    "image": "assets/iphone_17__ck7zzemcw37m_large_2x.jpg",
+    "warranty": "6 Months",
+    "branch": "Bulawayo Center"
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+]

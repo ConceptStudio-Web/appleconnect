@@ -1,0 +1,161 @@
+/* About page scoped styles */
+:root { --ac-blue:#1e96c8; --ac-blue-600:#157aa1; --ac-blue-700:#106b8d; --ink:#0b0f14; --ink-2:#1f2a37; --muted:#6b7280; --card:#ffffff; }
+
+/* Hero section - matches home page */
+.hero-banner { padding: 16px 0; }
+.hero-banner-inner { 
+  border-radius: 20px; 
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08); 
+  animation: revealUp 420ms ease-out both;
+  background: #f8fafc;
+  min-height: 410px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+/* Constrain the video card to the same width as other content containers */
+/* Make the hero card span the full container width */
+.hero-banner-inner { width: 100%; }
+/* About page: make hero card 20px wider than container (10px each side) */
+.about-page .container.hero-banner .hero-banner-inner { width: calc(100% + 100px); margin-left: -50px; margin-right: -50px; }
+/* No overlay variant for the first hero */
+.hero-banner.no-overlay .hero-banner-inner {
+  background: transparent;
+  box-shadow: none;
+}
+@media (min-width: 900px) {
+  .hero-banner-inner {
+    min-height: 510px;
+  }
+}
+.hero-banner .container {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+  width: 100%;
+}
+.about-hero-content {
+  max-width: 600px;
+}
+.about-hero-content .eyebrow {
+  color: var(--ac-blue);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 12px;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+.about-hero-content h1 {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 16px;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.about-hero-content .lead {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0 0 24px;
+  max-width: 90%;
+}
+.hero-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 60%;
+  object-fit: cover;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+@media (max-width: 900px) {
+  .hero-banner-inner {
+    min-height: 420px;
+  }
+  .hero-banner .container {
+    padding: 32px 24px;
+  }
+  .about-hero-content h1 {
+    font-size: 36px;
+  }
+  .hero-image { width: 50%; opacity: 0.6; }
+  .hero-banner.no-overlay .hero-image { opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .hero-banner-inner {
+    min-height: 480px;
+  }
+  .about-hero-content {
+    text-align: center;
+    margin: 0 auto;
+  }
+  .about-hero-content .lead {
+    max-width: 100%;
+    font-size: 16px;
+  }
+  .hero-image { width: 100%; opacity: 0.2; }
+  .hero-banner.no-overlay .hero-image { opacity: 1; }
+}
+
+.about-hero{ padding:48px 0 12px; }
+.about-hero .eyebrow{ color:var(--ac-blue); font-weight:700; letter-spacing:.08em; text-transform:uppercase; font-size:12px; }
+.about-hero h1{ margin:6px 0 10px; font-size:40px; line-height:1.12; }
+.about-hero .lead{ color:#4b5563; max-width:76ch; font-size:18px; }
+
+.about-sections{ display:grid; gap:30px; margin:28px 0 56px; }
+
+.cards{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:20px; }
+@media (max-width: 1024px){ .cards{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 640px){ .cards{ grid-template-columns: 1fr; } }
+
+.card{ position:relative; background:#ffffff; border:1px solid #d8eaf6; border-radius:16px; padding:22px; color:#0b0f14; box-shadow: 0 8px 18px rgba(16,107,141,.08); transition: transform .18s ease, box-shadow .2s ease, border-color .2s ease; }
+.card:hover{ transform: translateY(-5px); box-shadow: 0 14px 28px rgba(16,107,141,.15); border-color: #9fd4ec; }
+.card .title{ font-weight:800; font-size:18px; margin:8px 0 10px; letter-spacing:-.01em; }
+.card .desc{ color:#495a6b; font-size:15px; }
+.card .pill{ display:inline-flex; align-items:center; gap:8px; padding:7px 12px; border-radius:999px; background:rgba(30,150,200,.16); color:#cdeefd; font-weight:700; font-size:12px; }
+
+/* Brand pill */
+.card .pill.brand{ background:#1e96c8; color:#ffffff; }
+
+/* Icon circle */
+.card .icon{ width:44px; height:44px; border-radius:12px; display:grid; place-items:center; background:#e9f6fb; color:#1e96c8; }
+.card .icon svg{ width:22px; height:22px; }
+
+/* Stats */
+.stats{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:18px; margin:8px 0 14px; }
+@media (max-width: 640px){ .stats{ grid-template-columns:1fr; } }
+.stat{ background:#ffffff; border:1px solid #d8eaf6; border-radius:16px; padding:22px; color:#0b0f14; display:flex; align-items:center; gap:16px; box-shadow: 0 6px 14px rgba(16,107,141,.06); }
+.stat .num{ font-size:40px; font-weight:900; letter-spacing:-.01em; color:#0b0f14; }
+.stat .label{ color:#495a6b; font-size:14px; }
+
+/* Blue variant for stat cards */
+.stat.is-blue{ background:linear-gradient(180deg,#1e96c8,#157aa1); border-color:rgba(255,255,255,.25); color:#ffffff; }
+.stat.is-blue .label{ color:#eef7fd; }
+.stat.is-blue .icon{ background:rgba(255,255,255,.18); color:#ffffff; }
+
+/* Accent borders for special cards */
+.card.is-accent{ border-color:#9fd4ec; box-shadow:0 12px 24px rgba(30,150,200,.18); }
+.card.is-accent:hover{ border-color:#66bfe6; }
+
+/* Section heads */
+.section-head .kicker{ color:var(--ac-blue); font-weight:700; letter-spacing:.06em; text-transform:uppercase; font-size:12px; }
+.section-head h2{ margin:6px 0 4px; }
+
+/* Utilities */
+.grid-2{ display:grid; grid-template-columns:1.2fr 1fr; gap:22px; }
+@media (max-width: 900px){ .grid-2{ grid-template-columns:1fr; } }
+.muted{ color:#8895a7; }
+
+/* Make dark cards sit nicely on light sections */
+.section.alt{ background:linear-gradient(180deg,#f7fbff,#eaf6fc); border-radius:20px; padding:22px; }
+.section.alt .card{ background:#ffffff; color:#0b0f14; border-color:#d8eaf6; }
+.section.alt .card .desc{ color:#495a6b; }
+.section.alt .icon{ background:#e9f6fb; color:#1e96c8; }
