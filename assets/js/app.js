@@ -10,7 +10,7 @@
       if (!header) return;
       const h = header.offsetHeight || 64;
       document.documentElement.style.setProperty('--header-offset', `${h}px`);
-    } catch (_) {}
+    } catch (_) { }
   }
 
   function openWhatsAppShop(name) {
@@ -31,11 +31,11 @@
       : 'Hy, I would like to purchase this item :';
     const lines = [header, ''];
     items.forEach((ci, idx) => {
-      const prod = (state.products||[]).find(p => p.id === ci.id) || null;
+      const prod = (state.products || []).find(p => p.id === ci.id) || null;
       if (prod) ensureProductId(prod);
       const name = (prod?.model || ci.name || '').trim();
-      const isShop = (ci?.category === 'game') || (prod && ['game','controller','console'].includes(String(prod.category||'').toLowerCase())) || String(ci?.id||'').startsWith('shop-');
-      if (items.length > 1) lines.push(`Item ${idx+1}`);
+      const isShop = (ci?.category === 'game') || (prod && ['game', 'controller', 'console'].includes(String(prod.category || '').toLowerCase())) || String(ci?.id || '').startsWith('shop-');
+      if (items.length > 1) lines.push(`Item ${idx + 1}`);
       const qty = Math.max(1, parseInt(ci?.qty, 10) || 1);
       if (isShop) {
         // Game shop products: only display (Product Name)
@@ -120,7 +120,7 @@
 
   // Randomized color per product (stable per id)
   function productColor(p) {
-    const colors = ['Black','White','Midnight','Starlight','Blue','Green','Red','Purple','Space Gray','Silver'];
+    const colors = ['Black', 'White', 'Midnight', 'Starlight', 'Blue', 'Green', 'Red', 'Purple', 'Space Gray', 'Silver'];
     const id = (p?.id || String(Math.random())).toString();
     let hash = 0; for (let i = 0; i < id.length; i++) { hash = ((hash << 5) - hash) + id.charCodeAt(i); hash |= 0; }
     const idx = Math.abs(hash) % colors.length;
@@ -138,14 +138,14 @@
     const a = letters[Math.abs(h) % 26];
     const b = letters[Math.abs((h >> 3)) % 26];
     const c = letters[Math.abs((h >> 6)) % 26];
-    const num = String(Math.abs(h)).padStart(3, '0').slice(0,3);
+    const num = String(Math.abs(h)).padStart(3, '0').slice(0, 3);
     p.productId = `${a}${b}${c}-${num}`;
     return p;
   }
 
   // Persist cart across pages
   function saveCart() {
-    try { localStorage.setItem('ac_cart', JSON.stringify(state.cart)); } catch(_) {}
+    try { localStorage.setItem('ac_cart', JSON.stringify(state.cart)); } catch (_) { }
   }
   function loadCart() {
     try {
@@ -154,23 +154,23 @@
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) state.cart = parsed;
       }
-    } catch(_) {}
+    } catch (_) { }
   }
   loadCart();
   // Immediately reflect persisted cart in the badge on every page load
-  try { updateCartBadge(); } catch(_) {}
+  try { updateCartBadge(); } catch (_) { }
   // Also update once DOM is guaranteed ready, to handle any timing inconsistencies
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      try { ensureCartUI(); updateCartBadge(); } catch(_) {}
+      try { ensureCartUI(); updateCartBadge(); } catch (_) { }
     }, { once: true });
   } else {
-    try { ensureCartUI(); updateCartBadge(); } catch(_) {}
+    try { ensureCartUI(); updateCartBadge(); } catch (_) { }
   }
 
   // Final safety: after all resources load
   window.addEventListener('load', () => {
-    try { ensureCartUI(); updateCartBadge(); } catch(_) {}
+    try { ensureCartUI(); updateCartBadge(); } catch (_) { }
   }, { once: true });
 
   // Built-in fallback data for offline/file:// usage
@@ -261,22 +261,25 @@
       return Array.isArray(data) ? data : [];
     }
 
-    try {
-      let data = await tryLoad('data/products.json');
-      if (!data.length || data.length < 6) {
-        try {
-          data = await tryLoad('data/products-full.json');
-        } catch (e2) {
-          // ignore; will fall back below
+    // Prioritize window.PRODUCTS (from data/products.js) as it contains the complete dataset with promo flags
+    if (Array.isArray(window.PRODUCTS) && window.PRODUCTS.length > 0) {
+      state.products = window.PRODUCTS.map(ensureProductId);
+    } else {
+      try {
+        let data = await tryLoad('data/products.json');
+        if (!data.length || data.length < 6) {
+          try {
+            data = await tryLoad('data/products-full.json');
+          } catch (e2) {
+            // ignore; will fall back below
+          }
         }
+        if (!data || !data.length) throw new Error('Empty dataset');
+        state.products = data.map(ensureProductId);
+      } catch (err) {
+        console.warn('Failed to load products JSON, using fallback dataset.', err);
+        state.products = fallbackProducts.map(ensureProductId);
       }
-      if (!data || !data.length) throw new Error('Empty dataset');
-      state.products = data.map(ensureProductId);
-    } catch (err) {
-      console.warn('Failed to load products JSON, using fallback dataset.', err);
-      // Allow overriding via window.PRODUCTS if a script provides it
-      const override = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : null;
-      state.products = (override && override.length ? override : fallbackProducts).map(ensureProductId);
     }
     // Apply query filter from URL if present
     const urlQ = new URLSearchParams(location.search).get('q')?.trim().toLowerCase() || '';
@@ -284,23 +287,57 @@
     const base = urlQ
       ? state.products
       : ((pageCategory && pageCategory !== 'home')
-          ? state.products.filter(p => p.category === pageCategory)
-          : state.products);
+        ? state.products.filter(p => p.category === pageCategory)
+        : state.products);
     // Ensure every product has a badge
     const badgePool = ['New', 'In Stock', 'Deal', 'Clearance', 'Hot', 'Pro'];
     base.forEach(p => { ensureProductId(p); if (!p.badge) p.badge = badgePool[Math.floor(Math.random() * badgePool.length)]; });
     if (urlQ) {
       state.filtered = base.filter(p => {
-        const name = (p.model||p.name||'').toLowerCase();
-        const cat = (p.category||'').toLowerCase();
-        const brand = (p.brand||'').toLowerCase();
-        const pid = String(p.productId||'').toLowerCase();
+        const name = (p.model || p.name || '').toLowerCase();
+        const cat = (p.category || '').toLowerCase();
+        const brand = (p.brand || '').toLowerCase();
+        const pid = String(p.productId || '').toLowerCase();
         return name.includes(urlQ) || cat.includes(urlQ) || brand.includes(urlQ) || (pid && pid.includes(urlQ));
       });
+      initFilters();
+      renderAll();
     } else {
-      state.filtered = base;
+      // Use the unified filtering logic for standard page loads
+      // Use the unified filtering logic for standard page loads
+      // Small delay to ensure DOM is ready for IntersectionObserver
+      // Small delay to ensure DOM is ready for IntersectionObserver
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          initFilters();
+          applyFilters();
+          // Force re-check of reveal elements
+          tagForReveal(document);
+        });
+      }, 100);
     }
-    renderAll();
+  }
+
+  function initFilters() {
+    // Determine the base set of products for the current category
+    const base = (pageCategory && pageCategory !== 'home')
+      ? state.products.filter(p => p.category === pageCategory)
+      : state.products;
+
+    if (storageFilter) {
+      const storages = [...new Set(base.map(p => p.storage).filter(Boolean))].sort((a, b) => parseInt(a) - parseInt(b));
+      const current = storageFilter.value;
+      storageFilter.innerHTML = '<option value="">Any</option>' + storages.map(s => `<option ${s === current ? 'selected' : ''}>${s}</option>`).join('');
+    }
+
+    if (modelFilter) {
+      const models = [...new Set(base.map(p => p.model).filter(Boolean))].sort();
+      const current = modelFilter.value;
+      modelFilter.innerHTML = '<option value="">All</option>' + models.map(m => `<option ${m === current ? 'selected' : ''}>${m}</option>`).join('');
+    }
+
+    // Condition filter is often semi-static but let's ensure it matches reality if needed
+    // For now we keep the semantic buckets but we could also dynamic generate if the user wants.
   }
 
   function applyFilters() {
@@ -309,7 +346,6 @@
     const model = modelFilter?.value || '';
     const accessoriesType = accessoriesTypeFilter?.value || '';
 
-    // Base dataset limited to this page's category (except Home)
     const base = (pageCategory && pageCategory !== 'home')
       ? state.products.filter(p => p.category === pageCategory)
       : state.products;
@@ -319,6 +355,7 @@
       const c = (pCond || '').toLowerCase();
       switch (selected) {
         case 'boxed': return c.includes('boxed');
+        case 'brand_new': return c.includes('brand new') || c.includes('new');
         case 'used_new': return c.includes('like new') || c.includes('excellent') || c.includes('used (new)');
         case 'used_good': return c.includes('good');
         case 'used_fair': return c.includes('fair');
@@ -326,14 +363,47 @@
       }
     }
 
+    function matchesAccessoryType(p, selected) {
+      if (!selected) return true;
+      if (p.category !== 'accessory') return false;
+      const t = (p.type || '').toLowerCase();
+      const s = selected.toLowerCase();
+      // Map filter values to data types
+      if (s === 'airpods') return t.includes('airpods') || t.includes('audio') || t.includes('headphone');
+      if (s === 'pencil') return t.includes('pencil') || t.includes('keyboard');
+      if (s === 'covers') return t.includes('case') || t.includes('protection') || t.includes('cover');
+      if (s === 'chargers') return t.includes('power') || t.includes('cable') || t.includes('adapter') || t.includes('charger');
+      if (s === 'watch') return t.includes('watch') || t.includes('band');
+      return t.includes(s);
+    }
+
     state.filtered = base.filter(p => {
       const storageOk = !storage || p.storage === storage;
       const conditionOk = matchesCondition(p.condition, condition);
       const modelOk = !model || p.model === model;
-      const accessoriesTypeOk = !accessoriesType || (p.category === 'accessory' && p.type === accessoriesType);
+      const accessoriesTypeOk = matchesAccessoryType(p, accessoriesType);
       return storageOk && conditionOk && modelOk && accessoriesTypeOk;
     });
+
+    updateResultsCount(state.filtered.length);
     renderAll();
+  }
+
+  function updateResultsCount(count) {
+    let el = document.getElementById('filterResultsCount');
+    if (!el && (storageFilter || conditionFilter || modelFilter)) {
+      const parent = (storageFilter || conditionFilter || modelFilter).closest('.filters');
+      if (parent) {
+        el = document.createElement('div');
+        el.id = 'filterResultsCount';
+        el.className = 'results-count';
+        parent.appendChild(el);
+      }
+    }
+    if (el) {
+      el.textContent = `${count} ${count === 1 ? 'product' : 'products'} found`;
+      el.style.opacity = '1';
+    }
   }
 
   storageFilter?.addEventListener('change', applyFilters);
@@ -344,59 +414,59 @@
     if (storageFilter) storageFilter.value = '';
     if (conditionFilter) conditionFilter.value = '';
     if (modelFilter) modelFilter.value = '';
+    if (accessoriesTypeFilter) accessoriesTypeFilter.value = '';
     applyFilters();
   });
 
-  function makeCard(p) {
+  function makeCard(p, options = { showCart: true }) {
     const img = p.image || '';
-    const label = (p.tags && p.tags.includes('new_stock')) ? 'New' : (p.badge || '');
+    const hasPrice = typeof p.price === 'number' && isFinite(p.price);
+    const priceText = hasPrice ? `${currency(p.currency, p.price)}` : '';
+    const isPromo = p.promo === true;
+
+    // Subtext parts
     const subParts = [];
-    if (p.condition) subParts.push(p.condition);
     if (p.storage) subParts.push(p.storage);
     if (p.productId) subParts.push(p.productId);
     const sub = subParts.join(' • ');
-    const hasPrice = typeof p.price === 'number' && isFinite(p.price);
-    const priceLine = hasPrice ? `${currency(p.currency, p.price)}` : '';
-    const condition = p.condition || '';
-    const randColor = productColor(p);
-    const faceId = (p.faceId === true || p.faceId === 'Yes') ? 'Yes' : (p.faceId === false ? 'No' : (p.faceId || '')); 
-    const trueTone = (p.truetone === true || p.truetone === 'Yes') ? 'Yes' : (p.truetone === false ? 'No' : (p.truetone || ''));
+
     const battery = p.batteryHealth || '';
-    const warranty = p.warranty || '';
+    const color = p.color || productColor(p);
     const branch = p.branch || '';
-    const showDetails = condition || faceId || trueTone || battery || warranty || branch || randColor || p.storage;
-    const detailsHTML = showDetails ? `
+
+    const detailsHTML = `
       <div class="details" role="group" aria-label="Product details">
-        ${condition ? `<div class="detail-row"><span class="detail-label">Condition</span><span class="detail-value">${condition}</span></div>` : ''}
-        ${p.storage ? `<div class="detail-row"><span class="detail-label">Storage</span><span class="detail-value">${p.storage}</span></div>` : ''}
-        ${faceId ? `<div class="detail-row"><span class="detail-label">Face ID</span><span class="detail-value">${faceId}</span></div>` : ''}
-        ${trueTone ? `<div class="detail-row"><span class="detail-label">True Tone</span><span class="detail-value">${trueTone}</span></div>` : ''}
         ${battery ? `<div class="detail-row"><span class="detail-label">Battery Health</span><span class="detail-value">${battery}</span></div>` : ''}
-        ${warranty ? `<div class="detail-row"><span class="detail-label">Warranty</span><span class="detail-value">${warranty}</span></div>` : ''}
+        ${color ? `<div class="detail-row"><span class="detail-label">Color</span><span class="detail-value">${color}</span></div>` : ''}
         ${branch ? `<div class="detail-row"><span class="detail-label">Branch</span><span class="detail-value">${branch}</span></div>` : ''}
-        ${randColor ? `<div class="detail-row"><span class="detail-label">Color</span><span class="detail-value">${randColor}</span></div>` : ''}
       </div>
-    ` : '';
+    `;
+
     return `
       <article class="apple-card" role="listitem" data-id="${p.id}" data-category="${p.category}" data-price="${hasPrice ? p.price : ''}" data-name="${p.model}">
-        <div class="apple-card-media">${img ? `<img alt="${p.model}" src="${img}"/>` : ''}</div>
+        <div class="apple-card-media">
+          ${img ? `<img alt="${p.model}" src="${img}"/>` : ''}
+          ${hasPrice ? `<div class="card-badge price-badge">${priceText}</div>` : ''}
+          ${isPromo ? `<div class="card-badge promo-badge-label">On Promo</div>` : ''}
+          ${p.condition ? `<div class="card-badge condition-badge-label">${p.condition}</div>` : ''}
+        </div>
         <div class="apple-card-body">
-          ${label ? `<div class="pill">${label}</div>` : ''}
           <h3>${p.model}</h3>
           <div class="sub">${sub}</div>
           ${detailsHTML}
-          ${hasPrice ? `<div class="price-line">${priceLine}</div>` : ''}
+          ${hasPrice ? `<div class="price-line-hidden" style="display:none">${priceText}</div>` : ''}
           <div class="apple-card-actions">
-            <button class="preview-btn" aria-label="Preview ${p.model}">Preview</button>
-            <button class="buy-btn" aria-label="Buy ${p.model}">Buy now</button>
+            <button class="buy-btn" aria-label="Buy ${p.model}" style="${!options.showCart ? 'width:100%' : ''}">Buy now</button>
+            ${options.showCart ? `
             <button class="cart-btn" aria-label="Add ${p.model} to cart">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M6 6h15l-1.5 9h-12z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
                 <circle cx="9" cy="20" r="1.5" fill="currentColor"/>
                 <circle cx="18" cy="20" r="1.5" fill="currentColor"/>
                 <path d="M6 6L5 3H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
             </button>
+            ` : ''}
           </div>
         </div>
       </article>
@@ -414,7 +484,7 @@
       tagForReveal(el);
       return;
     }
-    el.innerHTML = items.map(makeCard).join('');
+    el.innerHTML = items.map(p => makeCard(p)).join('');
     // Tag newly rendered items for reveal
     tagForReveal(el);
   }
@@ -427,7 +497,7 @@
     renderSection('macbooks-list', p => p.category === 'macbook');
 
     const all = document.getElementById('all-products-list');
-    if (all) all.innerHTML = state.filtered.map(makeCard).join('');
+    if (all) all.innerHTML = state.filtered.map(p => makeCard(p)).join('');
     // Ensure button handlers remain active for dynamically rendered content
     setupDelegatedActions();
     // Tag newly rendered lists for reveal
@@ -453,7 +523,7 @@
       } else if (prev) {
         prev.remove();
       }
-    } catch(_) {}
+    } catch (_) { }
     // If URL has an id query, focus that card
     try {
       const idParam = new URLSearchParams(location.search).get('id');
@@ -465,7 +535,7 @@
           setTimeout(() => card.classList.remove('card-highlight'), 2000);
         }
       }
-    } catch(_) {}
+    } catch (_) { }
   }
 
   // Simple horizontal scroller controls
@@ -490,12 +560,12 @@
   // Kickoff
   setupScrollers();
   loadProducts();
-  (function(){
+  (function () {
     try {
       const v = document.getElementById('homeHeroVideo');
       if (!v) return;
       v.removeAttribute('loop');
-      const start = () => { try { v.play().catch(()=>{}); } catch(_) {} };
+      const start = () => { try { v.play().catch(() => { }); } catch (_) { } };
       if (v.readyState >= 2) { start(); }
       else { v.addEventListener('loadedmetadata', start, { once: true }); }
       v.addEventListener('ended', () => {
@@ -504,18 +574,18 @@
           if (!isNaN(v.duration) && isFinite(v.duration)) {
             v.currentTime = Math.max(0, v.duration - 0.001);
           }
-        } catch(_) {}
+        } catch (_) { }
       });
-    } catch(_) {}
+    } catch (_) { }
   })();
-  (function(){
+  (function () {
     try {
       const vids = Array.from(document.querySelectorAll('video[data-pause-once]'));
       vids.forEach(v => {
         if (v.dataset.pauseOnceBound) return;
         v.dataset.pauseOnceBound = '1';
         v.removeAttribute('loop');
-        const start = () => { try { v.play().catch(()=>{}); } catch(_) {} };
+        const start = () => { try { v.play().catch(() => { }); } catch (_) { } };
         if (v.readyState >= 2) { start(); }
         else { v.addEventListener('loadedmetadata', start, { once: true }); }
         v.addEventListener('ended', () => {
@@ -524,10 +594,10 @@
             if (!isNaN(v.duration) && isFinite(v.duration)) {
               v.currentTime = Math.max(0, v.duration - 0.001);
             }
-          } catch(_) {}
+          } catch (_) { }
         });
       });
-    } catch(_) {}
+    } catch (_) { }
   })();
 
   // --- Search UI ---
@@ -560,7 +630,7 @@
       }
       const lis = items.slice(0, 8).map(p => {
         const price = (typeof p.price === 'number') ? p.price : '';
-        const img = p.image ? `<img class="thumb" src="${p.image}" alt="${p.model||p.name}"/>` : '';
+        const img = p.image ? `<img class="thumb" src="${p.image}" alt="${p.model || p.name}"/>` : '';
         const name = p.model || p.name || '';
         return `<li data-id="${p.id}" data-category="${p.category}">${img}<span class="result-name">${name}</span>${price !== '' ? `<span class="result-price">${currency(p.currency, p.price)}</span>` : ''}</li>`;
       }).join('');
@@ -572,7 +642,7 @@
     async function ensureProductsLoaded() {
       // Always assemble a global catalog, independent of current page/category
       let allProducts = Array.isArray(state.products) ? state.products.slice() : [];
-      
+
       // Load from JSON files
       try {
         const tryUrls = ['data/products-full.json', 'data/products.json'];
@@ -585,12 +655,12 @@
           }
         }
       } catch (e) { /* ignore */ }
-      
+
       // Add global PRODUCTS (from products.js)
       if (Array.isArray(window?.PRODUCTS)) {
         allProducts = allProducts.concat(window.PRODUCTS);
       }
-      
+
       // Add gaming products if on gaming page
       if (/(^|\/)gaming\.html(\?|#|$)/.test(location.pathname) || document.querySelector('[data-gaming-page]')) {
         const gameItems = [
@@ -604,7 +674,7 @@
         ];
         allProducts = allProducts.concat(gameItems);
       }
-      
+
       // Remove duplicates by id and ensure productId
       const seen = new Set();
       const global = allProducts.map(ensureProductId).filter(p => {
@@ -627,11 +697,11 @@
         const q = raw.toLowerCase();
         if (!q) { results.classList.remove('open'); results.innerHTML = ''; return; }
         const base = await ensureProductsLoaded();
-        const matches = (base||[]).filter(p => {
-          const name = (p.model||p.name||'').toLowerCase();
-          const cat = (p.category||'').toLowerCase();
-          const brand = (p.brand||'').toLowerCase();
-          const pid = String(p.productId||'').toLowerCase();
+        const matches = (base || []).filter(p => {
+          const name = (p.model || p.name || '').toLowerCase();
+          const cat = (p.category || '').toLowerCase();
+          const brand = (p.brand || '').toLowerCase();
+          const pid = String(p.productId || '').toLowerCase();
           return name.includes(q) || cat.includes(q) || brand.includes(q) || (pid && pid.includes(q));
         });
         openResults(matches);
@@ -653,16 +723,16 @@
       if (!raw) return;
       const q = raw.toLowerCase();
       const base = await ensureProductsLoaded();
-      const matches = (base||[]).filter(p => {
-        const name = (p.model||p.name||'').toLowerCase();
-        const cat = (p.category||'').toLowerCase();
-        const brand = (p.brand||'').toLowerCase();
-        const pid = String(p.productId||'').toLowerCase();
+      const matches = (base || []).filter(p => {
+        const name = (p.model || p.name || '').toLowerCase();
+        const cat = (p.category || '').toLowerCase();
+        const brand = (p.brand || '').toLowerCase();
+        const pid = String(p.productId || '').toLowerCase();
         return name.includes(q) || cat.includes(q) || brand.includes(q) || (pid && pid.includes(q));
       });
-      const counts = matches.reduce((acc, p) => { const c=(p.category||'').toLowerCase(); acc[c]=(acc[c]||0)+1; return acc; }, {});
-      function routeFor(cat){
-        switch(cat){
+      const counts = matches.reduce((acc, p) => { const c = (p.category || '').toLowerCase(); acc[c] = (acc[c] || 0) + 1; return acc; }, {});
+      function routeFor(cat) {
+        switch (cat) {
           case 'iphone': return 'iphones.html';
           case 'ipad': return 'ipads.html';
           case 'macbook': return 'macbooks.html';
@@ -672,7 +742,7 @@
           default: return 'index.html';
         }
       }
-      const best = Object.keys(counts).sort((a,b)=>counts[b]-counts[a])[0] || '';
+      const best = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0] || '';
       const route = routeFor(best);
       const qs = encodeURIComponent(raw);
       window.location.href = `${route}?q=${qs}`;
@@ -684,10 +754,10 @@
   injectSearchUI();
   updateHeaderOffset();
   // Ensure cart UI is initialized even before any add-to-cart
-  (function initCartUI(){ try { ensureCartUI(); updateCartBadge(); } catch(_) {} })();
+  (function initCartUI() { try { ensureCartUI(); updateCartBadge(); } catch (_) { } })();
 
   // Make header logo navigate to home
-  (function setupBrandLink(){
+  (function setupBrandLink() {
     const logo = document.querySelector('.brand .logo');
     if (logo) {
       logo.style.cursor = 'pointer';
@@ -728,8 +798,179 @@
       const checkout = document.getElementById('checkoutBtn');
       if (checkout) {
         checkout.addEventListener('click', () => {
-          try { openWhatsAppCart(); } catch(_) {}
+          if (!state.cart.length) return;
+          openCheckoutModal();
         });
+      }
+
+      function openCheckoutModal() {
+        const total = state.cart.reduce((sum, i) => sum + (i.price || 0) * i.qty, 0);
+
+        // Identify the likely pickup branch from cart contents
+        const uniqueBranches = [...new Set(state.cart.map(i => i.branch).filter(Boolean))];
+        const cartBranch = uniqueBranches.length > 0 ? uniqueBranches[0] : 'Bulawayo Center';
+
+        const overlay = document.createElement('div');
+        overlay.className = 'fixed-layer active';
+        overlay.id = 'checkout-modal-root';
+        overlay.style.position = 'fixed';
+        overlay.style.inset = '0';
+        overlay.style.zIndex = '100000';
+        overlay.style.backgroundColor = 'rgba(0,0,0,0.85)';
+        overlay.style.display = 'flex';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.backdropFilter = 'blur(12px)';
+        overlay.style.webkitBackdropFilter = 'blur(12px)';
+
+        const modalContent = document.createElement('div');
+        modalContent.className = 'modal-reveal-container';
+        modalContent.style.maxWidth = '500px';
+        modalContent.style.width = '90%';
+        modalContent.innerHTML = `
+      <div class="checkout-modal" style="background:white; border-radius:32px; position:relative; overflow:hidden;">
+        <button id="closeCheckout" 
+                style="position:absolute; top:20px; right:20px; background:none; border:none; color:#64748b; font-size:24px; cursor:pointer;"
+                aria-label="Close">&times;</button>
+        
+        <!-- Step 1: Details -->
+        <div id="checkoutStep1" class="checkout-step active">
+          <h2 style="font-size:24px; font-weight:800; letter-spacing:-0.02em;">Shipping Details</h2>
+          <p style="color:var(--text-muted); font-size:14px; margin-bottom:10px;">Please provide your contact information and preferred branch.</p>
+          
+          <div class="checkout-form-group">
+            <label>Full Name</label>
+            <input type="text" id="checkoutName" placeholder="e.g. John Doe" required>
+          </div>
+          <div class="checkout-form-group">
+            <label>WhatsApp Number</label>
+            <input type="tel" id="checkoutPhone" placeholder="e.g. +263..." required>
+          </div>
+          <div class="checkout-form-group">
+            <label>Pickup Branch</label>
+            <select id="checkoutBranch">
+              <optgroup label="Auto-selected based on cart">
+                <option value="Bulawayo Center" ${cartBranch === 'Bulawayo Center' ? 'selected' : ''}>Bulawayo Center</option>
+                <option value="Haddon & Sly" ${cartBranch === 'Haddon & Sly' ? 'selected' : ''}>Haddon & Sly</option>
+              </optgroup>
+            </select>
+          </div>
+          
+          <div class="checkout-actions">
+            <span></span>
+            <button class="btn btn-primary" id="toStep2">Next: Payment</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Payment -->
+        <div id="checkoutStep2" class="checkout-step">
+          <h2 style="font-size:24px; font-weight:800; letter-spacing:-0.02em;">Payment Method</h2>
+          
+          <div class="checkout-order-summary">
+            <div class="summary-row"><span>Subtotal</span><span>${currency('USD', total)}</span></div>
+            <div class="summary-row"><span>Tax</span><span>$0.00</span></div>
+            <div class="summary-row total"><span>Total</span><span>${currency('USD', total)}</span></div>
+          </div>
+
+          <div class="payment-methods">
+            <div class="payment-card selected" data-method="cash">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="12" y1="15" x2="12" y2="15"></line></svg>
+              <div class="title">Cash at Branch</div>
+            </div>
+            <div class="payment-card" data-method="paynow">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              <div class="title">Paynow</div>
+            </div>
+          </div>
+
+          <div id="paynowDetail" style="display:none;">
+            <div class="paynow-placeholder">
+              <b>Paynow Integration Placeholder</b><br>
+              Direct payment processing will be linked here.
+            </div>
+          </div>
+
+          <div class="checkout-actions">
+            <button class="btn btn-secondary" id="backToStep1">Back</button>
+            <button class="btn btn-primary" id="completeOrder">Complete Order</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Success -->
+        <div id="checkoutStep3" class="checkout-step" style="text-align:center; padding: 40px 0;">
+          <div style="width:80px; height:80px; background:#22c55e; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; margin: 0 auto 20px; font-size:40px;">&check;</div>
+          <h2 style="font-size:28px; font-weight:800;">Order Confirmed!</h2>
+          <p id="successMsg" style="color:var(--text-muted); font-size:16px; margin: 15px 0 25px;"></p>
+          <button class="btn btn-primary" id="finishCheckout">Return to Site</button>
+        </div>
+
+      </div>
+    `;
+
+        overlay.appendChild(modalContent);
+        document.body.appendChild(overlay);
+        document.body.style.overflow = 'hidden';
+
+        // Logic
+        const close = () => { overlay.remove(); document.body.style.overflow = ''; };
+        document.getElementById('closeCheckout').onclick = close;
+        overlay.onclick = (e) => { if (e.target === overlay) close(); };
+
+        let selectedMethod = 'cash';
+
+        document.getElementById('toStep2').onclick = () => {
+          const name = document.getElementById('checkoutName').value.trim();
+          const phone = document.getElementById('checkoutPhone').value.trim();
+          if (!name || !phone) { alert('Please fill in your name and phone number.'); return; }
+          document.getElementById('checkoutStep1').classList.remove('active');
+          document.getElementById('checkoutStep2').classList.add('active');
+        };
+
+        document.getElementById('backToStep1').onclick = () => {
+          document.getElementById('checkoutStep2').classList.remove('active');
+          document.getElementById('checkoutStep1').classList.add('active');
+        };
+
+        const pCards = overlay.querySelectorAll('.payment-card');
+        pCards.forEach(card => {
+          card.onclick = () => {
+            pCards.forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedMethod = card.dataset.method;
+            document.getElementById('paynowDetail').style.display = selectedMethod === 'paynow' ? 'block' : 'none';
+          };
+        });
+
+        document.getElementById('completeOrder').onclick = () => {
+          const name = document.getElementById('checkoutName').value;
+          const phone = document.getElementById('checkoutPhone').value;
+          const branch = document.getElementById('checkoutBranch').value;
+
+          const successMsg = selectedMethod === 'cash'
+            ? `Thank you, ${name}. Your order has been placed. Please visit our ${branch} branch to complete your purchase.`
+            : `Ready to pay via Paynow. We've sent a payment request to your details.`;
+
+          document.getElementById('successMsg').textContent = successMsg;
+          document.getElementById('checkoutStep2').classList.remove('active');
+          document.getElementById('checkoutStep3').classList.add('active');
+
+          // WhatsApp Integration on Completion
+          const header = selectedMethod === 'cash' ? 'New Order (Cash Pickup)' : 'New Order (Paynow)';
+          const items = state.cart.map(i => `- ${i.name} (${i.qty}) @ ${currency('USD', i.price)}`).join('\n');
+          const footer = `Customer: ${name}\nPhone: ${phone}\nBranch: ${branch}\nTotal: ${currency('USD', total)}`;
+          const text = encodeURIComponent([header, '', items, '', footer].join('\n'));
+          const url = `https://wa.me/263777306848?text=${text}`;
+
+          setTimeout(() => { window.open(url, '_blank'); }, 2000);
+
+          // Clear cart
+          state.cart = [];
+          saveCart();
+          updateCartBadge();
+          renderCart();
+        };
+
+        document.getElementById('finishCheckout').onclick = close;
       }
       // Remove handlers
       cartPanelEl.addEventListener('click', (e) => {
@@ -771,9 +1012,20 @@
   function addToCart(product, qty = 1) {
     if (!product) return;
     const existing = state.cart.find(i => i.id === product.id);
-    if (existing) existing.qty += qty; else state.cart.push({ id: product.id, name: product.model, price: product.price || 0, image: product.image || '', qty });
+    if (existing) {
+      existing.qty += qty;
+    } else {
+      state.cart.push({
+        id: product.id,
+        name: product.model || product.name,
+        price: product.price || 0,
+        image: product.image || '',
+        branch: product.branch || '',
+        qty
+      });
+    }
     updateCartBadge();
-    showToast(`${product.model} added to cart`);
+    showToast(`${product.model || product.name} added to cart`);
     saveCart();
   }
 
@@ -784,7 +1036,7 @@
       state.cart.splice(idx, 1);
       renderCart();
       updateCartBadge();
-      try { cartPanelEl?.classList?.add('open'); } catch(_) {}
+      try { cartPanelEl?.classList?.add('open'); } catch (_) { }
       saveCart();
     }
   }
@@ -815,7 +1067,7 @@
           <div class="sub">Quantity</div>
         </div>
         <div style="display:grid; gap:6px; align-items:center; justify-items:end;">
-          <div>${currency('USD', (i.price||0) * i.qty)}</div>
+          <div>${currency('USD', (i.price || 0) * i.qty)}</div>
           <div class="qty-controls" role="group" aria-label="Adjust quantity">
             <button class="icon-btn qty-dec" data-id="${i.id}" aria-label="Decrease quantity">−</button>
             <span class="qty-val" aria-live="polite">${i.qty}</span>
@@ -826,7 +1078,7 @@
       </div>`;
     }).join('');
     itemsEl.innerHTML = rows;
-    const total = state.cart.reduce((sum, i) => sum + (i.price||0) * i.qty, 0);
+    const total = state.cart.reduce((sum, i) => sum + (i.price || 0) * i.qty, 0);
     totalEl.textContent = currency('USD', total);
   }
 
@@ -834,7 +1086,7 @@
     if (!id || !delta) return;
     const item = state.cart.find(x => x.id === id);
     if (!item) return;
-    item.qty = Math.max(1, (item.qty||1) + delta);
+    item.qty = Math.max(1, (item.qty || 1) + delta);
     renderCart();
     updateCartBadge();
     saveCart();
@@ -876,7 +1128,7 @@
       if (!product && article) {
         const name = article.querySelector('h3')?.textContent?.trim();
         const priceText = article.querySelector('.price-line')?.textContent || '';
-        const priceMatch = priceText.replace(/[^0-9.]/g,'');
+        const priceMatch = priceText.replace(/[^0-9.]/g, '');
         const price = parseFloat(priceMatch || '0');
         const img = article.querySelector('.apple-card-media img')?.getAttribute('src') || '';
         product = { id: id || `shop-${Date.now()}`, name, model: name, price: isFinite(price) ? price : 0, currency: 'USD', image: img, category: 'game' };
@@ -932,7 +1184,7 @@
     const ov = ensurePreviewModal();
     const media = ov.querySelector('.modal-media');
     const imgs = Array.isArray(product?.images) && product.images.length ? product.images : [product?.image].filter(Boolean);
-    media.innerHTML = imgs.map(src => `<img src="${src}" alt="${product?.model||product?.name||'Preview'}"/>`).join('');
+    media.innerHTML = imgs.map(src => `<img src="${src}" alt="${product?.model || product?.name || 'Preview'}"/>`).join('');
     ov.classList.add('open');
     document.documentElement.style.overflow = 'hidden';
   }
@@ -988,27 +1240,27 @@
           const s = document.createElement('script');
           const url = `${STATIONS_API_URL}?action=stations&token=${encodeURIComponent(STATIONS_API_TOKEN)}&callback=${CALLBACK}&_ts=${Date.now()}`;
           // Cleanup any previous handler
-          try { delete window[CALLBACK]; } catch(_) {}
+          try { delete window[CALLBACK]; } catch (_) { }
           window[CALLBACK] = (payload) => {
-            try { delete window[CALLBACK]; } catch(_) {}
-            try { s.remove(); } catch(_) {}
+            try { delete window[CALLBACK]; } catch (_) { }
+            try { s.remove(); } catch (_) { }
             const arr = Array.isArray(payload?.stations) ? payload.stations : [];
-            if (!arr.length) { try { console.warn('Stations payload empty or invalid', payload); } catch(_) {} }
+            if (!arr.length) { try { console.warn('Stations payload empty or invalid', payload); } catch (_) { } }
             stationsData = arr;
             resolve(arr);
           };
           s.src = url;
           s.async = true;
-          s.onerror = () => { try { delete window[CALLBACK]; } catch(_) {} ; try { s.remove(); } catch(_) {} ; resolve([]); };
+          s.onerror = () => { try { delete window[CALLBACK]; } catch (_) { }; try { s.remove(); } catch (_) { }; resolve([]); };
           document.body.appendChild(s);
-        } catch(_) { resolve([]); }
+        } catch (_) { resolve([]); }
       });
     }
 
     function remainingMinutes(st) {
       try {
         if (!st) return 0;
-        if (String(st.status||'').toLowerCase() !== 'busy') return 0;
+        if (String(st.status || '').toLowerCase() !== 'busy') return 0;
         // Prefer explicit minutesLeft if provided by API
         const ml = st.minutesLeft;
         if (typeof ml === 'number' && isFinite(ml)) return Math.max(0, Math.round(ml));
@@ -1026,7 +1278,7 @@
         if (!end) return 0;
         const diff = end.getTime() - Date.now();
         return Math.max(0, Math.round(diff / 60000));
-      } catch(_) { return 0; }
+      } catch (_) { return 0; }
     }
 
     function renderAvailable() {
@@ -1054,7 +1306,7 @@
       const h = Math.floor(min / 60);
       const m = min % 60;
       if (h && m) return `${h} hr ${m} min`;
-      if (h) return `${h} hr${h>1?'s':''}`;
+      if (h) return `${h} hr${h > 1 ? 's' : ''}`;
       return `${m} min`;
     }
 
@@ -1068,11 +1320,11 @@
       stationsEl.innerHTML = list.length ? `
         <div class="cards grid grid-6 tiny" role="list">
           ${list.map((st, idx) => {
-            const isBusyStatus = String(st.status||'').toLowerCase() === 'busy';
-            const rem = remainingMinutes(st);
-            const busy = isBusyStatus; // show Busy even if no endTime yet
-            const title = st.name || `Station ${idx+1}`;
-            return `
+        const isBusyStatus = String(st.status || '').toLowerCase() === 'busy';
+        const rem = remainingMinutes(st);
+        const busy = isBusyStatus; // show Busy even if no endTime yet
+        const title = st.name || `Station ${idx + 1}`;
+        return `
             <div class="card" role="listitem">
               ${busy ? '<span class="corner-badge">Booked</span>' : ''}
               <div class="card-media"><img src="assets/Games To Play/HPNG2_AV3.jpeg" alt="${title}" /></div>
@@ -1082,7 +1334,7 @@
                 ${busy ? (rem > 0 ? `<div class=\"specs\"><div>Time left</div><div>${fmtTime(rem)}</div></div>` : `<div class=\"specs\"><div>Status</div><div>Busy</div></div>`) : `<div class=\"specs\"><div>Status</div><div>Free</div></div>`}
               </div>
             </div>`;
-          }).join('')}
+      }).join('')}
         </div>
       ` : `<div class="muted">No stations found. Check your Google Sheet (Stations tab) and Apps Script response.</div>`;
       tagForReveal(stationsEl);
@@ -1096,6 +1348,15 @@
       if (!saleEl) return;
       // Render exactly the 5 specified products
       const items = [
+        {
+          id: 'fc26-disk',
+          name: 'FC 26',
+          price: 45,
+          image: 'assets/Game Shop/FC 26 (Game, Disk).jpg',
+          version: 'Game',
+          stock: 12,
+          branch: 'Bulawayo Center'
+        },
         {
           id: 'cod-disk',
           name: 'Call Of Duty',
@@ -1135,7 +1396,7 @@
         {
           id: 'ps5-dualsense',
           name: 'Playstation 5 DualSense',
-          price: 75,
+          price: 90,
           image: 'assets/Game Shop/PS5 DualSense Controller (Controller).jpg',
           version: 'Controller',
           stock: 12,
@@ -1175,11 +1436,11 @@
       if (!bookEl) return;
       const list = Array.isArray(stationsData) ? stationsData : [];
       const options = list.map((s, idx) => {
-        const title = s.name || `Station ${idx+1}`;
-        const isBusyStatus = String(s.status||'').toLowerCase() === 'busy';
+        const title = s.name || `Station ${idx + 1}`;
+        const isBusyStatus = String(s.status || '').toLowerCase() === 'busy';
         const rem = remainingMinutes(s);
         const suffix = isBusyStatus ? (rem > 0 ? `(Busy, ~${fmtTime(rem)})` : '(Busy)') : '(Free)';
-        const val = s.stationId || `S${idx+1}`;
+        const val = s.stationId || `S${idx + 1}`;
         return `<option value="${val}">${title} ${suffix}</option>`;
       }).join('');
       const durations = [
@@ -1238,5 +1499,196 @@
     renderForSale();
     fetchStations().then(() => { renderStations(); renderBooking(); });
     setInterval(tickStations, 60000); // poll every minute
+  })();
+
+  // --- Promo Preview Section Logic ---
+  (function initPromoPreview() {
+    const container = document.getElementById('promo-cards-container');
+    if (!container) return;
+
+    let promoProducts = [];
+    let currentIndex = 0;
+    const itemsPerPage = 4;
+    let rotationInterval = null;
+
+    function getPromoProducts() {
+      return (state.products || []).filter(p => p.promo === true);
+    }
+
+    function createPromoCard(p, isBack = false) {
+      const img = p.image || '';
+      const price = typeof p.price === 'number' ? currency(p.currency, p.price) : '';
+      const battery = p.batteryHealth || '';
+      const storage = p.storage || '';
+      const branch = p.branch || '';
+
+      return `
+        <div class="promo-card ${isBack ? 'back' : 'front'}">
+          <div class="promo-card-media">
+            <div class="promo-badge">${price}</div>
+            ${img ? `<img src="${img}" alt="${p.model}" />` : ''}
+          </div>
+          <div class="promo-card-body">
+            <h3>${p.model}</h3>
+            <div class="sub" style="font-size: 11px; margin-bottom: 4px;">${branch}</div>
+            <div style="font-size: 12px; color: var(--text-muted); display: grid; gap: 4px;">
+              <div>Storage: <b>${storage}</b></div>
+              <div>Battery: <b>${battery}</b></div>
+            </div>
+            <div class="promo-card-actions">
+              <button class="btn-see-now" onclick="openProductModal('${p.id}')">See More</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Modal Logic
+    window.openProductModal = function (pid) {
+      const p = (state.products || []).find(item => item.id === pid);
+      if (!p) return;
+
+      // Create modal overlay
+      const overlay = document.createElement('div');
+      overlay.className = 'fixed-layer active';
+      overlay.id = 'product-modal-root';
+      overlay.style.position = 'fixed';
+      overlay.style.top = '0';
+      overlay.style.left = '0';
+      overlay.style.width = '100vw';
+      overlay.style.height = '100vh';
+      overlay.style.zIndex = '99999';
+      overlay.style.backgroundColor = 'rgba(0,0,0,0.85)';
+      overlay.style.display = 'flex';
+      overlay.style.alignItems = 'center';
+      overlay.style.justifyContent = 'center';
+      overlay.style.padding = '20px';
+      overlay.style.backdropFilter = 'blur(12px)';
+      overlay.style.webkitBackdropFilter = 'blur(12px)';
+
+      const modalContent = document.createElement('div');
+      modalContent.className = 'modal-reveal-container';
+      modalContent.style.maxWidth = '420px';
+      modalContent.style.width = '100%';
+      modalContent.style.maxHeight = '90vh';
+      modalContent.style.borderRadius = '32px';
+      modalContent.style.animation = 'revealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both';
+      modalContent.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.5)';
+      modalContent.style.display = 'flex';
+      modalContent.style.flexDirection = 'column';
+
+      // Use the original card maker with hidden cart
+      const cardHTML = makeCard(p, { showCart: false });
+      modalContent.innerHTML = `
+        <div class="modal-scroll-area" style="position:relative; background:#f8fafc; border-radius:32px; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; max-height:90vh; scrollbar-width: none;">
+           <button class="close-trigger" 
+                   style="position:absolute; top:12px; right:12px; z-index:100; background:white; border:none; color:black; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); transition: 0.3s;"
+                   onmouseover="this.style.boxShadow='0 6px 16px rgba(0,0,0,0.15)'; this.style.transform='scale(1.1)'" 
+                   onmouseout="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'; this.style.transform='scale(1)'"
+                   aria-label="Close modal">&times;</button>
+           <div class="modal-card-inset" style="padding: 30px 20px;">
+             <div class="modal-inner-card-fix" style="height:auto;">
+               ${cardHTML.replace('class="apple-card"', 'class="apple-card modal-view-card" style="height:auto; box-shadow: 0 10px 30px rgba(0,0,0,0.08); animation: none;"')}
+             </div>
+           </div>
+        </div>
+      `;
+
+      overlay.innerHTML = '';
+      overlay.appendChild(modalContent);
+      document.body.appendChild(overlay);
+      document.body.style.overflow = 'hidden';
+
+      const closeModal = () => {
+        overlay.remove();
+        document.body.style.overflow = '';
+      };
+
+      // Close on background click
+      overlay.onclick = (e) => {
+        if (e.target === overlay) closeModal();
+      };
+
+      // Ensure the close button in the HTML content calls this local function too
+      // But since we used inline onclick in HTML string, let's just make it simpler:
+      overlay.querySelector('.close-trigger').onclick = closeModal;
+    };
+
+    function renderPromoInitial() {
+      promoProducts = getPromoProducts();
+      if (!promoProducts.length) {
+        container.innerHTML = '<div class="muted">No promo items at the moment.</div>';
+        return;
+      }
+
+      const displayItems = promoProducts.slice(0, itemsPerPage);
+      container.innerHTML = displayItems.map(p => `
+        <div class="promo-card-wrapper">
+          ${createPromoCard(p)}
+          <div class="promo-card back"></div> <!-- Placeholder for flip -->
+        </div>
+      `).join('');
+
+      tagForReveal(container);
+
+      if (promoProducts.length > itemsPerPage) {
+        startRotation();
+      }
+    }
+
+    function rotatePromo() {
+      const wrappers = container.querySelectorAll('.promo-card-wrapper');
+      currentIndex = (currentIndex + itemsPerPage) % promoProducts.length;
+      const nextItems = [];
+
+      for (let i = 0; i < itemsPerPage; i++) {
+        nextItems.push(promoProducts[(currentIndex + i) % promoProducts.length]);
+      }
+
+      wrappers.forEach((wrapper, idx) => {
+        const nextProduct = nextItems[idx];
+        if (!nextProduct) return;
+
+        // Injected the next product into the "back" card
+        const backCard = wrapper.querySelector('.promo-card.back');
+        if (backCard) {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = createPromoCard(nextProduct, true);
+          const newBack = tempDiv.firstElementChild;
+          wrapper.replaceChild(newBack, backCard);
+        }
+
+        // Trigger flip
+        wrapper.classList.add('flipping');
+
+        // After animation, swap front and back and reset
+        setTimeout(() => {
+          const front = wrapper.querySelector('.promo-card:not(.back)');
+          const back = wrapper.querySelector('.promo-card.back');
+
+          if (front && back) {
+            // New "front" is the one that was just flipped to (the back one)
+            back.classList.remove('back');
+            front.classList.add('back');
+            wrapper.classList.remove('flipping');
+            // Ensure the new "back" is empty/ready for next rotation
+            front.innerHTML = '';
+          }
+        }, 600);
+      });
+    }
+
+    function startRotation() {
+      if (rotationInterval) clearInterval(rotationInterval);
+      rotationInterval = setInterval(rotatePromo, 10000);
+    }
+
+    // Wait for products to be loaded
+    const checkLoaded = setInterval(() => {
+      if (state.products && state.products.length > 0) {
+        clearInterval(checkLoaded);
+        renderPromoInitial();
+      }
+    }, 500);
   })();
 })();
