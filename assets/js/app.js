@@ -1140,7 +1140,7 @@
 
   function openWhatsApp(product) {
     if (!product) return;
-    const number = '263777306848';
+    const number = '27640823961';
     ensureProductId(product);
     const name = product.model || product.name || '';
     const color = productColor(product) || '';
@@ -1488,7 +1488,7 @@
         const sid = stationSel.value;
         const stationText = stationSel.options[stationSel.selectedIndex].text.split('(')[0].trim();
         const durationText = durationSel.options[durationSel.selectedIndex].text;
-        const number = '263777306848';
+        const number = '27640823961';
         const msg = `Hy, I would like to book ${stationText} for ${durationText}`;
         const url = `https://wa.me/${number}?text=${encodeURIComponent(msg)}`;
         window.open(url, '_blank');
