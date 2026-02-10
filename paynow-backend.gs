@@ -335,7 +335,7 @@ function generateHash(data) {
   values.push(CONFIG.PAYNOW_INTEGRATION_KEY);
   
   const str = values.join('');
-  const hash = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA512, str);
+  const hash = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_512, str);
   
   return hash.map(byte => {
     const v = (byte < 0) ? 256 + byte : byte;
