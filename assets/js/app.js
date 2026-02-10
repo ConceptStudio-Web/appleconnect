@@ -13,6 +13,13 @@
     } catch (_) { }
   }
 
+  // Paynow Configuration
+  const PAYNOW_CONFIG = {
+    apiUrl: 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE',  // Replace with your deployed Web App URL
+    apiToken: 'AppleConnect2024',  // Must match the token in your backend script
+    enabled: true  // Set to false to disable Paynow integration
+  };
+
   function openWhatsAppShop(name) {
     if (!name) return;
     const number = '263777306848';
@@ -941,37 +948,191 @@
           };
         });
 
-        document.getElementById('completeOrder').onclick = () => {
+        document.getElementById('completeOrder').onclick = async () => {
           const name = document.getElementById('checkoutName').value;
           const phone = document.getElementById('checkoutPhone').value;
           const branch = document.getElementById('checkoutBranch').value;
 
-          const successMsg = selectedMethod === 'cash'
-            ? `Thank you, ${name}. Your order has been placed. Please visit our ${branch} branch to complete your purchase.`
-            : `Ready to pay via Paynow. We've sent a payment request to your details.`;
+          if (selectedMethod === 'paynow') {
+            // Handle Paynow payment
+            await processPaynowPayment({ name, phone, branch, total });
+          } else {
+            // Handle Cash payment (existing logic)
+            const successMsg = `Thank you, ${name}. Your order has been placed. Please visit our ${branch} branch to complete your purchase.`;
+            document.getElementById('successMsg').textContent = successMsg;
+            document.getElementById('checkoutStep2').classList.remove('active');
+            document.getElementById('checkoutStep3').classList.add('active');
 
-          document.getElementById('successMsg').textContent = successMsg;
-          document.getElementById('checkoutStep2').classList.remove('active');
-          document.getElementById('checkoutStep3').classList.add('active');
+            // WhatsApp Integration on Completion
+            const header = 'New Order (Cash Pickup)';
+            const items = state.cart.map(i => `- ${i.name} (${i.qty}) @ ${currency('USD', i.price)}`).join('\n');
+            const footer = `Customer: ${name}\nPhone: ${phone}\nBranch: ${branch}\nTotal: ${currency('USD', total)}`;
+            const text = encodeURIComponent([header, '', items, '', footer].join('\n'));
+            const url = `https://wa.me/263777306848?text=${text}`;
 
-          // WhatsApp Integration on Completion
-          const header = selectedMethod === 'cash' ? 'New Order (Cash Pickup)' : 'New Order (Paynow)';
-          const items = state.cart.map(i => `- ${i.name} (${i.qty}) @ ${currency('USD', i.price)}`).join('\n');
-          const footer = `Customer: ${name}\nPhone: ${phone}\nBranch: ${branch}\nTotal: ${currency('USD', total)}`;
-          const text = encodeURIComponent([header, '', items, '', footer].join('\n'));
-          const url = `https://wa.me/263777306848?text=${text}`;
+            setTimeout(() => { window.open(url, '_blank'); }, 2000);
 
-          setTimeout(() => { window.open(url, '_blank'); }, 2000);
-
-          // Clear cart
-          state.cart = [];
-          saveCart();
-          updateCartBadge();
-          renderCart();
+            // Clear cart
+            state.cart = [];
+            saveCart();
+            updateCartBadge();
+            renderCart();
+          }
         };
 
         document.getElementById('finishCheckout').onclick = close;
       }
+
+      // Paynow Payment Processing
+      async function processPaynowPayment({ name, phone, branch, total }) {
+        try {
+          // Show loading state
+          showPaynowLoading();
+
+          // Generate unique reference
+          const reference = `AC-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+
+          // Prepare cart data
+          const cartItems = state.cart.map(item => ({
+            name: item.name,
+            price: item.price || 0,
+            qty: item.qty || 1
+          }));
+
+          // Call backend to initiate payment
+          const response = await fetch(PAYNOW_CONFIG.apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'initiate',
+              token: PAYNOW_CONFIG.apiToken,
+              reference: reference,
+              email: phone + '@appleconnect.co.zw',  // Construct email from phone
+              cart: cartItems,
+              total: total,
+              customerName: name,
+              customerPhone: phone,
+              branch: branch
+            })
+          });
+
+          const result = await response.json();
+
+          if (!result.success) {
+            throw new Error(result.error || 'Payment initialization failed');
+          }
+
+          // Open Paynow payment page
+          const paymentWindow = window.open(result.redirectUrl, '_blank', 'width=800,height=600');
+
+          // Poll for payment status
+          const pollUrl = result.pollUrl;
+          let attempts = 0;
+          const maxAttempts = 60;  // Poll for up to 5 minutes (60 * 5s)
+
+          const checkPayment = async () => {
+            try {
+              attempts++;
+
+              const statusResponse = await fetch(PAYNOW_CONFIG.apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  action: 'status',
+                  token: PAYNOW_CONFIG.apiToken,
+                  pollUrl: pollUrl
+                })
+              });
+
+              const statusResult = await statusResponse.json();
+
+              if (statusResult.success && statusResult.status) {
+                const status = statusResult.status.toLowerCase();
+
+                if (status === 'paid' || status === 'delivered' || status === 'awaiting delivery') {
+                  // Payment successful
+                  showPaynowSuccess(reference, statusResult.paynowreference);
+
+                  // Clear cart
+                  state.cart = [];
+                  saveCart();
+                  updateCartBadge();
+                  renderCart();
+
+                  // Close payment window if still open
+                  if (paymentWindow && !paymentWindow.closed) {
+                    paymentWindow.close();
+                  }
+
+                } else if (status === 'cancelled' || status === 'failed') {
+                  // Payment failed
+                  throw new Error('Payment was cancelled or failed');
+                } else if (attempts < maxAttempts) {
+                  // Still pending, check again
+                  setTimeout(checkPayment, 5000);  // Check every 5 seconds
+                } else {
+                  // Timeout
+                  throw new Error('Payment verification timed out. Please contact support with reference: ' + reference);
+                }
+              } else if (attempts < maxAttempts) {
+                setTimeout(checkPayment, 5000);
+              } else {
+                throw new Error('Unable to verify payment status');
+              }
+
+            } catch (error) {
+              showPaynowError(error.message);
+            }
+          };
+
+          // Start polling after 5 seconds
+          setTimeout(checkPayment, 5000);
+
+        } catch (error) {
+          showPaynowError(error.message || 'Payment processing failed');
+        }
+      }
+
+      function showPaynowLoading() {
+        const paynowDetail = document.getElementById('paynowDetail');
+        paynowDetail.style.display = 'block';
+        paynowDetail.innerHTML = `
+          <div style="text-align: center; padding: 20px;">
+            <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #1e96c8; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <div style="margin-top: 15px; font-size: 16px; color: #333;">Processing payment...</div>
+            <div style="margin-top: 8px; font-size: 14px; color: #666;">Opening Paynow payment page. Please complete your payment.</div>
+            <style>
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+            </style>
+          </div>
+        `;
+      }
+
+      function showPaynowSuccess(reference, paynowRef) {
+        document.getElementById('successMsg').textContent =
+          `Payment successful! Your order has been confirmed. Reference: ${reference}`;
+        document.getElementById('paynowDetail').style.display = 'none';
+        document.getElementById('checkoutStep2').classList.remove('active');
+        document.getElementById('checkoutStep3').classList.add('active');
+      }
+
+      function showPaynowError(errorMsg) {
+        const paynowDetail = document.getElementById('paynowDetail');
+        paynowDetail.style.display = 'block';
+        paynowDetail.innerHTML = `
+          <div style="background: #fee; border: 1px solid #fcc; border-radius: 8px; padding: 15px; margin-top: 10px;">
+            <div style="color: #c33; font-weight: 600; margin-bottom: 8px;">Payment Failed</div>
+            <div style="color: #666; font-size: 14px;">${errorMsg}</div>
+            <div style="margin-top: 12px;">
+              <button class="btn btn-secondary btn-small" onclick="location.reload()">Try Again</button>
+            </div>
+          </div>
+        `;
+      }
+
       // Remove handlers
       cartPanelEl.addEventListener('click', (e) => {
         // Prevent outside-click handler from closing the panel
