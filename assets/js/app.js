@@ -1006,7 +1006,7 @@
               action: 'initiate',
               token: PAYNOW_CONFIG.apiToken,
               reference: reference,
-              email: phone + '@appleconnect.co.zw',
+              email: 'bezel3208@icloud.com',  // Merchant email for test mode
               cart: cartItems,
               total: total,
               customerName: name,
