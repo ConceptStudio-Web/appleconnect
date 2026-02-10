@@ -348,12 +348,15 @@ function generateHash(data) {
  */
 function parsePaynowResponse(responseText) {
   const result = {};
-  const lines = responseText.split('\n');
+  const lines = responseText.split('&');
   
   lines.forEach(line => {
     const parts = line.split('=');
-    if (parts.length === 2) {
-      result[parts[0].toLowerCase()] = decodeURIComponent(parts[1]);
+    if (parts.length >= 2) {
+      // Join parts in case value contains =
+      const key = parts[0];
+      const value = parts.slice(1).join('=');
+      result[key.toLowerCase()] = decodeURIComponent(value);
     }
   });
   
