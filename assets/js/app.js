@@ -15,7 +15,7 @@
 
   // Paynow Configuration
   const PAYNOW_CONFIG = {
-    apiUrl: 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE',  // Replace with your deployed Web App URL
+    apiUrl: 'https://script.google.com/macros/s/AKfycbwmo1fLm_PDgjZjKumbmL7-FsYLBWtEsKixaLYcri971unFzx24tOB3365dAKBJQUSL/exec',
     apiToken: 'AppleConnect2024',  // Must match the token in your backend script
     enabled: true  // Set to false to disable Paynow integration
   };

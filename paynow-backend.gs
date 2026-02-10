@@ -20,12 +20,12 @@
 
 const CONFIG = {
   // Paynow credentials (get from https://www.paynow.co.zw/)
-  PAYNOW_INTEGRATION_ID: 'YOUR_INTEGRATION_ID_HERE',
-  PAYNOW_INTEGRATION_KEY: 'YOUR_INTEGRATION_KEY_HERE',
+  PAYNOW_INTEGRATION_ID: '23427',
+  PAYNOW_INTEGRATION_KEY: '07c6d50e-29ac-4afd-99be-452b0937072d',
   
   // Your website URLs (update after deploying)
-  RESULT_URL: 'SCRIPT_WEB_APP_URL/exec?action=result',  // Where Paynow sends payment status
-  RETURN_URL: 'https://yourdomain.com/payment-complete.html',  // Where user returns after payment
+  RESULT_URL: 'https://script.google.com/macros/s/AKfycbwmo1fLm_PDgjZjKumbmL7-FsYLBWtEsKixaLYcri971unFzx24tOB3365dAKBJQUSL/exec?action=result',  // Where Paynow sends payment status
+  RETURN_URL: 'https://appleconnect.co.zw',  // Where user returns after payment
   
   // Google Sheet ID for transaction logging
   SHEET_ID: 'YOUR_GOOGLE_SHEET_ID_HERE',
