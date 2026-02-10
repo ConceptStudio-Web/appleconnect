@@ -890,10 +890,9 @@
             </div>
           </div>
 
-          <div id="paynowDetail" style="display:none;">
-            <div class="paynow-placeholder">
-              <b>Paynow Integration Placeholder</b><br>
-              Direct payment processing will be linked here.
+          <div id="paynowDetail" style="display:none; margin-top: 15px;">
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; color: #64748b; font-size: 14px;">
+              Pay securely via Paynow. You will be redirected to complete your payment.
             </div>
           </div>
 
@@ -999,10 +998,9 @@
             qty: item.qty || 1
           }));
 
-          // Call backend to initiate payment
+          // Call backend to initiate payment (using text/plain to avoid CORS preflight)
           const response = await fetch(PAYNOW_CONFIG.apiUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               action: 'initiate',
               token: PAYNOW_CONFIG.apiToken,
@@ -1036,7 +1034,6 @@
 
               const statusResponse = await fetch(PAYNOW_CONFIG.apiUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                   action: 'status',
                   token: PAYNOW_CONFIG.apiToken,
