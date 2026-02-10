@@ -998,14 +998,15 @@
             qty: item.qty || 1
           }));
 
-          // Call backend to initiate payment (using text/plain to avoid CORS preflight)
+          // Call backend to initiate payment
           const response = await fetch(PAYNOW_CONFIG.apiUrl, {
             method: 'POST',
+            redirect: 'follow',
             body: JSON.stringify({
               action: 'initiate',
               token: PAYNOW_CONFIG.apiToken,
               reference: reference,
-              email: phone + '@appleconnect.co.zw',  // Construct email from phone
+              email: phone + '@appleconnect.co.zw',
               cart: cartItems,
               total: total,
               customerName: name,
@@ -1014,9 +1015,19 @@
             })
           });
 
-          const result = await response.json();
+          // Parse response - handle both JSON and text responses
+          const responseText = await response.text();
+          let result;
+          try {
+            result = JSON.parse(responseText);
+          } catch (parseErr) {
+            console.error('Response was not JSON:', responseText.substring(0, 200));
+            throw new Error('Unexpected server response. Please try again.');
+          }
 
           if (!result.success) {
+            const errorDetail = result.debug ? ` (Status: ${result.debug.parsedStatus}, Raw: ${result.debug.rawResponse?.substring(0, 100)})` : '';
+            console.error('Payment initiation failed:', result.error, result.debug || '');
             throw new Error(result.error || 'Payment initialization failed');
           }
 
@@ -1034,6 +1045,7 @@
 
               const statusResponse = await fetch(PAYNOW_CONFIG.apiUrl, {
                 method: 'POST',
+                redirect: 'follow',
                 body: JSON.stringify({
                   action: 'status',
                   token: PAYNOW_CONFIG.apiToken,
@@ -1041,7 +1053,17 @@
                 })
               });
 
-              const statusResult = await statusResponse.json();
+              const statusText = await statusResponse.text();
+              let statusResult;
+              try {
+                statusResult = JSON.parse(statusText);
+              } catch (e) {
+                if (attempts < maxAttempts) {
+                  setTimeout(checkPayment, 5000);
+                  return;
+                }
+                throw new Error('Unable to verify payment status');
+              }
 
               if (statusResult.success && statusResult.status) {
                 const status = statusResult.status.toLowerCase();
