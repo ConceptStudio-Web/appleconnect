@@ -22,7 +22,7 @@
 
   function openWhatsAppShop(name) {
     if (!name) return;
-    const number = '263777306848';
+    const number = '27640823961';
     const header = 'Hy, i would like to purchace the following items :';
     const text = encodeURIComponent([header, '', `(${name})`].join('\n'));
     const url = `https://wa.me/${number}?text=${text}`;
@@ -30,7 +30,7 @@
   }
 
   function openWhatsAppCart() {
-    const number = '263777306848';
+    const number = '27640823961';
     const items = Array.isArray(state.cart) ? state.cart : [];
     if (!items.length) return;
     const header = items.length > 1
@@ -967,7 +967,7 @@
             const items = state.cart.map(i => `- ${i.name} (${i.qty}) @ ${currency('USD', i.price)}`).join('\n');
             const footer = `Customer: ${name}\nPhone: ${phone}\nBranch: ${branch}\nTotal: ${currency('USD', total)}`;
             const text = encodeURIComponent([header, '', items, '', footer].join('\n'));
-            const url = `https://wa.me/263777306848?text=${text}`;
+            const url = `https://wa.me/27640823961?text=${text}`;
 
             setTimeout(() => { window.open(url, '_blank'); }, 2000);
 
@@ -1006,7 +1006,7 @@
               action: 'initiate',
               token: PAYNOW_CONFIG.apiToken,
               reference: reference,
-              email: 'bezel3208@icloud.com',  // Merchant email for test mode
+              email: phone + '@appleconnect.co.zw', // Restored dynamic email logic
               cart: cartItems,
               total: total,
               customerName: name,
@@ -1291,12 +1291,17 @@
       const article = buyBtn.closest('.apple-card');
       const id = article?.dataset?.id;
       let product = (state.products || []).find(p => p.id === id) || (state.filtered || []).find(p => p.id === id);
-      // Shop card fallback: send name-only message per spec
+      // Shop card fallback: build product from data attributes
       if (!product && article) {
         const name = article.querySelector('h3')?.textContent?.trim();
-        if (name) { openWhatsAppShop(name); return; }
+        const priceText = article.querySelector('.price-line')?.textContent || '';
+        const priceMatch = priceText.replace(/[^0-9.]/g, '');
+        const price = parseFloat(priceMatch || '0');
+        const img = article.querySelector('.apple-card-media img')?.getAttribute('src') || '';
+        product = { id: id || `shop-${Date.now()}`, name, model: name, price: isFinite(price) ? price : 0, currency: 'USD', image: img, category: 'game' };
       }
-      openWhatsApp(product);
+      addToCart(product);
+      openCheckoutModal();
       return;
     }
     const cartBtn = e.target.closest('.cart-btn');
@@ -1320,7 +1325,7 @@
 
   function openWhatsApp(product) {
     if (!product) return;
-    const number = '27640823961';
+    const number = '263717331700';
     ensureProductId(product);
     const name = product.model || product.name || '';
     const color = productColor(product) || '';
@@ -1677,7 +1682,7 @@
 
     renderAvailable();
     renderForSale();
-    fetchStations().then(() => { renderStations(); renderBooking(); });
+    // fetchStations().then(() => { renderStations(); renderBooking(); });
     setInterval(tickStations, 60000); // poll every minute
   })();
 
