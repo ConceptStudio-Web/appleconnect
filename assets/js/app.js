@@ -913,6 +913,7 @@
   // --- Cart ---
   let cartBadgeEl = null;
   let cartPanelEl = null;
+  let _openCheckoutModal = null; // hoisted reference for delegated handlers
   function ensureCartUI() {
     const cartBtn = document.querySelector('.header-actions button[aria-label="Cart"]');
     if (!cartBtn) return;
@@ -1214,6 +1215,7 @@
 
         document.getElementById('finishCheckout').onclick = close;
       }
+      _openCheckoutModal = openCheckoutModal; // expose to delegated handler
 
       // Paynow Payment Processing (Redirect Method)
       async function processPaynowPayment({ name, phone, email, branch, total, fulfillment, deliveryInfo }) {
@@ -1470,7 +1472,7 @@
         product = { id: id || `shop-${Date.now()}`, name, model: name, price: isFinite(price) ? price : 0, currency: 'USD', image: img, category: 'game' };
       }
       addToCart(product);
-      openCheckoutModal();
+      if (_openCheckoutModal) _openCheckoutModal();
       return;
     }
     const cartBtn = e.target.closest('.cart-btn');
