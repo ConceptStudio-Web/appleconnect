@@ -6,7 +6,7 @@ window.PRODUCTS = [
     "storage": "64GB",
     "batteryHealth": "100%",
     "color": "White",
-    "price": 1.00,
+    "price": 0.01,
     "currency": "USD",
     "promo": false,
     "condition": "",

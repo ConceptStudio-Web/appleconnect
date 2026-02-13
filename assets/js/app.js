@@ -20,6 +20,144 @@
     enabled: true  // Set to false to disable Paynow integration
   };
 
+  // --- Paynow Redirect Return Handler ---
+  // Max age for a pending transaction before it's considered stale (1 hour)
+  const PAYNOW_PENDING_MAX_AGE_MS = 60 * 60 * 1000;
+
+  async function checkPendingPaynowTransaction() {
+    const pendingStr = localStorage.getItem('paynow_pending');
+    if (!pendingStr) return;
+
+    let pending;
+    try { pending = JSON.parse(pendingStr); } catch (e) { localStorage.removeItem('paynow_pending'); return; }
+
+    // Validate required fields
+    if (!pending.pollUrl || !pending.reference) {
+      localStorage.removeItem('paynow_pending');
+      return;
+    }
+
+    // Check if the transaction is stale (older than 1 hour)
+    if (pending.timestamp && (Date.now() - pending.timestamp > PAYNOW_PENDING_MAX_AGE_MS)) {
+      localStorage.removeItem('paynow_pending');
+      return; // Silently discard — too old to verify
+    }
+
+    // IMMEDIATELY clear localStorage so that if the user reloads,
+    // the overlay won't reappear. We keep the data in memory for polling.
+    localStorage.removeItem('paynow_pending');
+
+    // Create verification overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'paynow-verify-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:1000000;background:rgba(255,255,255,0.98);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:inherit;';
+    overlay.innerHTML = `
+      <div id="pv-loader" style="text-align:center; max-width:400px; padding:20px;">
+        <div style="width: 50px; height: 50px; border: 4px solid #e2e8f0; border-top: 4px solid #007aff; border-radius: 50%; animation: pvSpin 0.8s linear infinite; margin: 0 auto;"></div>
+        <h2 style="margin-top: 20px; font-size: 20px; color: #1e293b;">Verifying Payment</h2>
+        <p style="color: #64748b; margin-top: 8px;">Please wait while we confirm your transaction...</p>
+        <p style="color: #94a3b8; font-size: 13px; margin-top: 4px;">Ref: ${pending.reference}</p>
+      </div>
+      <div id="pv-result" style="display:none; text-align:center; max-width: 400px; padding: 20px;"></div>
+      <style>@keyframes pvSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+    `;
+    document.body.appendChild(overlay);
+
+    const maxAttempts = 12;
+    let attempts = 0;
+
+    const closeOverlay = () => { overlay.remove(); };
+
+    const showResult = (success, title, msg, extra) => {
+      const loader = document.getElementById('pv-loader');
+      const res = document.getElementById('pv-result');
+      if (loader) loader.style.display = 'none';
+      if (res) {
+        res.style.display = 'block';
+        const iconBg = success ? '#22c55e' : '#ef4444';
+        const icon = success ? '&#10003;' : '&#10005;';
+        const btnLabel = success ? 'Continue Shopping' : 'Close';
+        const extraHtml = extra || '';
+        res.innerHTML = `
+          <div style="width: 60px; height: 60px; background: ${iconBg}; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 20px;">
+            ${icon}
+          </div>
+          <h2 style="font-size: 22px; font-weight: 700; color: #1e293b; margin-bottom: 10px;">${title}</h2>
+          <p style="color: #64748b; line-height: 1.5; margin-bottom: 15px;">${msg}</p>
+          ${extraHtml}
+          <button id="pv-close" class="btn btn-primary" style="min-width: 140px; margin-top: 10px;">${btnLabel}</button>
+        `;
+        document.getElementById('pv-close').onclick = closeOverlay;
+      }
+    };
+
+    const supportLink = (ref) => `<a href="https://wa.me/27640823961?text=${encodeURIComponent('Hi, please check my payment status. Ref: ' + ref)}" target="_blank" rel="noopener" style="display:inline-block;color:#007aff;font-size:14px;margin-top:8px;">Contact support on WhatsApp</a>`;
+    const refLine = (ref) => `<p style="color:#94a3b8; font-size:13px;">Reference: <strong>${ref}</strong></p>`;
+
+    const check = async () => {
+      try {
+        attempts++;
+        const response = await fetch(PAYNOW_CONFIG.apiUrl, {
+          method: 'POST',
+          redirect: 'follow',
+          body: JSON.stringify({
+            action: 'status',
+            token: PAYNOW_CONFIG.apiToken,
+            pollUrl: pending.pollUrl
+          })
+        });
+        const json = await response.json();
+
+        if (json.success && json.status) {
+          const status = json.status.toLowerCase();
+          if (['paid', 'delivered', 'awaiting delivery'].includes(status)) {
+            state.cart = [];
+            try { saveCart(); updateCartBadge(); renderCart(); } catch (_) { }
+            showResult(true, 'Payment Successful!',
+              'Your order has been confirmed and is being processed.',
+              refLine(pending.reference)
+            );
+            return;
+          } else if (['cancelled', 'failed'].includes(status)) {
+            showResult(false, 'Payment Cancelled',
+              'The transaction was not completed. Your cart has been preserved \u2014 you can try again anytime.',
+              refLine(pending.reference) + supportLink(pending.reference)
+            );
+            return;
+          }
+        }
+
+        if (attempts < maxAttempts) {
+          setTimeout(check, 3000);
+        } else {
+          showResult(false, 'Verification Timeout',
+            "We couldn't confirm the payment right now. If money was deducted, your payment will still be processed.",
+            refLine(pending.reference) + supportLink(pending.reference)
+          );
+        }
+      } catch (err) {
+        console.error('Payment verification error:', err);
+        if (attempts < maxAttempts) {
+          setTimeout(check, 3000);
+        } else {
+          showResult(false, 'Connection Error',
+            "We couldn't reach our payment server. Please check your internet connection and try again.",
+            refLine(pending.reference) + supportLink(pending.reference)
+          );
+        }
+      }
+    };
+
+    check();
+  }
+
+  // Run return handler on load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', checkPendingPaynowTransaction);
+  } else {
+    checkPendingPaynowTransaction();
+  }
+
   function openWhatsAppShop(name) {
     if (!name) return;
     const number = '27640823961';
@@ -854,6 +992,10 @@
             <input type="tel" id="checkoutPhone" placeholder="e.g. +263..." required>
           </div>
           <div class="checkout-form-group">
+            <label>Email Address</label>
+            <input type="email" id="checkoutEmail" placeholder="e.g. you@email.com" required>
+          </div>
+          <div class="checkout-form-group">
             <label>Pickup Branch</label>
             <select id="checkoutBranch">
               <optgroup label="Auto-selected based on cart">
@@ -927,7 +1069,9 @@
         document.getElementById('toStep2').onclick = () => {
           const name = document.getElementById('checkoutName').value.trim();
           const phone = document.getElementById('checkoutPhone').value.trim();
-          if (!name || !phone) { alert('Please fill in your name and phone number.'); return; }
+          const email = document.getElementById('checkoutEmail').value.trim();
+          if (!name || !phone || !email) { alert('Please fill in all fields including email.'); return; }
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
           document.getElementById('checkoutStep1').classList.remove('active');
           document.getElementById('checkoutStep2').classList.add('active');
         };
@@ -954,7 +1098,8 @@
 
           if (selectedMethod === 'paynow') {
             // Handle Paynow payment
-            await processPaynowPayment({ name, phone, branch, total });
+            const email = document.getElementById('checkoutEmail').value.trim();
+            await processPaynowPayment({ name, phone, email, branch, total });
           } else {
             // Handle Cash payment (existing logic)
             const successMsg = `Thank you, ${name}. Your order has been placed. Please visit our ${branch} branch to complete your purchase.`;
@@ -982,8 +1127,8 @@
         document.getElementById('finishCheckout').onclick = close;
       }
 
-      // Paynow Payment Processing
-      async function processPaynowPayment({ name, phone, branch, total }) {
+      // Paynow Payment Processing (Redirect Method)
+      async function processPaynowPayment({ name, phone, email, branch, total }) {
         try {
           // Show loading state
           showPaynowLoading();
@@ -1006,7 +1151,7 @@
               action: 'initiate',
               token: PAYNOW_CONFIG.apiToken,
               reference: reference,
-              email: phone + '@appleconnect.co.zw', // Restored dynamic email logic
+              email: email, // Use user-provided email
               cart: cartItems,
               total: total,
               customerName: name,
@@ -1015,7 +1160,7 @@
             })
           });
 
-          // Parse response - handle both JSON and text responses
+          // Parse response
           const responseText = await response.text();
           let result;
           try {
@@ -1031,81 +1176,15 @@
             throw new Error(result.error || 'Payment initialization failed');
           }
 
-          // Open Paynow payment page
-          const paymentWindow = window.open(result.redirectUrl, '_blank', 'width=800,height=600');
+          // Store transaction details for verification on return
+          localStorage.setItem('paynow_pending', JSON.stringify({
+            pollUrl: result.pollUrl,
+            reference: reference,
+            timestamp: Date.now()
+          }));
 
-          // Poll for payment status
-          const pollUrl = result.pollUrl;
-          let attempts = 0;
-          const maxAttempts = 60;  // Poll for up to 5 minutes (60 * 5s)
-
-          const checkPayment = async () => {
-            try {
-              attempts++;
-
-              const statusResponse = await fetch(PAYNOW_CONFIG.apiUrl, {
-                method: 'POST',
-                redirect: 'follow',
-                body: JSON.stringify({
-                  action: 'status',
-                  token: PAYNOW_CONFIG.apiToken,
-                  pollUrl: pollUrl
-                })
-              });
-
-              const statusText = await statusResponse.text();
-              let statusResult;
-              try {
-                statusResult = JSON.parse(statusText);
-              } catch (e) {
-                if (attempts < maxAttempts) {
-                  setTimeout(checkPayment, 5000);
-                  return;
-                }
-                throw new Error('Unable to verify payment status');
-              }
-
-              if (statusResult.success && statusResult.status) {
-                const status = statusResult.status.toLowerCase();
-
-                if (status === 'paid' || status === 'delivered' || status === 'awaiting delivery') {
-                  // Payment successful
-                  showPaynowSuccess(reference, statusResult.paynowreference);
-
-                  // Clear cart
-                  state.cart = [];
-                  saveCart();
-                  updateCartBadge();
-                  renderCart();
-
-                  // Close payment window if still open
-                  if (paymentWindow && !paymentWindow.closed) {
-                    paymentWindow.close();
-                  }
-
-                } else if (status === 'cancelled' || status === 'failed') {
-                  // Payment failed
-                  throw new Error('Payment was cancelled or failed');
-                } else if (attempts < maxAttempts) {
-                  // Still pending, check again
-                  setTimeout(checkPayment, 5000);  // Check every 5 seconds
-                } else {
-                  // Timeout
-                  throw new Error('Payment verification timed out. Please contact support with reference: ' + reference);
-                }
-              } else if (attempts < maxAttempts) {
-                setTimeout(checkPayment, 5000);
-              } else {
-                throw new Error('Unable to verify payment status');
-              }
-
-            } catch (error) {
-              showPaynowError(error.message);
-            }
-          };
-
-          // Start polling after 5 seconds
-          setTimeout(checkPayment, 5000);
+          // Redirect to Paynow (no popup — works on all mobile browsers)
+          window.location.href = result.redirectUrl;
 
         } catch (error) {
           showPaynowError(error.message || 'Payment processing failed');
