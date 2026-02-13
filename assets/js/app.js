@@ -981,7 +981,7 @@
         <!-- Step 1: Details -->
         <div id="checkoutStep1" class="checkout-step active">
           <h2 style="font-size:24px; font-weight:800; letter-spacing:-0.02em;">Shipping Details</h2>
-          <p style="color:var(--text-muted); font-size:14px; margin-bottom:10px;">Please provide your contact information and preferred branch.</p>
+          <p style="color:var(--text-muted); font-size:14px; margin-bottom:10px;">Please provide your contact information.</p>
           
           <div class="checkout-form-group">
             <label>Full Name</label>
@@ -995,14 +995,61 @@
             <label>Email Address</label>
             <input type="email" id="checkoutEmail" placeholder="e.g. you@email.com" required>
           </div>
+
+          <!-- Fulfillment Method Toggle -->
           <div class="checkout-form-group">
-            <label>Pickup Branch</label>
-            <select id="checkoutBranch">
-              <optgroup label="Auto-selected based on cart">
-                <option value="Bulawayo Center" ${cartBranch === 'Bulawayo Center' ? 'selected' : ''}>Bulawayo Center</option>
-                <option value="Haddon & Sly" ${cartBranch === 'Haddon & Sly' ? 'selected' : ''}>Haddon & Sly</option>
-              </optgroup>
-            </select>
+            <label>How would you like to receive your order?</label>
+            <div id="fulfillmentToggle" style="display:flex; gap:10px; margin-top:6px;">
+              <div class="fulfillment-card selected" data-fulfillment="pickup" style="flex:1; padding:14px 12px; border:2px solid #1e96c8; border-radius:12px; text-align:center; cursor:pointer; transition:all .2s;">
+                <div style="font-size:22px; margin-bottom:4px;">🏪</div>
+                <div style="font-weight:700; font-size:14px;">Pickup</div>
+                <div style="font-size:11px; color:#64748b;">Collect from branch</div>
+              </div>
+              <div class="fulfillment-card" data-fulfillment="delivery" style="flex:1; padding:14px 12px; border:2px solid #e2e8f0; border-radius:12px; text-align:center; cursor:pointer; transition:all .2s;">
+                <div style="font-size:22px; margin-bottom:4px;">🚚</div>
+                <div style="font-weight:700; font-size:14px;">Delivery</div>
+                <div style="font-size:11px; color:#22c55e; font-weight:600;">FREE</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pickup: Branch selector -->
+          <div id="pickupFields">
+            <div class="checkout-form-group">
+              <label>Pickup Branch</label>
+              <select id="checkoutBranch">
+                <optgroup label="Auto-selected based on cart">
+                  <option value="Bulawayo Center" ${cartBranch === 'Bulawayo Center' ? 'selected' : ''}>Bulawayo Center</option>
+                  <option value="Haddon & Sly" ${cartBranch === 'Haddon & Sly' ? 'selected' : ''}>Haddon & Sly</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+
+          <!-- Delivery: Address fields -->
+          <div id="deliveryFields" style="display:none;">
+            <div class="checkout-form-group">
+              <label>Street Address</label>
+              <input type="text" id="checkoutStreet" placeholder="e.g. 12 Main Street">
+            </div>
+            <div style="display:flex; gap:10px;">
+              <div class="checkout-form-group" style="flex:1;">
+                <label>Suburb / Area</label>
+                <input type="text" id="checkoutSuburb" placeholder="e.g. Hillside">
+              </div>
+              <div class="checkout-form-group" style="flex:1;">
+                <label>City</label>
+                <input type="text" id="checkoutCity" placeholder="e.g. Bulawayo">
+              </div>
+            </div>
+            <div class="checkout-form-group">
+              <label>Delivery Notes <span style="color:#94a3b8; font-weight:400;">(optional)</span></label>
+              <input type="text" id="checkoutDeliveryNotes" placeholder="e.g. Gate code, landmark, preferred time">
+            </div>
+            <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:10px; padding:10px 14px; display:flex; align-items:center; gap:10px; margin-top:4px;">
+              <span style="font-size:20px;">⏱️</span>
+              <span style="font-size:13px; color:#0369a1; line-height:1.4;">Delivery is within <strong>72 hours</strong> of confirmed payment. We'll contact you on WhatsApp to arrange a convenient time.</span>
+            </div>
           </div>
           
           <div class="checkout-actions">
@@ -1065,6 +1112,20 @@
         overlay.onclick = (e) => { if (e.target === overlay) close(); };
 
         let selectedMethod = 'cash';
+        let selectedFulfillment = 'pickup';
+
+        // Fulfillment toggle logic
+        const fCards = overlay.querySelectorAll('.fulfillment-card');
+        fCards.forEach(card => {
+          card.onclick = () => {
+            fCards.forEach(c => { c.classList.remove('selected'); c.style.borderColor = '#e2e8f0'; });
+            card.classList.add('selected');
+            card.style.borderColor = '#1e96c8';
+            selectedFulfillment = card.dataset.fulfillment;
+            document.getElementById('pickupFields').style.display = selectedFulfillment === 'pickup' ? 'block' : 'none';
+            document.getElementById('deliveryFields').style.display = selectedFulfillment === 'delivery' ? 'block' : 'none';
+          };
+        });
 
         document.getElementById('toStep2').onclick = () => {
           const name = document.getElementById('checkoutName').value.trim();
@@ -1072,6 +1133,12 @@
           const email = document.getElementById('checkoutEmail').value.trim();
           if (!name || !phone || !email) { alert('Please fill in all fields including email.'); return; }
           if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
+          if (selectedFulfillment === 'delivery') {
+            const street = document.getElementById('checkoutStreet').value.trim();
+            const suburb = document.getElementById('checkoutSuburb').value.trim();
+            const city = document.getElementById('checkoutCity').value.trim();
+            if (!street || !suburb || !city) { alert('Please fill in your delivery address (street, suburb, and city).'); return; }
+          }
           document.getElementById('checkoutStep1').classList.remove('active');
           document.getElementById('checkoutStep2').classList.add('active');
         };
@@ -1094,23 +1161,44 @@
         document.getElementById('completeOrder').onclick = async () => {
           const name = document.getElementById('checkoutName').value;
           const phone = document.getElementById('checkoutPhone').value;
+          const email = document.getElementById('checkoutEmail').value.trim();
           const branch = document.getElementById('checkoutBranch').value;
+
+          // Gather delivery details if delivery is selected
+          let deliveryInfo = null;
+          let fulfillmentLabel = `Pickup at ${branch}`;
+          if (selectedFulfillment === 'delivery') {
+            const street = document.getElementById('checkoutStreet').value.trim();
+            const suburb = document.getElementById('checkoutSuburb').value.trim();
+            const city = document.getElementById('checkoutCity').value.trim();
+            const notes = document.getElementById('checkoutDeliveryNotes').value.trim();
+            deliveryInfo = { street, suburb, city, notes };
+            fulfillmentLabel = `${street}, ${suburb}, ${city}`;
+          }
 
           if (selectedMethod === 'paynow') {
             // Handle Paynow payment
-            const email = document.getElementById('checkoutEmail').value.trim();
-            await processPaynowPayment({ name, phone, email, branch, total });
+            await processPaynowPayment({ name, phone, email, branch: selectedFulfillment === 'pickup' ? branch : 'Delivery', total, fulfillment: selectedFulfillment, deliveryInfo });
           } else {
-            // Handle Cash payment (existing logic)
-            const successMsg = `Thank you, ${name}. Your order has been placed. Please visit our ${branch} branch to complete your purchase.`;
+            // Handle Cash payment
+            const successMsg = selectedFulfillment === 'delivery'
+              ? `Thank you, ${name}. Your order will be delivered to ${fulfillmentLabel} within 72 hours. We'll contact you on WhatsApp to confirm.`
+              : `Thank you, ${name}. Your order has been placed. Please visit our ${branch} branch to complete your purchase.`;
             document.getElementById('successMsg').textContent = successMsg;
             document.getElementById('checkoutStep2').classList.remove('active');
             document.getElementById('checkoutStep3').classList.add('active');
 
             // WhatsApp Integration on Completion
-            const header = 'New Order (Cash Pickup)';
+            const isDelivery = selectedFulfillment === 'delivery';
+            const header = isDelivery ? 'New Order (Delivery 🚚)' : 'New Order (Cash Pickup)';
             const items = state.cart.map(i => `- ${i.name} (${i.qty}) @ ${currency('USD', i.price)}`).join('\n');
-            const footer = `Customer: ${name}\nPhone: ${phone}\nBranch: ${branch}\nTotal: ${currency('USD', total)}`;
+            let footer = `Customer: ${name}\nPhone: ${phone}\nTotal: ${currency('USD', total)}`;
+            if (isDelivery) {
+              footer += `\n\nDelivery Address:\n${deliveryInfo.street}\n${deliveryInfo.suburb}, ${deliveryInfo.city}`;
+              if (deliveryInfo.notes) footer += `\nNotes: ${deliveryInfo.notes}`;
+            } else {
+              footer += `\nBranch: ${branch}`;
+            }
             const text = encodeURIComponent([header, '', items, '', footer].join('\n'));
             const url = `https://wa.me/27640823961?text=${text}`;
 
@@ -1128,7 +1216,7 @@
       }
 
       // Paynow Payment Processing (Redirect Method)
-      async function processPaynowPayment({ name, phone, email, branch, total }) {
+      async function processPaynowPayment({ name, phone, email, branch, total, fulfillment, deliveryInfo }) {
         try {
           // Show loading state
           showPaynowLoading();
@@ -1156,7 +1244,9 @@
               total: total,
               customerName: name,
               customerPhone: phone,
-              branch: branch
+              branch: branch,
+              fulfillment: fulfillment || 'pickup',
+              deliveryAddress: deliveryInfo ? `${deliveryInfo.street}, ${deliveryInfo.suburb}, ${deliveryInfo.city}${deliveryInfo.notes ? ' | Notes: ' + deliveryInfo.notes : ''}` : ''
             })
           });
 
