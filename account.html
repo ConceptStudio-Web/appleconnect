@@ -1,29 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#1e96c8" />
-    <title>My Account | Apple Connect</title>
-    <link rel="icon" type="image/png" href="assets/Favicon.png" />
-    <link rel="stylesheet" href="assets/css/loader.css?v=2" />
-    <script src="assets/js/loader.js?v=2"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/styles.css?v=22" />
-    <link rel="stylesheet" href="assets/css/footer.css?v=22" />
-  </head>
-  <body data-page="account">
-    <a class="skip-link" href="#content">Skip to content</a>
-    <header class="site-header">
-      <div class="container header-inner">
-        <div class="brand">
-          <img class="logo" src="assets/Apple Connect Logo Header.jpg" alt="Apple Connect logo" />
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#1e96c8" />
+  <title>My Account | Apple Connect</title>
+  <link rel="icon" type="image/png" href="assets/Favicon.png" />
+  <link rel="stylesheet" href="assets/css/loader.css?v=2" />
+  <script src="assets/js/loader.js?v=2"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=22" />
+  <link rel="stylesheet" href="assets/css/footer.css?v=22" />
+</head>
+
+<body data-page="account">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <img class="logo" src="assets/Apple Connect Logo Header.jpg" alt="Apple Connect logo" />
+      </div>
+      <nav class="nav" aria-label="Primary">
+        <button id="navToggle" class="icon-btn" aria-expanded="false" aria-controls="navMenu"
+          aria-label="Toggle navigation">☰</button>
+        <ul id="navMenu" class="nav-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="iphones.html">iPhones</a></li>
+          <li><a href="ipads.html">iPads</a></li>
+          <li><a href="accessories.html">Accessories</a></li>
+          <li><a href="macbooks.html">MacBooks</a></li>
+          <li><a href="gaming.html">Gaming</a></li>
+          <li><a href="about.html">About Us</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions"></div>
+    </div>
+  </header>
+
+  <main id="content" class="container" style="padding: 24px 16px;">
+    <h1 class="section-title">My Account</h1>
+    <div id="accountWelcome" class="sub" style="margin-bottom: 16px;"></div>
+
+    <div class="cards-grid">
+      <section class="card">
+        <h3>Lay-bys</h3>
+        <div id="laybysList" class="list"></div>
+      </section>
+      <section class="card">
+        <h3>Purchases</h3>
+        <div id="purchasesList" class="list"></div>
+      </section>
+      <section class="card">
+        <h3>Promotions</h3>
+        <div id="promotionsList" class="list"></div>
+      </section>
+    </div>
+
+    <div id="accountError" class="error" style="margin-top:12px;"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-top">
+      <div class="container footer-grid">
+        <div class="footer-col">
+          <div class="footer-brand">
+            <img class="logo" src="assets/Apple Connect Logo Header.jpg" alt="Apple Connect" />
+            <div class="brand-text">Apple <span class="brand-accent">Connect</span></div>
+          </div>
         </div>
-        <nav class="nav" aria-label="Primary">
-          <button id="navToggle" class="icon-btn" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation">☰</button>
-          <ul id="navMenu" class="nav-menu">
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="iphones.html">iPhones</a></li>
             <li><a href="ipads.html">iPads</a></li>
@@ -32,138 +82,91 @@
             <li><a href="gaming.html">Gaming</a></li>
             <li><a href="about.html">About Us</a></li>
           </ul>
-        </nav>
-        <div class="header-actions"></div>
-      </div>
-    </header>
-
-    <main id="content" class="container" style="padding: 24px 16px;">
-      <h1 class="section-title">My Account</h1>
-      <div id="accountWelcome" class="sub" style="margin-bottom: 16px;"></div>
-
-      <div class="cards-grid">
-        <section class="card">
-          <h3>Lay-bys</h3>
-          <div id="laybysList" class="list"></div>
-        </section>
-        <section class="card">
-          <h3>Purchases</h3>
-          <div id="purchasesList" class="list"></div>
-        </section>
-        <section class="card">
-          <h3>Promotions</h3>
-          <div id="promotionsList" class="list"></div>
-        </section>
-      </div>
-
-      <div id="accountError" class="error" style="margin-top:12px;"></div>
-    </main>
-
-    <footer class="site-footer">
-      <div class="footer-top">
-        <div class="container footer-grid">
-          <div class="footer-col">
-            <div class="footer-brand">
-              <img class="logo" src="assets/Apple Connect Logo Header.jpg" alt="Apple Connect" />
-              <div class="brand-text">Apple <span class="brand-accent">Connect</span></div>
-            </div>
-          </div>
-          <div class="footer-col">
-            <h4>Quick Links</h4>
-            <ul>
-              <li><a href="index.html">Home</a></li>
-              <li><a href="iphones.html">iPhones</a></li>
-              <li><a href="ipads.html">iPads</a></li>
-              <li><a href="accessories.html">Accessories</a></li>
-              <li><a href="macbooks.html">MacBooks</a></li>
-              <li><a href="gaming.html">Gaming</a></li>
-              <li><a href="about.html">About Us</a></li>
-            </ul>
-          </div>
-          <div class="footer-col footer-newsletter">
-            <h4>Stay Updated</h4>
-            <form onsubmit="event.preventDefault(); try{ alert('Thanks! You\'re subscribed.'); }catch(_){}">
-              <input type="email" placeholder="Your email address" aria-label="Email" required />
-              <button type="submit">Subscribe</button>
-            </form>
-          </div>
+        </div>
+        <div class="footer-col footer-newsletter">
+          <h4>Stay Updated</h4>
+          <form onsubmit="event.preventDefault(); try{ alert('Thanks! You\'re subscribed.'); }catch(_){}">
+            <input type="email" placeholder="Your email address" aria-label="Email" required />
+            <button type="submit">Subscribe</button>
+          </form>
         </div>
       </div>
-      <div class="container footer-bottom">
-        <div>© <span id="year"></span> Apple Connect. All rights reserved.</div>
-        <div class="links">
-          <a href="#" aria-label="Privacy Policy">Privacy</a>
-          <a href="#" aria-label="Terms of Service">Terms</a>
-        </div>
+    </div>
+    <div class="container footer-bottom">
+      <div>© <span id="year"></span> Apple Connect. All rights reserved.</div>
+      <div class="links">
+        <a href="#" aria-label="Privacy Policy">Privacy</a>
+        <a href="#" aria-label="Terms of Service">Terms</a>
       </div>
-    </footer>
+    </div>
+  </footer>
 
-    <!-- Firebase compat SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore-compat.js"></script>
-    <script src="assets/js/firebase-config.js"></script>
+  <!-- Firebase compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore-compat.js"></script>
+  <script src="assets/js/firebase-config.js"></script>
 
-    <script src="assets/js/app.js?v=25" defer></script>
-    <script src="assets/js/auth.js" defer></script>
+  <script src="assets/js/app.js?v=26" defer></script>
+  <script src="assets/js/auth.js" defer></script>
 
-    <script>
-      // This page fetches user-specific documents from Firestore.
-      // Staff can manually add documents in the Firestore console to:
-      //  - purchases collection (fields: userId, item, amount, date, status)
-      //  - laybys collection (fields: userId, item, total, paid, balance, nextDue, status)
-      //  - promotions collection (fields: title, description, public=true or targetUserId)
-      document.addEventListener('DOMContentLoaded', () => {
-        const err = document.getElementById('accountError');
-        const welcome = document.getElementById('accountWelcome');
-        const purchasesList = document.getElementById('purchasesList');
-        const laybysList = document.getElementById('laybysList');
-        const promotionsList = document.getElementById('promotionsList');
+  <script>
+    // This page fetches user-specific documents from Firestore.
+    // Staff can manually add documents in the Firestore console to:
+    //  - purchases collection (fields: userId, item, amount, date, status)
+    //  - laybys collection (fields: userId, item, total, paid, balance, nextDue, status)
+    //  - promotions collection (fields: title, description, public=true or targetUserId)
+    document.addEventListener('DOMContentLoaded', () => {
+      const err = document.getElementById('accountError');
+      const welcome = document.getElementById('accountWelcome');
+      const purchasesList = document.getElementById('purchasesList');
+      const laybysList = document.getElementById('laybysList');
+      const promotionsList = document.getElementById('promotionsList');
 
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+      const auth = firebase.auth();
+      const db = firebase.firestore();
 
-        auth.onAuthStateChanged(async (user) => {
-          if (!user) { window.location.href = 'login.html'; return; }
-          try {
-            // Load user profile
-            const uref = db.collection('users').doc(user.uid);
-            const usnap = await uref.get();
-            const prof = usnap.exists ? usnap.data() : {};
-            const firstName = prof.firstName || user.email || 'Customer';
-            welcome.textContent = 'Welcome, ' + firstName + '!';
+      auth.onAuthStateChanged(async (user) => {
+        if (!user) { window.location.href = 'login.html'; return; }
+        try {
+          // Load user profile
+          const uref = db.collection('users').doc(user.uid);
+          const usnap = await uref.get();
+          const prof = usnap.exists ? usnap.data() : {};
+          const firstName = prof.firstName || user.email || 'Customer';
+          welcome.textContent = 'Welcome, ' + firstName + '!';
 
-            // Fetch purchases
-            const pqs = await db.collection('purchases').where('userId', '==', user.uid).orderBy('date','desc').get();
-            purchasesList.innerHTML = pqs.empty ? '<div class="muted">No purchases yet.</div>' : pqs.docs.map(d => {
-              const p = d.data();
-              const date = p.date ? new Date(p.date.seconds ? p.date.seconds*1000 : p.date).toLocaleDateString() : '';
-              return `<div class="list-item"><div class="list-main"><div class="title">${p.item || 'Purchase'}</div><div class="sub">${date}</div></div><div class="badge">${p.status || ''}</div></div>`;
-            }).join('');
+          // Fetch purchases
+          const pqs = await db.collection('purchases').where('userId', '==', user.uid).orderBy('date', 'desc').get();
+          purchasesList.innerHTML = pqs.empty ? '<div class="muted">No purchases yet.</div>' : pqs.docs.map(d => {
+            const p = d.data();
+            const date = p.date ? new Date(p.date.seconds ? p.date.seconds * 1000 : p.date).toLocaleDateString() : '';
+            return `<div class="list-item"><div class="list-main"><div class="title">${p.item || 'Purchase'}</div><div class="sub">${date}</div></div><div class="badge">${p.status || ''}</div></div>`;
+          }).join('');
 
-            // Fetch lay-bys
-            const lqs = await db.collection('laybys').where('userId', '==', user.uid).orderBy('createdAt','desc').get();
-            laybysList.innerHTML = lqs.empty ? '<div class="muted">No lay-bys yet.</div>' : lqs.docs.map(d => {
-              const l = d.data();
-              const bal = (l.balance != null) ? l.balance : (l.total && l.paid ? (l.total - l.paid) : '');
-              return `<div class="list-item"><div class="list-main"><div class="title">${l.item || 'Lay-by'}</div><div class="sub">Paid: ${l.paid || 0} / Total: ${l.total || 0}</div></div><div class="badge">Bal: ${bal}</div></div>`;
-            }).join('');
+          // Fetch lay-bys
+          const lqs = await db.collection('laybys').where('userId', '==', user.uid).orderBy('createdAt', 'desc').get();
+          laybysList.innerHTML = lqs.empty ? '<div class="muted">No lay-bys yet.</div>' : lqs.docs.map(d => {
+            const l = d.data();
+            const bal = (l.balance != null) ? l.balance : (l.total && l.paid ? (l.total - l.paid) : '');
+            return `<div class="list-item"><div class="list-main"><div class="title">${l.item || 'Lay-by'}</div><div class="sub">Paid: ${l.paid || 0} / Total: ${l.total || 0}</div></div><div class="badge">Bal: ${bal}</div></div>`;
+          }).join('');
 
-            // Fetch promotions - public or targeted to user
-            const publicPromos = await db.collection('promotions').where('public','==', true).get();
-            const targeted = await db.collection('promotions').where('targetUserId','==', user.uid).get();
-            const promos = [...publicPromos.docs, ...targeted.docs];
-            promotionsList.innerHTML = promos.length === 0 ? '<div class="muted">No promotions at the moment.</div>' : promos.map(doc => {
-              const p = doc.data();
-              return `<div class="list-item"><div class="list-main"><div class="title">${p.title || 'Promotion'}</div><div class="sub">${p.description || ''}</div></div></div>`;
-            }).join('');
-          } catch (e) {
-            err.textContent = e && e.message ? e.message : 'Failed to load your account.';
-            err.classList.add('show');
-          }
-        });
+          // Fetch promotions - public or targeted to user
+          const publicPromos = await db.collection('promotions').where('public', '==', true).get();
+          const targeted = await db.collection('promotions').where('targetUserId', '==', user.uid).get();
+          const promos = [...publicPromos.docs, ...targeted.docs];
+          promotionsList.innerHTML = promos.length === 0 ? '<div class="muted">No promotions at the moment.</div>' : promos.map(doc => {
+            const p = doc.data();
+            return `<div class="list-item"><div class="list-main"><div class="title">${p.title || 'Promotion'}</div><div class="sub">${p.description || ''}</div></div></div>`;
+          }).join('');
+        } catch (e) {
+          err.textContent = e && e.message ? e.message : 'Failed to load your account.';
+          err.classList.add('show');
+        }
       });
-    </script>
-  </body>
-</html>
+    });
+  </script>
+</body>
 
+</html>
