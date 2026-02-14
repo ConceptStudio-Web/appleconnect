@@ -1918,7 +1918,10 @@
       renderCart();
 
       addToCart(product);
-      if (_openCheckoutModal) _openCheckoutModal();
+      ensureCartUI();
+      // Trigger checkout directly via the existing button's event listener
+      const checkoutBtn = document.getElementById('checkoutBtn');
+      if (checkoutBtn) checkoutBtn.click();
       return;
     }
     const cartBtn = e.target.closest('.cart-btn');
