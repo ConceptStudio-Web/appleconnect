@@ -31,7 +31,7 @@
     "badge": "In Stock",
     "image": "assets/iphone_17__ck7zzemcw37m_large_2x.jpg",
     "warranty": "1 year",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip16e-used-fair-1",
@@ -99,7 +99,7 @@
     "badge": "Deal",
     "image": "assets/iPhone 11.jpg",
     "warranty": "None",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip13-boxed-hs-1",
@@ -133,7 +133,7 @@
     "badge": "Pro",
     "image": "assets/Apple-iPhone-14-Pro-iPhone-14-Pro-Max-deep-purple-220907-geo_inline.jpg.large.jpg",
     "warranty": "1 Year",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip15-used-fair-hs-1",
@@ -172,7 +172,7 @@
     "image": "assets/Accessories/Apple AirPods Pro 3.png",
     "type": "airpods",
     "price": 279,
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "acc-airpods-pro-1",
@@ -194,7 +194,7 @@
     "image": "assets/Accessories/Apple Watch Ultra 3.png",
     "type": "watch",
     "price": 799,
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "acc-watch-se3-1",
@@ -216,7 +216,7 @@
     "image": "assets/Accessories/Apple Watch Series 11.png",
     "type": "watch",
     "price": 429,
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "acc-pencil-mk0c2-1",
@@ -249,7 +249,7 @@
     "image": "assets/iPads/iPad.jpg",
     "storage": "128GB",
     "price": null,
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ipad-air-boxed-1",
@@ -271,7 +271,7 @@
     "image": "assets/MacBooks/MacBook Air 13 Inch.jpg",
     "storage": "256GB",
     "price": 999,
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "mbp-14-1",

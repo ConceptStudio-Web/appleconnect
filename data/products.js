@@ -11,7 +11,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone X.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-x-1",
@@ -25,7 +25,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone X.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-11-2",
@@ -39,7 +39,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 11.png",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-11-3",
@@ -53,7 +53,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 11.png",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-11-4",
@@ -67,7 +67,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 11.png",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-11-5",
@@ -81,7 +81,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 11.png",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-12-6",
@@ -95,7 +95,7 @@ window.PRODUCTS = [
     "promo": true,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 12.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-12-7",
@@ -109,7 +109,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 12.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-12-8",
@@ -123,7 +123,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 12.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-12-pro-max-9",
@@ -137,7 +137,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 12 Pro Max.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-13-10",
@@ -151,7 +151,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 13.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-13-11",
@@ -165,7 +165,7 @@ window.PRODUCTS = [
     "promo": true,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 13.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-13-12",
@@ -179,7 +179,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 13.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-14-13",
@@ -193,7 +193,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 14.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-14-pro-14",
@@ -207,7 +207,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 14 Pro.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-14-pro-15",
@@ -221,7 +221,7 @@ window.PRODUCTS = [
     "promo": true,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 14 Pro.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-14-pro-max-16",
@@ -235,7 +235,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 14 Pro Max.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-15-17",
@@ -249,7 +249,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 15.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-15-18",
@@ -263,7 +263,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 15.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-15-pro-max-19",
@@ -277,7 +277,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-15-pro-max-20",
@@ -291,7 +291,7 @@ window.PRODUCTS = [
     "promo": true,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-15-pro-max-21",
@@ -305,7 +305,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-15-pro-max-22",
@@ -319,7 +319,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-23",
@@ -333,7 +333,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 16.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-24",
@@ -347,7 +347,7 @@ window.PRODUCTS = [
     "promo": true,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 16.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16e-25",
@@ -361,7 +361,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 16e.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-pro-26",
@@ -375,7 +375,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-pro-max-27",
@@ -389,7 +389,7 @@ window.PRODUCTS = [
     "promo": true,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-pro-max-28",
@@ -403,7 +403,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-pro-max-29",
@@ -417,7 +417,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-pro-max-30",
@@ -431,7 +431,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-17-pro-max-31",
@@ -445,7 +445,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-17-pro-max-32",
@@ -459,7 +459,7 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-x-33",
@@ -918,7 +918,7 @@ window.PRODUCTS = [
     "price": 12,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -929,7 +929,7 @@ window.PRODUCTS = [
     "price": 20,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -940,7 +940,7 @@ window.PRODUCTS = [
     "price": 30,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -951,7 +951,7 @@ window.PRODUCTS = [
     "price": 45,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -962,7 +962,7 @@ window.PRODUCTS = [
     "price": 50,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -973,7 +973,7 @@ window.PRODUCTS = [
     "price": 60,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -984,7 +984,7 @@ window.PRODUCTS = [
     "price": 80,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -995,7 +995,7 @@ window.PRODUCTS = [
     "price": 25,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1006,7 +1006,7 @@ window.PRODUCTS = [
     "price": 30,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1017,7 +1017,7 @@ window.PRODUCTS = [
     "price": 20,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1028,7 +1028,7 @@ window.PRODUCTS = [
     "price": 10,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1039,7 +1039,7 @@ window.PRODUCTS = [
     "price": 15,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1050,7 +1050,7 @@ window.PRODUCTS = [
     "price": 20,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1061,7 +1061,7 @@ window.PRODUCTS = [
     "price": 10,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1072,7 +1072,7 @@ window.PRODUCTS = [
     "price": 20,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1083,7 +1083,7 @@ window.PRODUCTS = [
     "price": 10,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1094,7 +1094,7 @@ window.PRODUCTS = [
     "price": 10,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1105,7 +1105,7 @@ window.PRODUCTS = [
     "price": 10,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1116,7 +1116,7 @@ window.PRODUCTS = [
     "price": 15,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1127,7 +1127,7 @@ window.PRODUCTS = [
     "price": 10,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   // --- MacBooks from Chat ---
@@ -1142,7 +1142,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "Brand New",
     "image": "assets/Image Assets/MacBook Lead.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "mac-m4-air",
@@ -1155,17 +1155,17 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "Brand New",
     "image": "assets/Image Assets/MacBook Lead.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   // --- Flash Drives ---
-  { "id": "usb-c-16gb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 16GB", "price": 5, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Center", "condition": "New" },
-  { "id": "usb-c-32gb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 32GB", "price": 8, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Center", "condition": "New" },
-  { "id": "usb-c-64gb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 64GB", "price": 10, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Center", "condition": "New" },
-  { "id": "usb-c-128gb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 128GB", "price": 20, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Center", "condition": "New" },
-  { "id": "usb-c-256gb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 256GB", "price": 25, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Center", "condition": "New" },
-  { "id": "usb-c-512gb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 512GB", "price": 30, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Center", "condition": "New" },
-  { "id": "usb-c-1tb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 1TB", "price": 40, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Center", "condition": "New" },
-  { "id": "usb-c-2tb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 2TB", "price": 50, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Center", "condition": "New" },
+  { "id": "usb-c-16gb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 16GB", "price": 5, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Centre", "condition": "New" },
+  { "id": "usb-c-32gb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 32GB", "price": 8, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Centre", "condition": "New" },
+  { "id": "usb-c-64gb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 64GB", "price": 10, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Centre", "condition": "New" },
+  { "id": "usb-c-128gb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 128GB", "price": 20, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Centre", "condition": "New" },
+  { "id": "usb-c-256gb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 256GB", "price": 25, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Centre", "condition": "New" },
+  { "id": "usb-c-512gb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 512GB", "price": 30, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Centre", "condition": "New" },
+  { "id": "usb-c-1tb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 1TB", "price": 40, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Centre", "condition": "New" },
+  { "id": "usb-c-2tb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 2TB", "price": 50, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Centre", "condition": "New" },
   // --- Back To School iPads ---
   {
     "id": "ipad-11-pink",
@@ -1178,7 +1178,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "Brand New",
     "image": "assets/Image Assets/iPad Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "tags": ["new_stock", "back_to_school"]
   },
   {
@@ -1206,7 +1206,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "Brand New",
     "image": "assets/Image Assets/iPad Lead.jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "tags": ["new_stock", "back_to_school"]
   },
   // --- iPad Keyboard Covers ---
@@ -1220,7 +1220,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "New",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "acc-ipad-kb-blue",
@@ -1244,7 +1244,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "New",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   // --- iPad Standard Covers ---
   {
@@ -1257,7 +1257,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "New",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   {
     "id": "acc-ipad-cover-blue",
@@ -1281,7 +1281,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "New",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Center"
+    "branch": "Bulawayo Centre"
   },
   // --- Africa Day Deals ---
   {
@@ -1293,7 +1293,7 @@ window.PRODUCTS = [
     "promo": true,
     "condition": "Brand New",
     "image": "assets/Game Shop/PS5 DualSense Controller (Controller).jpg",
-    "branch": "Bulawayo Center",
+    "branch": "Bulawayo Centre",
     "tags": ["hot_deal", "africa_day"]
   }
 ];

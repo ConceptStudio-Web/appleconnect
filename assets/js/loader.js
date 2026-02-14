@@ -6,7 +6,7 @@
       var preload = document.createElement('link');
       preload.rel = 'preload';
       preload.as = 'image';
-      preload.href = 'assets/Loading Page Icon.png';
+      preload.href = 'assets/load.png';
       document.head && document.head.appendChild(preload);
     } catch (_) { }
 
@@ -15,7 +15,7 @@
       wrap.id = 'ac-loader';
       wrap.innerHTML = `
         <div class="ac-loader-inner">
-          <img class="ac-logo" src="assets/Loading Page Icon.png" alt="Loading" decoding="async" fetchpriority="high" />
+          <img class="ac-logo" src="assets/load.png" alt="Loading" decoding="async" fetchpriority="high" />
           <div class="line-loader"></div>
         </div>`;
       document.documentElement.appendChild(wrap);

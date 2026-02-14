@@ -297,9 +297,19 @@
       const raw = localStorage.getItem('ac_cart');
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) state.cart = parsed;
+        if (Array.isArray(parsed)) {
+          // Robust validation: ensure only valid objects are in the cart
+          state.cart = parsed.filter(item => item && typeof item === 'object' && item.id);
+        } else {
+          state.cart = []; // Reset if not an array
+        }
+      } else {
+        state.cart = []; // Default empty
       }
-    } catch (_) { }
+    } catch (_) {
+      state.cart = []; // Fallback empty
+      localStorage.removeItem('ac_cart'); // Clear corrupt data
+    }
   }
   loadCart();
   // Immediately reflect persisted cart in the badge on every page load
@@ -367,7 +377,7 @@
       badge: '',
       image: 'assets/iphone_17__ck7zzemcw37m_large_2x.jpg',
       warranty: '6 Months',
-      branch: 'Bulawayo Center'
+      branch: 'Bulawayo Centre'
     },
     {
       id: 'ip16e-used-fair-1',
@@ -406,9 +416,39 @@
       return Array.isArray(data) ? data : [];
     }
 
+    // Unified sorting logic by model version (iPhone 17 -> iPhone X)
+    function sortProductsByModel(list) {
+      if (!list) return [];
+      const getVersion = (name) => {
+        const n = String(name || '').toLowerCase();
+        if (n.includes('iphone 17')) return 17;
+        if (n.includes('iphone 16')) return 16;
+        if (n.includes('iphone 15')) return 15;
+        if (n.includes('iphone 14')) return 14;
+        if (n.includes('iphone 13')) return 13;
+        if (n.includes('iphone 12')) return 12;
+        if (n.includes('iphone 11')) return 11;
+        if (n.includes('iphone x')) {
+          if (n.includes('xs')) return 10.5;
+          return 10;
+        }
+        if (n.includes('iphone se')) return 9;
+        if (n.includes('iphone 8')) return 8;
+        return 0;
+      };
+
+      return list.sort((a, b) => {
+        const vA = getVersion(a.model);
+        const vB = getVersion(b.model);
+        if (vA !== vB) return vB - vA;
+        // Sub-sort by name for same models
+        return (a.model || '').localeCompare(b.model || '');
+      });
+    }
+
     // Prioritize window.PRODUCTS (from data/products.js) as it contains the complete dataset with promo flags
     if (Array.isArray(window.PRODUCTS) && window.PRODUCTS.length > 0) {
-      state.products = window.PRODUCTS.map(ensureProductId);
+      state.products = sortProductsByModel(window.PRODUCTS.map(ensureProductId));
     } else {
       try {
         let data = await tryLoad('data/products.json');
@@ -420,10 +460,10 @@
           }
         }
         if (!data || !data.length) throw new Error('Empty dataset');
-        state.products = data.map(ensureProductId);
+        state.products = sortProductsByModel(data.map(ensureProductId));
       } catch (err) {
         console.warn('Failed to load products JSON, using fallback dataset.', err);
-        state.products = fallbackProducts.map(ensureProductId);
+        state.products = sortProductsByModel(fallbackProducts.map(ensureProductId));
       }
     }
     // Apply query filter from URL if present
@@ -571,17 +611,27 @@
 
     // Subtext parts
     const subParts = [];
-    if (p.storage) subParts.push(p.storage);
-    if (p.productId) subParts.push(p.productId);
+    // if (p.productId) subParts.push(p.productId); // Hidden for now
     const sub = subParts.join(' • ');
 
     const battery = p.batteryHealth || '';
     const color = p.color || productColor(p);
     const branch = p.branch || '';
+    const storage = p.storage || '';
+
+    let conditionDisplay = '';
+    if (p.condition && p.condition.toLowerCase().includes('new')) {
+      conditionDisplay = 'Brand New';
+    } else if (p.batteryHealth === '100%') {
+      conditionDisplay = 'Used (10/10)';
+    } else {
+      conditionDisplay = 'Used (8/10)';
+    }
 
     const detailsHTML = `
       <div class="details" role="group" aria-label="Product details">
-        ${battery ? `<div class="detail-row"><span class="detail-label">Battery Health</span><span class="detail-value">${battery}</span></div>` : ''}
+        ${storage ? `<div class="detail-row"><span class="detail-label">Storage</span><span class="detail-value">${storage}</span></div>` : ''}
+        ${conditionDisplay ? `<div class="detail-row"><span class="detail-label">Condition</span><span class="detail-value">${conditionDisplay}</span></div>` : ''}
         ${color ? `<div class="detail-row"><span class="detail-label">Color</span><span class="detail-value">${color}</span></div>` : ''}
         ${branch ? `<div class="detail-row"><span class="detail-label">Branch</span><span class="detail-value">${branch}</span></div>` : ''}
       </div>
@@ -597,7 +647,7 @@
         </div>
         <div class="apple-card-body">
           <h3>${p.model}</h3>
-          <div class="sub">${sub}</div>
+          ${sub ? `<div class="sub">${sub}</div>` : ''}
           ${detailsHTML}
           ${hasPrice ? `<div class="price-line-hidden" style="display:none">${priceText}</div>` : ''}
           <div class="apple-card-actions">
@@ -948,416 +998,43 @@
           openCheckoutModal();
         });
       }
-
-      function openCheckoutModal() {
-        const total = state.cart.reduce((sum, i) => sum + (i.price || 0) * i.qty, 0);
-
-        // Identify the likely pickup branch from cart contents
-        const uniqueBranches = [...new Set(state.cart.map(i => i.branch).filter(Boolean))];
-        const cartBranch = uniqueBranches.length > 0 ? uniqueBranches[0] : 'Bulawayo Center';
-
-        const overlay = document.createElement('div');
-        overlay.className = 'fixed-layer active';
-        overlay.id = 'checkout-modal-root';
-        overlay.style.position = 'fixed';
-        overlay.style.inset = '0';
-        overlay.style.zIndex = '100000';
-        overlay.style.backgroundColor = 'rgba(0,0,0,0.85)';
-        overlay.style.display = 'flex';
-        overlay.style.alignItems = 'center';
-        overlay.style.justifyContent = 'center';
-        overlay.style.backdropFilter = 'blur(12px)';
-        overlay.style.webkitBackdropFilter = 'blur(12px)';
-
-        const modalContent = document.createElement('div');
-        modalContent.className = 'modal-reveal-container';
-        modalContent.style.maxWidth = '500px';
-        modalContent.style.width = '90%';
-        modalContent.innerHTML = `
-      <div class="checkout-modal" style="background:white; border-radius:32px; position:relative; overflow:hidden;">
-        <button id="closeCheckout" 
-                style="position:absolute; top:20px; right:20px; background:none; border:none; color:#64748b; font-size:24px; cursor:pointer;"
-                aria-label="Close">&times;</button>
-        
-        <!-- Step 1: Details -->
-        <div id="checkoutStep1" class="checkout-step active">
-          <h2 style="font-size:24px; font-weight:800; letter-spacing:-0.02em;">Shipping Details</h2>
-          <p style="color:var(--text-muted); font-size:14px; margin-bottom:10px;">Please provide your contact information.</p>
-          
-          <div class="checkout-form-group">
-            <label>Full Name</label>
-            <input type="text" id="checkoutName" placeholder="e.g. John Doe" required>
-          </div>
-          <div class="checkout-form-group">
-            <label>WhatsApp Number</label>
-            <input type="tel" id="checkoutPhone" placeholder="e.g. +263..." required>
-          </div>
-          <div class="checkout-form-group">
-            <label>Email Address</label>
-            <input type="email" id="checkoutEmail" placeholder="e.g. you@email.com" required>
-          </div>
-
-          <!-- Fulfillment Method Toggle -->
-          <div class="checkout-form-group">
-            <label>How would you like to receive your order?</label>
-            <div id="fulfillmentToggle" style="display:flex; gap:10px; margin-top:6px;">
-              <div class="fulfillment-card selected" data-fulfillment="pickup" style="flex:1; padding:14px 12px; border:2px solid #1e96c8; border-radius:12px; text-align:center; cursor:pointer; transition:all .2s;">
-                <div style="font-size:22px; margin-bottom:4px;">🏪</div>
-                <div style="font-weight:700; font-size:14px;">Pickup</div>
-                <div style="font-size:11px; color:#64748b;">Collect from branch</div>
-              </div>
-              <div class="fulfillment-card" data-fulfillment="delivery" style="flex:1; padding:14px 12px; border:2px solid #e2e8f0; border-radius:12px; text-align:center; cursor:pointer; transition:all .2s;">
-                <div style="font-size:22px; margin-bottom:4px;">🚚</div>
-                <div style="font-weight:700; font-size:14px;">Delivery</div>
-                <div style="font-size:11px; color:#22c55e; font-weight:600;">FREE</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Pickup: Branch selector -->
-          <div id="pickupFields">
-            <div class="checkout-form-group">
-              <label>Pickup Branch</label>
-              <select id="checkoutBranch">
-                <optgroup label="Auto-selected based on cart">
-                  <option value="Bulawayo Center" ${cartBranch === 'Bulawayo Center' ? 'selected' : ''}>Bulawayo Center</option>
-                  <option value="Haddon & Sly" ${cartBranch === 'Haddon & Sly' ? 'selected' : ''}>Haddon & Sly</option>
-                </optgroup>
-              </select>
-            </div>
-          </div>
-
-          <!-- Delivery: Address fields -->
-          <div id="deliveryFields" style="display:none;">
-            <div class="checkout-form-group">
-              <label>Street Address</label>
-              <input type="text" id="checkoutStreet" placeholder="e.g. 12 Main Street">
-            </div>
-            <div style="display:flex; gap:10px;">
-              <div class="checkout-form-group" style="flex:1;">
-                <label>Suburb / Area</label>
-                <input type="text" id="checkoutSuburb" placeholder="e.g. Hillside">
-              </div>
-              <div class="checkout-form-group" style="flex:1;">
-                <label>City</label>
-                <input type="text" id="checkoutCity" placeholder="e.g. Bulawayo">
-              </div>
-            </div>
-            <div class="checkout-form-group">
-              <label>Delivery Notes <span style="color:#94a3b8; font-weight:400;">(optional)</span></label>
-              <input type="text" id="checkoutDeliveryNotes" placeholder="e.g. Gate code, landmark, preferred time">
-            </div>
-            <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:10px; padding:10px 14px; display:flex; align-items:center; gap:10px; margin-top:4px;">
-              <span style="font-size:20px;">⏱️</span>
-              <span style="font-size:13px; color:#0369a1; line-height:1.4;">Delivery is within <strong>72 hours</strong> of confirmed payment. We'll contact you on WhatsApp to arrange a convenient time.</span>
-            </div>
-          </div>
-          
-          <div class="checkout-actions">
-            <span></span>
-            <button class="btn btn-primary" id="toStep2">Next: Payment</button>
-          </div>
-        </div>
-
-        <!-- Step 2: Payment -->
-        <div id="checkoutStep2" class="checkout-step">
-          <h2 style="font-size:24px; font-weight:800; letter-spacing:-0.02em;">Payment Method</h2>
-          
-          <div class="checkout-order-summary">
-            <div class="summary-row"><span>Subtotal</span><span>${currency('USD', total)}</span></div>
-            <div class="summary-row"><span>Tax</span><span>$0.00</span></div>
-            <div class="summary-row total"><span>Total</span><span>${currency('USD', total)}</span></div>
-          </div>
-
-          <div class="payment-methods">
-            <div class="payment-card selected" data-method="cash">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="12" y1="15" x2="12" y2="15"></line></svg>
-              <div class="title">Cash at Branch</div>
-            </div>
-            <div class="payment-card" data-method="paynow">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-              <div class="title">Paynow</div>
-            </div>
-          </div>
-
-          <div id="paynowDetail" style="display:none; margin-top: 15px;">
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; color: #64748b; font-size: 14px;">
-              Pay securely via Paynow. You will be redirected to complete your payment.
-            </div>
-          </div>
-
-          <div class="checkout-actions">
-            <button class="btn btn-secondary" id="backToStep1">Back</button>
-            <button class="btn btn-primary" id="completeOrder">Complete Order</button>
-          </div>
-        </div>
-
-        <!-- Step 3: Success -->
-        <div id="checkoutStep3" class="checkout-step" style="text-align:center; padding: 40px 0;">
-          <div style="width:80px; height:80px; background:#22c55e; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; margin: 0 auto 20px; font-size:40px;">&check;</div>
-          <h2 style="font-size:28px; font-weight:800;">Order Confirmed!</h2>
-          <p id="successMsg" style="color:var(--text-muted); font-size:16px; margin: 15px 0 25px;"></p>
-          <button class="btn btn-primary" id="finishCheckout">Return to Site</button>
-        </div>
-
-      </div>
-    `;
-
-        overlay.appendChild(modalContent);
-        document.body.appendChild(overlay);
-        document.body.style.overflow = 'hidden';
-
-        // Logic
-        const close = () => { overlay.remove(); document.body.style.overflow = ''; };
-        document.getElementById('closeCheckout').onclick = close;
-        overlay.onclick = (e) => { if (e.target === overlay) close(); };
-
-        let selectedMethod = 'cash';
-        let selectedFulfillment = 'pickup';
-
-        // Fulfillment toggle logic
-        const fCards = overlay.querySelectorAll('.fulfillment-card');
-        fCards.forEach(card => {
-          card.onclick = () => {
-            fCards.forEach(c => { c.classList.remove('selected'); c.style.borderColor = '#e2e8f0'; });
-            card.classList.add('selected');
-            card.style.borderColor = '#1e96c8';
-            selectedFulfillment = card.dataset.fulfillment;
-            document.getElementById('pickupFields').style.display = selectedFulfillment === 'pickup' ? 'block' : 'none';
-            document.getElementById('deliveryFields').style.display = selectedFulfillment === 'delivery' ? 'block' : 'none';
-          };
-        });
-
-        document.getElementById('toStep2').onclick = () => {
-          const name = document.getElementById('checkoutName').value.trim();
-          const phone = document.getElementById('checkoutPhone').value.trim();
-          const email = document.getElementById('checkoutEmail').value.trim();
-          if (!name || !phone || !email) { alert('Please fill in all fields including email.'); return; }
-          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
-          if (selectedFulfillment === 'delivery') {
-            const street = document.getElementById('checkoutStreet').value.trim();
-            const suburb = document.getElementById('checkoutSuburb').value.trim();
-            const city = document.getElementById('checkoutCity').value.trim();
-            if (!street || !suburb || !city) { alert('Please fill in your delivery address (street, suburb, and city).'); return; }
-          }
-          document.getElementById('checkoutStep1').classList.remove('active');
-          document.getElementById('checkoutStep2').classList.add('active');
-        };
-
-        document.getElementById('backToStep1').onclick = () => {
-          document.getElementById('checkoutStep2').classList.remove('active');
-          document.getElementById('checkoutStep1').classList.add('active');
-        };
-
-        const pCards = overlay.querySelectorAll('.payment-card');
-        pCards.forEach(card => {
-          card.onclick = () => {
-            pCards.forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-            selectedMethod = card.dataset.method;
-            document.getElementById('paynowDetail').style.display = selectedMethod === 'paynow' ? 'block' : 'none';
-          };
-        });
-
-        document.getElementById('completeOrder').onclick = async () => {
-          const name = document.getElementById('checkoutName').value;
-          const phone = document.getElementById('checkoutPhone').value;
-          const email = document.getElementById('checkoutEmail').value.trim();
-          const branch = document.getElementById('checkoutBranch').value;
-
-          // Gather delivery details if delivery is selected
-          let deliveryInfo = null;
-          let fulfillmentLabel = `Pickup at ${branch}`;
-          if (selectedFulfillment === 'delivery') {
-            const street = document.getElementById('checkoutStreet').value.trim();
-            const suburb = document.getElementById('checkoutSuburb').value.trim();
-            const city = document.getElementById('checkoutCity').value.trim();
-            const notes = document.getElementById('checkoutDeliveryNotes').value.trim();
-            deliveryInfo = { street, suburb, city, notes };
-            fulfillmentLabel = `${street}, ${suburb}, ${city}`;
-          }
-
-          if (selectedMethod === 'paynow') {
-            // Handle Paynow payment
-            await processPaynowPayment({ name, phone, email, branch: selectedFulfillment === 'pickup' ? branch : 'Delivery', total, fulfillment: selectedFulfillment, deliveryInfo });
-          } else {
-            // Handle Cash payment
-            const successMsg = selectedFulfillment === 'delivery'
-              ? `Thank you, ${name}. Your order will be delivered to ${fulfillmentLabel} within 72 hours. We'll contact you on WhatsApp to confirm.`
-              : `Thank you, ${name}. Your order has been placed. Please visit our ${branch} branch to complete your purchase.`;
-            document.getElementById('successMsg').textContent = successMsg;
-            document.getElementById('checkoutStep2').classList.remove('active');
-            document.getElementById('checkoutStep3').classList.add('active');
-
-            // WhatsApp Integration on Completion
-            const isDelivery = selectedFulfillment === 'delivery';
-            const header = isDelivery ? 'New Order (Delivery 🚚)' : 'New Order (Cash Pickup)';
-            const items = state.cart.map(i => `- ${i.name} (${i.qty}) @ ${currency('USD', i.price)}`).join('\n');
-            let footer = `Customer: ${name}\nPhone: ${phone}\nTotal: ${currency('USD', total)}`;
-            if (isDelivery) {
-              footer += `\n\nDelivery Address:\n${deliveryInfo.street}\n${deliveryInfo.suburb}, ${deliveryInfo.city}`;
-              if (deliveryInfo.notes) footer += `\nNotes: ${deliveryInfo.notes}`;
-            } else {
-              footer += `\nBranch: ${branch}`;
-            }
-            const text = encodeURIComponent([header, '', items, '', footer].join('\n'));
-            const url = `https://wa.me/27640823961?text=${text}`;
-
-            setTimeout(() => { window.open(url, '_blank'); }, 2000);
-
-            // Clear cart
-            state.cart = [];
-            saveCart();
-            updateCartBadge();
-            renderCart();
-          }
-        };
-
-        document.getElementById('finishCheckout').onclick = close;
-      }
-      _openCheckoutModal = openCheckoutModal; // expose to delegated handler
-
-      // Paynow Payment Processing (Redirect Method)
-      async function processPaynowPayment({ name, phone, email, branch, total, fulfillment, deliveryInfo }) {
-        try {
-          // Show loading state
-          showPaynowLoading();
-
-          // Generate unique reference
-          const reference = `AC-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
-
-          // Prepare cart data
-          const cartItems = state.cart.map(item => ({
-            name: item.name,
-            price: item.price || 0,
-            qty: item.qty || 1
-          }));
-
-          // Call backend to initiate payment
-          const response = await fetch(PAYNOW_CONFIG.apiUrl, {
-            method: 'POST',
-            redirect: 'follow',
-            body: JSON.stringify({
-              action: 'initiate',
-              token: PAYNOW_CONFIG.apiToken,
-              reference: reference,
-              email: email, // Use user-provided email
-              cart: cartItems,
-              total: total,
-              customerName: name,
-              customerPhone: phone,
-              branch: branch,
-              fulfillment: fulfillment || 'pickup',
-              deliveryAddress: deliveryInfo ? `${deliveryInfo.street}, ${deliveryInfo.suburb}, ${deliveryInfo.city}${deliveryInfo.notes ? ' | Notes: ' + deliveryInfo.notes : ''}` : ''
-            })
-          });
-
-          // Parse response
-          const responseText = await response.text();
-          let result;
-          try {
-            result = JSON.parse(responseText);
-          } catch (parseErr) {
-            console.error('Response was not JSON:', responseText.substring(0, 200));
-            throw new Error('Unexpected server response. Please try again.');
-          }
-
-          if (!result.success) {
-            const errorDetail = result.debug ? ` (Status: ${result.debug.parsedStatus}, Raw: ${result.debug.rawResponse?.substring(0, 100)})` : '';
-            console.error('Payment initiation failed:', result.error, result.debug || '');
-            throw new Error(result.error || 'Payment initialization failed');
-          }
-
-          // Store transaction details for verification on return
-          localStorage.setItem('paynow_pending', JSON.stringify({
-            pollUrl: result.pollUrl,
-            reference: reference,
-            timestamp: Date.now()
-          }));
-
-          // Redirect to Paynow (no popup — works on all mobile browsers)
-          window.location.href = result.redirectUrl;
-
-        } catch (error) {
-          showPaynowError(error.message || 'Payment processing failed');
-        }
-      }
-
-      function showPaynowLoading() {
-        const paynowDetail = document.getElementById('paynowDetail');
-        paynowDetail.style.display = 'block';
-        paynowDetail.innerHTML = `
-          <div style="text-align: center; padding: 20px;">
-            <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #1e96c8; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-            <div style="margin-top: 15px; font-size: 16px; color: #333;">Processing payment...</div>
-            <div style="margin-top: 8px; font-size: 14px; color: #666;">Opening Paynow payment page. Please complete your payment.</div>
-            <style>
-              @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-              }
-            </style>
-          </div>
-        `;
-      }
-
-      function showPaynowSuccess(reference, paynowRef) {
-        document.getElementById('successMsg').textContent =
-          `Payment successful! Your order has been confirmed. Reference: ${reference}`;
-        document.getElementById('paynowDetail').style.display = 'none';
-        document.getElementById('checkoutStep2').classList.remove('active');
-        document.getElementById('checkoutStep3').classList.add('active');
-      }
-
-      function showPaynowError(errorMsg) {
-        const paynowDetail = document.getElementById('paynowDetail');
-        paynowDetail.style.display = 'block';
-        paynowDetail.innerHTML = `
-          <div style="background: #fee; border: 1px solid #fcc; border-radius: 8px; padding: 15px; margin-top: 10px;">
-            <div style="color: #c33; font-weight: 600; margin-bottom: 8px;">Payment Failed</div>
-            <div style="color: #666; font-size: 14px;">${errorMsg}</div>
-            <div style="margin-top: 12px;">
-              <button class="btn btn-secondary btn-small" onclick="location.reload()">Try Again</button>
-            </div>
-          </div>
-        `;
-      }
-
-      // Remove handlers
-      cartPanelEl.addEventListener('click', (e) => {
-        // Prevent outside-click handler from closing the panel
-        e.stopPropagation();
-        const rm = e.target.closest('.remove-item');
-        const inc = e.target.closest('.qty-inc');
-        const dec = e.target.closest('.qty-dec');
-        if (rm) {
-          const id = rm.getAttribute('data-id');
-          removeFromCart(id);
-          // keep panel open explicitly
-          cartPanelEl.classList.add('open');
-          return;
-        }
-        if (inc) {
-          const id = inc.getAttribute('data-id');
-          updateCartItemQty(id, +1);
-          cartPanelEl.classList.add('open');
-          return;
-        }
-        if (dec) {
-          const id = dec.getAttribute('data-id');
-          updateCartItemQty(id, -1);
-          cartPanelEl.classList.add('open');
-          return;
-        }
-      });
-      // Also prevent closing when clicking anywhere inside the panel
-      cartPanelEl.addEventListener('mousedown', (e) => e.stopPropagation());
-      document.addEventListener('click', (e) => {
-        if (cartPanelEl.classList.contains('open') && !cartPanelEl.contains(e.target) && !cartBtn.contains(e.target)) {
-          cartPanelEl.classList.remove('open');
-        }
-      });
     }
+    _openCheckoutModal = openCheckoutModal; // expose to delegated handler
+
+    // Remove handlers
+    cartPanelEl.addEventListener('click', (e) => {
+      // Prevent outside-click handler from closing the panel
+      e.stopPropagation();
+      const rm = e.target.closest('.remove-item');
+      const inc = e.target.closest('.qty-inc');
+      const dec = e.target.closest('.qty-dec');
+      if (rm) {
+        const id = rm.getAttribute('data-id');
+        removeFromCart(id);
+        // keep panel open explicitly
+        cartPanelEl.classList.add('open');
+        return;
+      }
+      if (inc) {
+        const id = inc.getAttribute('data-id');
+        updateCartItemQty(id, +1);
+        cartPanelEl.classList.add('open');
+        return;
+      }
+      if (dec) {
+        const id = dec.getAttribute('data-id');
+        updateCartItemQty(id, -1);
+        cartPanelEl.classList.add('open');
+        return;
+      }
+    });
+    // Also prevent closing when clicking anywhere inside the panel
+    cartPanelEl.addEventListener('mousedown', (e) => e.stopPropagation());
+    document.addEventListener('click', (e) => {
+      if (cartPanelEl.classList.contains('open') && !cartPanelEl.contains(e.target) && !cartBtn.contains(e.target)) {
+        cartPanelEl.classList.remove('open');
+      }
+    });
   }
 
   function addToCart(product, qty = 1) {
@@ -1443,6 +1120,394 @@
     saveCart();
   }
 
+  // --- Checkout Modal ---
+  function openCheckoutModal() {
+    const total = state.cart.reduce((sum, i) => sum + (i.price || 0) * i.qty, 0);
+
+    // Identify the likely pickup branch from cart contents
+    const uniqueBranches = [...new Set(state.cart.map(i => i.branch).filter(Boolean))];
+    const cartBranch = uniqueBranches.length > 0 ? uniqueBranches[0] : 'Bulawayo Centre';
+
+    const overlay = document.createElement('div');
+    overlay.className = 'fixed-layer active';
+    overlay.id = 'checkout-modal-root';
+    overlay.style.position = 'fixed';
+    overlay.style.inset = '0';
+    overlay.style.zIndex = '100000';
+    overlay.style.backgroundColor = 'rgba(0,0,0,0.85)';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.backdropFilter = 'blur(12px)';
+    overlay.style.webkitBackdropFilter = 'blur(12px)';
+
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-reveal-container';
+    modalContent.style.maxWidth = '500px';
+    modalContent.style.width = '90%';
+    modalContent.innerHTML = `
+      <div class="checkout-modal" style="background:white; border-radius:32px; position:relative; overflow:hidden;">
+        <button id="closeCheckout" 
+                style="position:absolute; top:20px; right:20px; background:none; border:none; color:#64748b; font-size:24px; cursor:pointer;"
+                aria-label="Close">&times;</button>
+        
+        <!-- Step 1: Details -->
+        <div id="checkoutStep1" class="checkout-step active">
+          <h2 style="font-size:24px; font-weight:800; letter-spacing:-0.02em;">Shipping Details</h2>
+          <p style="color:var(--text-muted); font-size:14px; margin-bottom:10px;">Please provide your contact information.</p>
+          
+          <div class="checkout-form-group">
+            <label>Full Name</label>
+            <input type="text" id="checkoutName" placeholder="e.g. John Doe" required>
+          </div>
+          <div class="checkout-form-group">
+            <label>WhatsApp Number</label>
+            <input type="tel" id="checkoutPhone" placeholder="e.g. +263..." required>
+          </div>
+          <div class="checkout-form-group">
+            <label>Email Address</label>
+            <input type="email" id="checkoutEmail" placeholder="e.g. you@email.com" required>
+          </div>
+
+          <!-- Fulfillment Method Toggle -->
+          <div class="checkout-form-group">
+            <label>How would you like to receive your order?</label>
+            <div id="fulfillmentToggle" style="display:flex; gap:10px; margin-top:6px;">
+              <div class="fulfillment-card selected" data-fulfillment="pickup" style="flex:1; padding:14px 12px; border:2px solid #1e96c8; border-radius:12px; text-align:center; cursor:pointer; transition:all .2s;">
+                <div style="font-size:22px; margin-bottom:4px;">🏪</div>
+                <div style="font-weight:700; font-size:14px;">Pickup</div>
+                <div style="font-size:11px; color:#64748b;">Collect from branch</div>
+              </div>
+              <div class="fulfillment-card" data-fulfillment="delivery" style="flex:1; padding:14px 12px; border:2px solid #e2e8f0; border-radius:12px; text-align:center; cursor:pointer; transition:all .2s;">
+                <div style="font-size:22px; margin-bottom:4px;">🚚</div>
+                <div style="font-weight:700; font-size:14px;">Delivery</div>
+                <div style="font-size:11px; color:#22c55e; font-weight:600;">FREE</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pickup: Branch selector -->
+          <div id="pickupFields">
+            <div class="checkout-form-group">
+              <label>Pickup Branch</label>
+              <select id="checkoutBranch">
+                <optgroup label="Auto-selected based on cart">
+                  <option value="Bulawayo Centre" ${cartBranch === 'Bulawayo Centre' ? 'selected' : ''}>Bulawayo Centre</option>
+                  <option value="Haddon & Sly" ${cartBranch === 'Haddon & Sly' ? 'selected' : ''}>Haddon & Sly</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+
+          <!-- Delivery: Address fields -->
+          <div id="deliveryFields" style="display:none;">
+            <div class="checkout-form-group">
+              <label>Street Address</label>
+              <input type="text" id="checkoutStreet" placeholder="e.g. 12 Main Street">
+            </div>
+            <div style="display:flex; gap:10px;">
+              <div class="checkout-form-group" style="flex:1;">
+                <label>Suburb / Area</label>
+                <input type="text" id="checkoutSuburb" placeholder="e.g. Hillside">
+              </div>
+              <div class="checkout-form-group" style="flex:1;">
+                <label>City</label>
+                <input type="text" id="checkoutCity" placeholder="e.g. Bulawayo">
+              </div>
+            </div>
+            <div class="checkout-form-group">
+              <label>Delivery Notes <span style="color:#94a3b8; font-weight:400;">(optional)</span></label>
+              <input type="text" id="checkoutDeliveryNotes" placeholder="e.g. Gate code, landmark, preferred time">
+            </div>
+            <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:10px; padding:10px 14px; display:flex; align-items:center; gap:10px; margin-top:4px;">
+              <span style="font-size:20px;">⏱️</span>
+              <span style="font-size:13px; color:#0369a1; line-height:1.4;">Delivery is within <strong>72 hours</strong> of confirmed payment. We'll contact you on WhatsApp to arrange a convenient time.</span>
+            </div>
+          </div>
+          
+          <div class="checkout-actions">
+            <span></span>
+            <button class="btn btn-primary" id="toStep2">Next: Payment</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Payment -->
+        <div id="checkoutStep2" class="checkout-step">
+          <h2 style="font-size:24px; font-weight:800; letter-spacing:-0.02em;">Payment Method</h2>
+          
+          <div class="checkout-order-summary">
+            <div class="summary-row"><span>Subtotal</span><span>${currency('USD', total)}</span></div>
+            <div class="summary-row"><span>Tax</span><span>$0.00</span></div>
+            <div class="summary-row total"><span>Total</span><span>${currency('USD', total)}</span></div>
+          </div>
+
+          <div class="payment-methods">
+            <div class="payment-card selected" data-method="cash">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="12" y1="15" x2="12" y2="15"></line></svg>
+              <div class="title">Cash at Branch</div>
+            </div>
+            <div class="payment-card" data-method="paynow">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              <div class="title">Paynow</div>
+            </div>
+          </div>
+
+          <div id="paynowDetail" style="display:none; margin-top: 15px;">
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; color: #64748b; font-size: 14px;">
+              Pay securely via Paynow. You will be redirected to complete your payment.
+            </div>
+          </div>
+
+          <div class="checkout-actions">
+            <button class="btn btn-secondary" id="backToStep1">Back</button>
+            <button class="btn btn-primary" id="completeOrder">Complete Order</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Success -->
+        <div id="checkoutStep3" class="checkout-step" style="text-align:center; padding: 40px 0;">
+          <div style="width:80px; height:80px; background:#22c55e; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; margin: 0 auto 20px; font-size:40px;">&check;</div>
+          <h2 style="font-size:28px; font-weight:800;">Order Confirmed!</h2>
+          <p id="successMsg" style="color:var(--text-muted); font-size:16px; margin: 15px 0 25px;"></p>
+          <button class="btn btn-primary" id="finishCheckout">Return to Site</button>
+        </div>
+
+      </div>
+    `;
+
+    overlay.appendChild(modalContent);
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    // Logic
+    const close = () => { overlay.remove(); document.body.style.overflow = ''; };
+    const closeBtn = document.getElementById('closeCheckout');
+    if (closeBtn) closeBtn.onclick = close;
+    overlay.onclick = (e) => { if (e.target === overlay) close(); };
+
+    let selectedMethod = 'cash';
+    let selectedFulfillment = 'pickup';
+
+    // Fulfillment toggle logic
+    const fCards = overlay.querySelectorAll('.fulfillment-card');
+    fCards.forEach(card => {
+      card.onclick = () => {
+        fCards.forEach(c => { c.classList.remove('selected'); c.style.borderColor = '#e2e8f0'; });
+        card.classList.add('selected');
+        card.style.borderColor = '#1e96c8';
+        selectedFulfillment = card.dataset.fulfillment;
+        document.getElementById('pickupFields').style.display = selectedFulfillment === 'pickup' ? 'block' : 'none';
+        document.getElementById('deliveryFields').style.display = selectedFulfillment === 'delivery' ? 'block' : 'none';
+      };
+    });
+
+    const toStep2 = document.getElementById('toStep2');
+    if (toStep2) {
+      toStep2.onclick = () => {
+        const name = document.getElementById('checkoutName').value.trim();
+        const phone = document.getElementById('checkoutPhone').value.trim();
+        const email = document.getElementById('checkoutEmail').value.trim();
+        if (!name || !phone || !email) { alert('Please fill in all fields including email.'); return; }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
+        if (selectedFulfillment === 'delivery') {
+          const street = document.getElementById('checkoutStreet').value.trim();
+          const suburb = document.getElementById('checkoutSuburb').value.trim();
+          const city = document.getElementById('checkoutCity').value.trim();
+          if (!street || !suburb || !city) { alert('Please fill in your delivery address (street, suburb, and city).'); return; }
+        }
+        document.getElementById('checkoutStep1').classList.remove('active');
+        document.getElementById('checkoutStep2').classList.add('active');
+      };
+    }
+
+    const backToStep1 = document.getElementById('backToStep1');
+    if (backToStep1) {
+      backToStep1.onclick = () => {
+        document.getElementById('checkoutStep2').classList.remove('active');
+        document.getElementById('checkoutStep1').classList.add('active');
+      };
+    }
+
+    const pCards = overlay.querySelectorAll('.payment-card');
+    pCards.forEach(card => {
+      card.onclick = () => {
+        pCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        selectedMethod = card.dataset.method;
+        const paynowDetail = document.getElementById('paynowDetail');
+        if (paynowDetail) paynowDetail.style.display = selectedMethod === 'paynow' ? 'block' : 'none';
+      };
+    });
+
+    const completeOrder = document.getElementById('completeOrder');
+    if (completeOrder) {
+      completeOrder.onclick = async () => {
+        const name = document.getElementById('checkoutName').value;
+        const phone = document.getElementById('checkoutPhone').value;
+        const branch = document.getElementById('checkoutBranch').value;
+        const email = document.getElementById('checkoutEmail').value.trim();
+
+        // Gather delivery details if delivery is selected
+        let deliveryInfo = null;
+        let fulfillmentLabel = `Pickup at ${branch}`;
+        if (selectedFulfillment === 'delivery') {
+          const street = document.getElementById('checkoutStreet').value.trim();
+          const suburb = document.getElementById('checkoutSuburb').value.trim();
+          const city = document.getElementById('checkoutCity').value.trim();
+          const notes = document.getElementById('checkoutDeliveryNotes').value.trim();
+          deliveryInfo = { street, suburb, city, notes };
+          fulfillmentLabel = `${street}, ${suburb}, ${city}`;
+        }
+
+        if (selectedMethod === 'paynow') {
+          // Handle Paynow payment
+          await processPaynowPayment({ name, phone, email, branch: selectedFulfillment === 'pickup' ? branch : 'Delivery', total, fulfillment: selectedFulfillment, deliveryInfo });
+        } else {
+          // Handle Cash payment
+          const successMsg = selectedFulfillment === 'delivery'
+            ? `Thank you, ${name}. Your order will be delivered to ${fulfillmentLabel} within 72 hours. We'll contact you on WhatsApp to confirm.`
+            : `Thank you, ${name}. Your order has been placed. Please visit our ${branch} branch to complete your purchase.`;
+          const successMsgEl = document.getElementById('successMsg');
+          if (successMsgEl) successMsgEl.textContent = successMsg;
+          document.getElementById('checkoutStep2').classList.remove('active');
+          document.getElementById('checkoutStep3').classList.add('active');
+
+          // WhatsApp Integration on Completion
+          const isDelivery = selectedFulfillment === 'delivery';
+          const header = isDelivery ? 'New Order (Delivery 🚚)' : 'New Order (Cash Pickup)';
+          const itemsStr = state.cart.map(i => `- ${i.name} (${i.qty}) @ ${currency('USD', i.price)}`).join('\n');
+          let footer = `Customer: ${name}\nPhone: ${phone}\nTotal: ${currency('USD', total)}`;
+          if (isDelivery) {
+            footer += `\n\nDelivery Address:\n${deliveryInfo.street}\n${deliveryInfo.suburb}, ${deliveryInfo.city}`;
+            if (deliveryInfo.notes) footer += `\nNotes: ${deliveryInfo.notes}`;
+          } else {
+            footer += `\nBranch: ${branch}`;
+          }
+          const text = encodeURIComponent([header, '', itemsStr, '', footer].join('\n'));
+          const url = `https://wa.me/27640823961?text=${text}`;
+
+          setTimeout(() => { window.open(url, '_blank'); }, 2000);
+
+          // Clear cart
+          state.cart = [];
+          saveCart();
+          updateCartBadge();
+          renderCart();
+        }
+      };
+    }
+
+    const finishCheckout = document.getElementById('finishCheckout');
+    if (finishCheckout) finishCheckout.onclick = close;
+  }
+
+  // Paynow Payment Processing (Redirect Method)
+  async function processPaynowPayment({ name, phone, email, branch, total, fulfillment, deliveryInfo }) {
+    try {
+      // Show loading state
+      showPaynowLoading();
+
+      // Generate unique reference
+      const reference = `AC-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+
+      // Prepare cart data
+      const cartItems = state.cart.map(item => ({
+        name: item.name,
+        price: item.price || 0,
+        qty: item.qty || 1
+      }));
+
+      // Call backend to initiate payment
+      const response = await fetch(PAYNOW_CONFIG.apiUrl, {
+        method: 'POST',
+        redirect: 'follow',
+        body: JSON.stringify({
+          action: 'initiate',
+          token: PAYNOW_CONFIG.apiToken,
+          reference: reference,
+          email: email, // Use user-provided email
+          cart: cartItems,
+          total: total,
+          customerName: name,
+          customerPhone: phone,
+          branch: branch,
+          fulfillment: fulfillment || 'pickup',
+          deliveryAddress: deliveryInfo ? `${deliveryInfo.street}, ${deliveryInfo.suburb}, ${deliveryInfo.city}${deliveryInfo.notes ? ' | Notes: ' + deliveryInfo.notes : ''}` : ''
+        })
+      });
+
+      // Parse response
+      const responseText = await response.text();
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseErr) {
+        console.error('Response was not JSON:', responseText.substring(0, 200));
+        throw new Error('Unexpected server response. Please try again.');
+      }
+
+      if (!result.success) {
+        throw new Error(result.error || 'Payment initialization failed');
+      }
+
+      // Store transaction details for verification on return
+      localStorage.setItem('paynow_pending', JSON.stringify({
+        pollUrl: result.pollUrl,
+        reference: reference,
+        timestamp: Date.now()
+      }));
+
+      // Redirect to Paynow
+      window.location.href = result.redirectUrl;
+
+    } catch (error) {
+      showPaynowError(error.message || 'Payment processing failed');
+    }
+  }
+
+  function showPaynowLoading() {
+    const paynowDetail = document.getElementById('paynowDetail');
+    if (!paynowDetail) return;
+    paynowDetail.style.display = 'block';
+    paynowDetail.innerHTML = `
+      <div style="text-align: center; padding: 20px;">
+        <div style="display: inline-block; width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #1e96c8; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <div style="margin-top: 15px; font-size: 16px; color: #333;">Processing payment...</div>
+        <div style="margin-top: 8px; font-size: 14px; color: #666;">Opening Paynow payment page. Please complete your payment.</div>
+        <style>
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        </style>
+      </div>
+    `;
+  }
+
+  function showPaynowSuccess(reference) {
+    const successMsgEl = document.getElementById('successMsg');
+    if (successMsgEl) successMsgEl.textContent = `Payment successful! Your order has been confirmed. Reference: ${reference}`;
+    const paynowDetail = document.getElementById('paynowDetail');
+    if (paynowDetail) paynowDetail.style.display = 'none';
+    document.getElementById('checkoutStep2').classList.remove('active');
+    document.getElementById('checkoutStep3').classList.add('active');
+  }
+
+  function showPaynowError(errorMsg) {
+    const paynowDetail = document.getElementById('paynowDetail');
+    if (!paynowDetail) return;
+    paynowDetail.style.display = 'block';
+    paynowDetail.innerHTML = `
+      <div style="background: #fee; border: 1px solid #fcc; border-radius: 8px; padding: 15px; margin-top: 10px;">
+        <div style="color: #c33; font-weight: 600; margin-bottom: 8px;">Payment Failed</div>
+        <div style="color: #666; font-size: 14px;">${errorMsg}</div>
+        <div style="margin-top: 12px;">
+          <button class="btn btn-secondary btn-small" onclick="location.reload()">Try Again</button>
+        </div>
+      </div>
+    `;
+  }
+
   function setupDelegatedActions() {
     ensureCartUI();
     document.body.removeEventListener('click', delegatedHandler, true);
@@ -1465,12 +1530,17 @@
       // Shop card fallback: build product from data attributes
       if (!product && article) {
         const name = article.querySelector('h3')?.textContent?.trim();
-        const priceText = article.querySelector('.price-line')?.textContent || '';
-        const priceMatch = priceText.replace(/[^0-9.]/g, '');
-        const price = parseFloat(priceMatch || '0');
+        const priceText = article.querySelector('.price-line')?.textContent || article.querySelector('.card-badge.price-badge')?.textContent || '';
+        const priceValue = parseFloat(priceText.replace(/[^0-9.]/g, '') || '0');
         const img = article.querySelector('.apple-card-media img')?.getAttribute('src') || '';
-        product = { id: id || `shop-${Date.now()}`, name, model: name, price: isFinite(price) ? price : 0, currency: 'USD', image: img, category: 'game' };
+        product = { id: id || `shop-${Date.now()}`, name, model: name, price: isFinite(priceValue) ? priceValue : 0, currency: 'USD', image: img, category: 'game' };
       }
+      // Clear cart for "Buy Now" direct checkout
+      state.cart = [];
+      saveCart();
+      updateCartBadge();
+      renderCart();
+
       addToCart(product);
       if (_openCheckoutModal) _openCheckoutModal();
       return;
@@ -1483,11 +1553,10 @@
       // Shop card fallback: build product from data attributes
       if (!product && article) {
         const name = article.querySelector('h3')?.textContent?.trim();
-        const priceText = article.querySelector('.price-line')?.textContent || '';
-        const priceMatch = priceText.replace(/[^0-9.]/g, '');
-        const price = parseFloat(priceMatch || '0');
+        const priceText = article.querySelector('.price-line')?.textContent || article.querySelector('.card-badge.price-badge')?.textContent || '';
+        const priceValue = parseFloat(priceText.replace(/[^0-9.]/g, '') || '0');
         const img = article.querySelector('.apple-card-media img')?.getAttribute('src') || '';
-        product = { id: id || `shop-${Date.now()}`, name, model: name, price: isFinite(price) ? price : 0, currency: 'USD', image: img, category: 'game' };
+        product = { id: id || `shop-${Date.now()}`, name, model: name, price: isFinite(priceValue) ? priceValue : 0, currency: 'USD', image: img, category: 'game' };
       }
       addToCart(product, 1);
       return;
@@ -1565,7 +1634,10 @@
     el.className = 'toast';
     el.innerHTML = `<span class="ok"></span><span>${message}</span>`;
     wrap.appendChild(el);
-    setTimeout(() => { el.remove(); }, timeout);
+    setTimeout(() => {
+      el.classList.add('hiding');
+      setTimeout(() => { el.remove(); }, 300);
+    }, timeout);
   }
 
   // --- Gaming page logic ---
@@ -1651,7 +1723,7 @@
         return `
           <article class=\"apple-card\"> 
             ${media}
-            <div class=\"apple-card-body\"><h3>${name}</h3><div class=\"sub\">$2 per hour • PS5 • Bulawayo Center</div></div>
+            <div class=\"apple-card-body\"><h3>${name}</h3><div class=\"sub\">$2 per hour • PS5 • Bulawayo Centre</div></div>
           </article>`;
       }).join('')}</div>`;
       tagForReveal(availableEl);
@@ -1686,7 +1758,7 @@
               <div class="card-media"><img src="assets/Games To Play/HPNG2_AV3.jpeg" alt="${title}" /></div>
               <div class="card-body">
                 <div class="card-title"><h3>${title}</h3><span class="card-badge ${busy ? 'warn' : 'success'}">${busy ? 'Busy' : 'Free'}</span></div>
-                <div class="sub">Bulawayo Center</div>
+                <div class="sub">Bulawayo Centre</div>
                 ${busy ? (rem > 0 ? `<div class=\"specs\"><div>Time left</div><div>${fmtTime(rem)}</div></div>` : `<div class=\"specs\"><div>Status</div><div>Busy</div></div>`) : `<div class=\"specs\"><div>Status</div><div>Free</div></div>`}
               </div>
             </div>`;
@@ -1711,7 +1783,7 @@
           image: 'assets/Game Shop/FC 26 (Game, Disk).jpg',
           version: 'Game',
           stock: 12,
-          branch: 'Bulawayo Center'
+          branch: 'Bulawayo Centre'
         },
         {
           id: 'cod-disk',
@@ -1720,7 +1792,7 @@
           image: 'assets/Game Shop/Call of Duty (Game, Disk).jpg',
           version: 'Game',
           stock: 8,
-          branch: 'Bulawayo Center'
+          branch: 'Bulawayo Centre'
         },
         {
           id: 'mk1-disk',
@@ -1729,7 +1801,7 @@
           image: 'assets/Game Shop/Mortal Kombat 1 (Game, Disk).jpg',
           version: 'Game',
           stock: 6,
-          branch: 'Bulawayo Center'
+          branch: 'Bulawayo Centre'
         },
         {
           id: 'nba2k26-disk',
@@ -1738,7 +1810,7 @@
           image: 'assets/Game Shop/NBA 2K26 (Game, Disk).jpg',
           version: 'Game',
           stock: 10,
-          branch: 'Bulawayo Center'
+          branch: 'Bulawayo Centre'
         },
         {
           id: 'ps5-console',
@@ -1747,7 +1819,7 @@
           image: 'assets/Game Shop/Playstation 5 Console.jpg',
           version: 'Console',
           stock: 3,
-          branch: 'Bulawayo Center'
+          branch: 'Bulawayo Centre'
         },
         {
           id: 'ps5-dualsense',
@@ -1756,7 +1828,7 @@
           image: 'assets/Game Shop/PS5 DualSense Controller (Controller).jpg',
           version: 'Controller',
           stock: 12,
-          branch: 'Bulawayo Center'
+          branch: 'Bulawayo Centre'
         }
       ];
       saleEl.innerHTML = `
@@ -1879,8 +1951,8 @@
       const branch = p.branch || '';
 
       return `
-        <div class="promo-card ${isBack ? 'back' : 'front'}">
-          <div class="promo-card-media">
+        <div class="promo-card apple-card ${isBack ? 'back' : 'front'}" data-id="${p.id}">
+          <div class="promo-card-media apple-card-media">
             <div class="promo-badge">${price}</div>
             ${img ? `<img src="${img}" alt="${p.model}" />` : ''}
           </div>
@@ -1892,7 +1964,7 @@
               <div>Battery: <b>${battery}</b></div>
             </div>
             <div class="promo-card-actions">
-              <button class="btn-see-now" onclick="openProductModal('${p.id}')">See More</button>
+              <button class="buy-btn" style="background:var(--brand-blue); color:white; border:none; padding:8px 12px; border-radius:32px; font-size:12px; font-weight:600; cursor:pointer; width:100%;">Buy Now</button>
             </div>
           </div>
         </div>
