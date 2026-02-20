@@ -102,6 +102,13 @@
   width: 100%;
 }
 
+@media (max-width: 650px) {
+  .promo-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
+
 @media (min-width: 900px) {
   .promo-grid {
     gap: 20px;

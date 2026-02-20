@@ -686,6 +686,28 @@ body {
   font-weight: 400;
 }
 
+@media (max-width: 600px) {
+  .video-overlay-content {
+    padding: 20px 15px;
+  }
+
+  .video-overlay-content .hero-subtitle {
+    margin-bottom: 15px;
+  }
+
+  .video-overlay-content .custom-order-message {
+    font-size: 0.8rem;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+
+  .video-overlay-content .hero-cta {
+    padding: 10px 24px;
+    font-size: 0.95rem;
+  }
+}
+
 .video-overlay-content .hero-cta {
   display: flex;
   align-items: center;
@@ -780,6 +802,18 @@ body {
 .split-card:hover img,
 .split-card:hover video {
   transform: scale(1.05);
+}
+
+@media (max-width: 600px) {
+  .split-card .cta-pill {
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(0) !important;
+    pointer-events: auto !important;
+  }
+
+  .split-card .overlay {
+    opacity: 1 !important;
+  }
 }
 
 .split-card .overlay {
@@ -2242,5 +2276,4 @@ select {
 .color-swatch.active {
   box-shadow: 0 0 0 2px #007aff;
   transform: scale(1.1);
-}
 }
