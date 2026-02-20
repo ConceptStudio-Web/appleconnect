@@ -186,7 +186,7 @@
         // Game shop products: only display (Product Name)
         lines.push(`(${name}) - Quantity (${qty})`);
       } else {
-        const color = prod ? productColor(prod) : '';
+        const color = ci.color || (prod ? productColor(prod) : '');
         const price = typeof ci.price === 'number' ? currency('USD', ci.price) : (typeof prod?.price === 'number' ? currency(prod.currency, prod.price) : '');
         const pid = prod?.productId || '';
         lines.push(`${name} - ${color} - ${price} - ${pid} - Quantity (${qty})`);
@@ -441,29 +441,39 @@
         const vA = getVersion(a.model);
         const vB = getVersion(b.model);
         if (vA !== vB) return vB - vA;
-        // Sub-sort by name for same models
+
+        // Rank refinement for models (Pro Max > Pro > Plus > standard)
+        const getRank = (m) => {
+          const n = String(m || '').toLowerCase();
+          if (n.includes('pro max')) return 4;
+          if (n.includes('pro')) return 3;
+          if (n.includes('plus')) return 2;
+          return 1;
+        };
+        const rA = getRank(a.model);
+        const rB = getRank(b.model);
+        if (rA !== rB) return rB - rA;
+
         return (a.model || '').localeCompare(b.model || '');
       });
     }
 
-    // Prioritize window.PRODUCTS (from data/products.js) as it contains the complete dataset with promo flags
+    // Prioritize window.PRODUCTS (from data/products.js)
     if (Array.isArray(window.PRODUCTS) && window.PRODUCTS.length > 0) {
-      state.products = sortProductsByModel(window.PRODUCTS.map(ensureProductId));
+      state.products = sortProductsByModel(window.PRODUCTS.map(ensureProductId).filter(p => p.variants && p.variants.length > 0));
     } else {
       try {
         let data = await tryLoad('data/products.json');
         if (!data.length || data.length < 6) {
           try {
             data = await tryLoad('data/products-full.json');
-          } catch (e2) {
-            // ignore; will fall back below
-          }
+          } catch (e2) { }
         }
         if (!data || !data.length) throw new Error('Empty dataset');
-        state.products = sortProductsByModel(data.map(ensureProductId));
+        state.products = sortProductsByModel(data.map(ensureProductId).filter(p => p.variants && p.variants.length > 0));
       } catch (err) {
         console.warn('Failed to load products JSON, using fallback dataset.', err);
-        state.products = sortProductsByModel(fallbackProducts.map(ensureProductId));
+        state.products = sortProductsByModel(fallbackProducts.map(ensureProductId).filter(p => p.variants && p.variants.length > 0));
       }
     }
     // Apply query filter from URL if present
@@ -608,6 +618,9 @@
     const hasPrice = typeof p.price === 'number' && isFinite(p.price);
     const priceText = hasPrice ? `${currency(p.currency, p.price)}` : '';
     const isPromo = p.promo === true;
+    const isIpad = p.category === 'ipad';
+    const storageLabel = isIpad ? 'Size' : 'Storage';
+    const currentStorage = p.size || p.storage || '';
 
     // Subtext parts
     const subParts = [];
@@ -617,37 +630,91 @@
     const battery = p.batteryHealth || '';
     const color = p.color || productColor(p);
     const branch = p.branch || '';
-    const storage = p.storage || '';
 
     let conditionDisplay = '';
-    if (p.condition && p.condition.toLowerCase().includes('new')) {
+    let warrantyText = p.warranty || ''; // Use explicit warranty if available
+
+    if (p.condition && p.condition.toLowerCase().includes('brand new')) {
       conditionDisplay = 'Brand New';
+      if (!warrantyText) warrantyText = '1 Year Warranty';
+    } else if (p.condition && p.condition.toLowerCase().includes('pre-owned')) {
+      conditionDisplay = 'Pre-owned';
+      if (!warrantyText) warrantyText = '6 Month Warranty';
     } else if (p.batteryHealth === '100%') {
       conditionDisplay = 'Used (10/10)';
+      if (!warrantyText) warrantyText = '6 Month Warranty';
     } else {
       conditionDisplay = 'Used (8/10)';
+      if (!warrantyText) warrantyText = '6 Month Warranty';
     }
 
     const detailsHTML = `
       <div class="details" role="group" aria-label="Product details">
-        ${storage ? `<div class="detail-row"><span class="detail-label">Storage</span><span class="detail-value">${storage}</span></div>` : ''}
+        ${p.year ? `<div class="detail-row"><span class="detail-label">Year</span><span class="detail-value">${p.year}</span></div>` : ''}
+        ${currentStorage ? `<div class="detail-row" data-detail="storage"><span class="detail-label">${storageLabel}</span><span class="detail-value">${currentStorage}</span></div>` : ''}
         ${conditionDisplay ? `<div class="detail-row"><span class="detail-label">Condition</span><span class="detail-value">${conditionDisplay}</span></div>` : ''}
-        ${color ? `<div class="detail-row"><span class="detail-label">Color</span><span class="detail-value">${color}</span></div>` : ''}
+        ${warrantyText ? `<div class="detail-row"><span class="detail-label">Warranty</span><span class="detail-value">${warrantyText}</span></div>` : ''}
+        ${color ? `<div class="detail-row" data-detail="color"><span class="detail-label">Color</span><span class="detail-value">${color}</span></div>` : ''}
         ${branch ? `<div class="detail-row"><span class="detail-label">Branch</span><span class="detail-value">${branch}</span></div>` : ''}
       </div>
     `;
 
+    // ... (no changes until the return string)
+    // Actually I'll just include the return string too to be safe with the contiguous block requirement
+
+    // Color Swatches Logic
+    let swatchesHTML = '';
+    if (p.variants && p.variants.length > 1) {
+      const swatches = p.variants.map((v, idx) => `
+        <button class="color-swatch ${idx === 0 ? 'active' : ''}" 
+                data-image="${v.image}" 
+                data-color="${v.color}" 
+                style="background-color: ${v.hex};" 
+                aria-label="Select ${v.color}"></button>
+      `).join('');
+
+      swatchesHTML = `
+        <div class="color-swatches-container" style="display:flex; gap:8px; justify-content:center; margin:8px 0 12px;">
+          ${swatches}
+        </div>
+      `;
+    }
+
+    // Storage/Size Options Logic
+    let optionsHTML = '';
+    const optionsData = p.sizeOptions || p.storageOptions;
+    if (optionsData && optionsData.length > 0) {
+      const options = optionsData.map((opt, idx) => {
+        const isActive = opt.size === currentStorage || idx === 0;
+        return `
+          <button class="storage-chip ${isActive ? 'active' : ''}"
+                  data-size="${opt.size}"
+                  data-price="${opt.price}">
+            ${opt.size}
+          </button>
+        `;
+      }).join('');
+
+      optionsHTML = `
+        <div class="storage-options-container">
+          ${options}
+        </div>
+      `;
+    }
+
     return `
-      <article class="apple-card" role="listitem" data-id="${p.id}" data-category="${p.category}" data-price="${hasPrice ? p.price : ''}" data-name="${p.model}">
+      <article class="apple-card" role="listitem" data-id="${p.id}" data-category="${p.category}" data-price="${hasPrice ? p.price : ''}" data-name="${p.model}" data-color="${color}">
         <div class="apple-card-media">
-          ${img ? `<img alt="${p.model}" src="${img}"/>` : ''}
+          ${img ? `<img alt="${p.model}" src="${img}" class="product-main-img"/>` : ''}
           ${hasPrice ? `<div class="card-badge price-badge">${priceText}</div>` : ''}
-          ${isPromo ? `<div class="card-badge promo-badge-label">On Promo</div>` : ''}
           ${p.condition ? `<div class="card-badge condition-badge-label">${p.condition}</div>` : ''}
         </div>
         <div class="apple-card-body">
           <h3>${p.model}</h3>
           ${sub ? `<div class="sub">${sub}</div>` : ''}
+          ${swatchesHTML}
+          ${optionsHTML}
+          ${isPromo ? `<div class="promo-text-notice">On Promo</div>` : ''}
           ${detailsHTML}
           ${hasPrice ? `<div class="price-line-hidden" style="display:none">${priceText}</div>` : ''}
           <div class="apple-card-actions">
@@ -666,6 +733,7 @@
         </div>
       </article>
     `;
+
   }
 
   function renderSection(listId, filterFn) {
@@ -796,27 +864,49 @@
   })();
 
   // --- Search UI ---
-  function injectSearchUI() {
+  // --- Search UI Toggle Logic ---
+  function initSearchToggle() {
+    const searchBtn = document.querySelector('.header-actions button[aria-label="Search"]');
     const header = document.querySelector('.site-header .header-inner');
     const nav = document.querySelector('.site-header nav');
-    if (!header || !nav) return;
-    // Remove old search icon button if present
-    const oldSearchBtn = header.querySelector('.header-actions button[aria-label="Search"]');
-    if (oldSearchBtn) oldSearchBtn.remove();
+    if (!searchBtn || !header || !nav) return;
+
     // Create search container
     const wrap = document.createElement('div');
     wrap.className = 'header-search';
+    wrap.style.display = 'none'; // Initially hidden
     wrap.innerHTML = `
       <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"></circle><path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
       <input id="globalSearch" type="search" placeholder="Search products..." aria-label="Search products" />
       <div id="searchResults" class="search-results" role="listbox"></div>
     `;
     nav.insertAdjacentElement('afterend', wrap);
-    updateHeaderOffset();
 
     const input = wrap.querySelector('#globalSearch');
     const results = wrap.querySelector('#searchResults');
 
+    // Toggle logic
+    searchBtn.addEventListener('click', () => {
+      const isHidden = wrap.style.display === 'none';
+      wrap.style.display = isHidden ? 'flex' : 'none';
+      if (!isHidden) {
+        input.focus();
+        updateHeaderOffset();
+      } else {
+        updateHeaderOffset();
+      }
+    });
+
+    // Close search on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && wrap.style.display !== 'none') {
+        wrap.style.display = 'none';
+        updateHeaderOffset();
+        searchBtn.focus();
+      }
+    });
+
+    // --- Search functionality (restored from original injectSearchUI) ---
     function openResults(items) {
       if (!items.length) {
         results.innerHTML = `<div style="padding:10px; color:#6b7280">No Results Found</div>`;
@@ -833,12 +923,8 @@
       results.classList.add('open');
     }
 
-    // Ensure product data is available from all sources
     async function ensureProductsLoaded() {
-      // Always assemble a global catalog, independent of current page/category
       let allProducts = Array.isArray(state.products) ? state.products.slice() : [];
-
-      // Load from JSON files
       try {
         const tryUrls = ['data/products-full.json', 'data/products.json'];
         for (const url of tryUrls) {
@@ -849,14 +935,8 @@
             else if (Array.isArray(data?.products)) { allProducts = allProducts.concat(data.products); }
           }
         }
-      } catch (e) { /* ignore */ }
-
-      // Add global PRODUCTS (from products.js)
-      if (Array.isArray(window?.PRODUCTS)) {
-        allProducts = allProducts.concat(window.PRODUCTS);
-      }
-
-      // Add gaming products if on gaming page
+      } catch (e) { }
+      if (Array.isArray(window?.PRODUCTS)) { allProducts = allProducts.concat(window.PRODUCTS); }
       if (/(^|\/)gaming\.html(\?|#|$)/.test(location.pathname) || document.querySelector('[data-gaming-page]')) {
         const gameItems = [
           { id: 'game-fc26', model: 'FC 26', category: 'game', price: 45, currency: 'USD', image: 'assets/Games To Play/FC 26.jpg' },
@@ -869,8 +949,6 @@
         ];
         allProducts = allProducts.concat(gameItems);
       }
-
-      // Remove duplicates by id and ensure productId
       const seen = new Set();
       const global = allProducts.map(ensureProductId).filter(p => {
         if (!p?.id) return false;
@@ -878,12 +956,10 @@
         seen.add(p.id);
         return true;
       });
-      // Keep a global catalog available for future searches
       state.products = global;
       return global;
     }
 
-    // Debounced live search
     let t;
     input.addEventListener('input', () => {
       clearTimeout(t);
@@ -902,6 +978,7 @@
         openResults(matches);
       }, 120);
     });
+
     results.addEventListener('click', async (e) => {
       const li = e.target.closest('li');
       if (!li) return;
@@ -911,7 +988,7 @@
       const qs = new URLSearchParams({ id }).toString();
       window.location.href = `${route}?${qs}`;
     });
-    // Enter-to-search: pick the best category page based on global matches
+
     input.addEventListener('keydown', async (ev) => {
       if (ev.key !== 'Enter') return;
       const raw = input.value.trim();
@@ -942,11 +1019,18 @@
       const qs = encodeURIComponent(raw);
       window.location.href = `${route}?q=${qs}`;
     });
+
     document.addEventListener('click', (e) => {
-      if (!wrap.contains(e.target)) { results.classList.remove('open'); }
+      if (!wrap.contains(e.target) && !searchBtn.contains(e.target)) {
+        if (wrap.style.display !== 'none') {
+          wrap.style.display = 'none';
+          updateHeaderOffset();
+        }
+      }
     });
   }
-  injectSearchUI();
+
+  initSearchToggle();
   updateHeaderOffset();
   // Ensure cart UI is initialized even before any add-to-cart
   (function initCartUI() { try { ensureCartUI(); updateCartBadge(); } catch (_) { } })();
@@ -1401,6 +1485,86 @@
           return;
         }
       });
+
+      // Color Swatch Click Handler
+      document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('color-swatch')) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const swatch = e.target;
+          const container = swatch.closest('.color-swatches-container');
+          const card = swatch.closest('.apple-card');
+          const img = card.querySelector('.product-main-img');
+
+          if (!container || !card || !img) return;
+
+          // Update active state
+          container.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+          swatch.classList.add('active');
+
+          // Sync selection to dataset for cart
+          const newColor = swatch.dataset.color;
+          card.dataset.color = newColor;
+
+          // Update Color Detail Text
+          const colorDetail = card.querySelector('.details .detail-row[data-detail="color"] .detail-value');
+          if (colorDetail) {
+            colorDetail.textContent = newColor;
+          }
+
+          // Transition Image
+          const newSrc = swatch.dataset.image;
+          if (newSrc && img.src !== newSrc) {
+            img.classList.add('changing');
+            setTimeout(() => {
+              img.src = newSrc;
+              img.onload = () => { img.classList.remove('changing'); };
+              // Fallback for cached or instant loads
+              setTimeout(() => img.classList.remove('changing'), 50);
+            }, 250); // Wait for fade out
+          }
+        }
+
+        // Storage Toggle Click Handler
+        if (e.target.classList.contains('storage-chip')) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const chip = e.target;
+          const container = chip.closest('.storage-options-container');
+          const card = chip.closest('.apple-card');
+
+          if (!container || !card) return;
+
+          // Update active state
+          container.querySelectorAll('.storage-chip').forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+
+          // Update Price
+          const newPrice = parseFloat(chip.dataset.price);
+          if (!isNaN(newPrice)) {
+            // Update data attributes for cart
+            card.dataset.price = newPrice;
+
+            // Update displayed price badge
+            const badge = card.querySelector('.price-badge');
+            if (badge) {
+              badge.textContent = currency('USD', newPrice);
+              // Simple pop animation
+              badge.style.transform = 'scale(1.1)';
+              setTimeout(() => badge.style.transform = '', 200);
+            }
+          }
+
+          // Update Storage/Size Detail
+          const storageDetail = card.querySelector('.details .detail-row[data-detail="storage"] .detail-value');
+          if (storageDetail) {
+            storageDetail.textContent = chip.dataset.size;
+          }
+        }
+      });
+
       // Also prevent closing when clicking anywhere inside the panel
       cartPanelEl.addEventListener('mousedown', (e) => e.stopPropagation());
       document.addEventListener('click', (e) => {
@@ -1418,6 +1582,10 @@
     const existing = state.cart.find(i => i.id === product.id);
     if (existing) {
       existing.qty += qty;
+      // Sync latest selection
+      if (product.price) existing.price = product.price;
+      if (product.color) existing.color = product.color;
+      if (product.image) existing.image = product.image;
     } else {
       state.cart.push({
         id: product.id,
@@ -1425,6 +1593,7 @@
         price: product.price || 0,
         image: product.image || '',
         branch: product.branch || '',
+        color: product.color || '',
         qty
       });
     }
@@ -1468,7 +1637,7 @@
         <img src="${i.image}" alt="${i.name}" />
         <div>
           <div class="name">${i.name}</div>
-          <div class="sub">Quantity</div>
+          <div class="sub">${i.color ? i.color + ' • ' : ''}Quantity</div>
         </div>
         <div style="display:grid; gap:6px; align-items:center; justify-items:end;">
           <div>${currency('USD', (i.price || 0) * i.qty)}</div>
@@ -1911,6 +2080,15 @@
         const img = article.querySelector('.apple-card-media img')?.getAttribute('src') || '';
         product = { id: id || `shop-${Date.now()}`, name, model: name, price: isFinite(priceValue) ? priceValue : 0, currency: 'USD', image: img, category: 'game' };
       }
+
+      // Sync selection from card dataset
+      if (article && product) {
+        if (article.dataset.color) product.color = article.dataset.color;
+        if (article.dataset.price) product.price = parseFloat(article.dataset.price);
+        const activeImg = article.querySelector('.product-main-img');
+        if (activeImg) product.image = activeImg.getAttribute('src');
+      }
+
       // Clear cart for "Buy Now" direct checkout
       state.cart = [];
       saveCart();
@@ -1937,6 +2115,15 @@
         const img = article.querySelector('.apple-card-media img')?.getAttribute('src') || '';
         product = { id: id || `shop-${Date.now()}`, name, model: name, price: isFinite(priceValue) ? priceValue : 0, currency: 'USD', image: img, category: 'game' };
       }
+
+      // Sync selection from card dataset
+      if (article && product) {
+        if (article.dataset.color) product.color = article.dataset.color;
+        if (article.dataset.price) product.price = parseFloat(article.dataset.price);
+        const activeImg = article.querySelector('.product-main-img');
+        if (activeImg) product.image = activeImg.getAttribute('src');
+      }
+
       addToCart(product, 1);
       return;
     }
@@ -2322,15 +2509,14 @@
       return (state.products || []).filter(p => p.promo === true);
     }
 
-    function createPromoCard(p, isBack = false) {
+    function createPromoCard(p) {
       const img = p.image || '';
       const price = typeof p.price === 'number' ? currency(p.currency, p.price) : '';
-      const battery = p.batteryHealth || '';
       const storage = p.storage || '';
       const branch = p.branch || '';
 
       return `
-        <div class="promo-card apple-card ${isBack ? 'back' : 'front'}" data-id="${p.id}">
+        <div class="promo-card apple-card" data-id="${p.id}">
           <div class="promo-card-media apple-card-media">
             <div class="promo-badge">${price}</div>
             ${img ? `<img src="${img}" alt="${p.model}" />` : ''}
@@ -2340,7 +2526,8 @@
             <div class="sub" style="font-size: 11px; margin-bottom: 4px;">${branch}</div>
             <div style="font-size: 12px; color: var(--text-muted); display: grid; gap: 4px;">
               <div>Storage: <b>${storage}</b></div>
-              <div>Battery: <b>${battery}</b></div>
+              <div>Color: <b>${p.color || ''}</b></div>
+              <div>Condition: <b>${p.condition || ''}</b></div>
             </div>
             <div class="promo-card-actions">
               <button class="buy-btn" style="background:var(--brand-blue); color:white; border:none; padding:8px 12px; border-radius:32px; font-size:12px; font-weight:600; cursor:pointer; width:100%;">Buy Now</button>
@@ -2350,151 +2537,58 @@
       `;
     }
 
-    // Modal Logic
-    window.openProductModal = function (pid) {
-      const p = (state.products || []).find(item => item.id === pid);
-      if (!p) return;
-
-      // Create modal overlay
-      const overlay = document.createElement('div');
-      overlay.className = 'fixed-layer active';
-      overlay.id = 'product-modal-root';
-      overlay.style.position = 'fixed';
-      overlay.style.top = '0';
-      overlay.style.left = '0';
-      overlay.style.width = '100vw';
-      overlay.style.height = '100vh';
-      overlay.style.zIndex = '99999';
-      overlay.style.backgroundColor = 'rgba(0,0,0,0.85)';
-      overlay.style.display = 'flex';
-      overlay.style.alignItems = 'center';
-      overlay.style.justifyContent = 'center';
-      overlay.style.padding = '20px';
-      overlay.style.backdropFilter = 'blur(12px)';
-      overlay.style.webkitBackdropFilter = 'blur(12px)';
-
-      const modalContent = document.createElement('div');
-      modalContent.className = 'modal-reveal-container';
-      modalContent.style.maxWidth = '420px';
-      modalContent.style.width = '100%';
-      modalContent.style.maxHeight = '90vh';
-      modalContent.style.borderRadius = '32px';
-      modalContent.style.animation = 'revealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both';
-      modalContent.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.5)';
-      modalContent.style.display = 'flex';
-      modalContent.style.flexDirection = 'column';
-
-      // Use the original card maker with hidden cart
-      const cardHTML = makeCard(p, { showCart: false });
-      modalContent.innerHTML = `
-        <div class="modal-scroll-area" style="position:relative; background:#f8fafc; border-radius:32px; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; max-height:90vh; scrollbar-width: none;">
-           <button class="close-trigger" 
-                   style="position:absolute; top:12px; right:12px; z-index:100; background:white; border:none; color:black; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); transition: 0.3s;"
-                   onmouseover="this.style.boxShadow='0 6px 16px rgba(0,0,0,0.15)'; this.style.transform='scale(1.1)'" 
-                   onmouseout="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'; this.style.transform='scale(1)'"
-                   aria-label="Close modal">&times;</button>
-           <div class="modal-card-inset" style="padding: 30px 20px;">
-             <div class="modal-inner-card-fix" style="height:auto;">
-               ${cardHTML.replace('class="apple-card"', 'class="apple-card modal-view-card" style="height:auto; box-shadow: 0 10px 30px rgba(0,0,0,0.08); animation: none;"')}
-             </div>
-           </div>
-        </div>
-      `;
-
-      overlay.innerHTML = '';
-      overlay.appendChild(modalContent);
-      document.body.appendChild(overlay);
-      document.body.style.overflow = 'hidden';
-
-      const closeModal = () => {
-        overlay.remove();
-        document.body.style.overflow = '';
-      };
-
-      // Close on background click
-      overlay.onclick = (e) => {
-        if (e.target === overlay) closeModal();
-      };
-
-      // Ensure the close button in the HTML content calls this local function too
-      // But since we used inline onclick in HTML string, let's just make it simpler:
-      overlay.querySelector('.close-trigger').onclick = closeModal;
-    };
-
-    function renderPromoInitial() {
-      promoProducts = getPromoProducts();
-      if (!promoProducts.length) {
-        container.innerHTML = '<div class="muted">No promo items at the moment.</div>';
+    function renderPromo() {
+      const pList = getPromoProducts();
+      if (!pList.length) {
+        container.innerHTML = '<div class="muted">No promo items.</div>';
         return;
       }
 
-      const displayItems = promoProducts.slice(0, itemsPerPage);
-      container.innerHTML = displayItems.map(p => `
-        <div class="promo-card-wrapper">
-          ${createPromoCard(p)}
-          <div class="promo-card back"></div> <!-- Placeholder for flip -->
-        </div>
-      `).join('');
-
-      tagForReveal(container);
-
-      if (promoProducts.length > itemsPerPage) {
-        startRotation();
+      container.innerHTML = '';
+      for (let i = 0; i < itemsPerPage; i++) {
+        const p = pList[(currentIndex + i) % pList.length];
+        const wrapper = document.createElement('div');
+        wrapper.className = 'promo-card-wrapper';
+        wrapper.innerHTML = createPromoCard(p);
+        container.appendChild(wrapper);
       }
     }
 
     function rotatePromo() {
+      const pList = getPromoProducts();
+      if (pList.length <= itemsPerPage) return;
+
       const wrappers = container.querySelectorAll('.promo-card-wrapper');
-      currentIndex = (currentIndex + itemsPerPage) % promoProducts.length;
-      const nextItems = [];
+      currentIndex = (currentIndex + 1) % pList.length;
 
-      for (let i = 0; i < itemsPerPage; i++) {
-        nextItems.push(promoProducts[(currentIndex + i) % promoProducts.length]);
-      }
+      wrappers.forEach((wrapper, i) => {
+        const oldCard = wrapper.querySelector('.promo-card');
+        const nextProduct = pList[(currentIndex + i) % pList.length];
 
-      wrappers.forEach((wrapper, idx) => {
-        const nextProduct = nextItems[idx];
-        if (!nextProduct) return;
+        if (oldCard) oldCard.classList.add('exit');
 
-        // Injected the next product into the "back" card
-        const backCard = wrapper.querySelector('.promo-card.back');
-        if (backCard) {
-          const tempDiv = document.createElement('div');
-          tempDiv.innerHTML = createPromoCard(nextProduct, true);
-          const newBack = tempDiv.firstElementChild;
-          wrapper.replaceChild(newBack, backCard);
-        }
-
-        // Trigger flip
-        wrapper.classList.add('flipping');
-
-        // After animation, swap front and back and reset
         setTimeout(() => {
-          const front = wrapper.querySelector('.promo-card:not(.back)');
-          const back = wrapper.querySelector('.promo-card.back');
-
-          if (front && back) {
-            // New "front" is the one that was just flipped to (the back one)
-            back.classList.remove('back');
-            front.classList.add('back');
-            wrapper.classList.remove('flipping');
-            // Ensure the new "back" is empty/ready for next rotation
-            front.innerHTML = '';
+          wrapper.innerHTML = createPromoCard(nextProduct);
+          const newCard = wrapper.querySelector('.promo-card');
+          if (newCard) {
+            newCard.classList.add('enter');
+            newCard.offsetHeight; // trigger reflow
+            newCard.classList.remove('enter');
           }
-        }, 600);
+        }, 800);
       });
     }
 
     function startRotation() {
       if (rotationInterval) clearInterval(rotationInterval);
-      rotationInterval = setInterval(rotatePromo, 10000);
+      rotationInterval = setInterval(rotatePromo, 8000);
     }
 
-    // Wait for products to be loaded
     const checkLoaded = setInterval(() => {
       if (state.products && state.products.length > 0) {
         clearInterval(checkLoaded);
-        renderPromoInitial();
+        renderPromo();
+        if (getPromoProducts().length > itemsPerPage) startRotation();
       }
     }, 500);
   })();

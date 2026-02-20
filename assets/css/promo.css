@@ -1,6 +1,5 @@
-/* Promo Preview Section */
 .promo-section {
-  padding: 60px 0;
+  padding: 60px 0 10px 0;
   overflow: hidden;
 }
 
@@ -16,15 +15,19 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--accent-100);
-  color: var(--accent-600);
+  background: #f97316;
+  /* Vibrant Orange */
+  color: #ffffff;
   padding: 6px 16px;
   border-radius: var(--radius-full);
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-bottom: 16px;
+  margin-top: -20px;
+  /* Move up by 20px */
+  margin-bottom: 24px;
+  /* Space to products */
   width: fit-content;
 }
 
@@ -94,14 +97,13 @@
 
 .promo-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
-  perspective: 1000px;
+  width: 100%;
 }
 
 @media (min-width: 900px) {
   .promo-grid {
-    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
 }
@@ -110,8 +112,8 @@
   position: relative;
   height: 320px;
   width: 100%;
-  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transform-style: preserve-3d;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
 }
 
 @media (min-width: 600px) {
@@ -120,14 +122,9 @@
   }
 }
 
-.promo-card-wrapper.flipping {
-  transform: rotateY(180deg) scale(1.02);
-}
-
 .promo-card {
   position: absolute;
   inset: 0;
-  backface-visibility: hidden;
   background: var(--card, #fff);
   border: 1px solid rgba(0, 0, 0, 0.04);
   border-radius: var(--radius-lg);
@@ -135,22 +132,28 @@
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
-  transition: var(--transition);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease;
   text-align: left;
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
-.promo-card.back {
-  transform: rotateY(180deg);
+.promo-card.exit {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.95);
+  pointer-events: none;
+}
+
+.promo-card.enter {
+  opacity: 0;
+  transform: translateY(20px) scale(1.05);
+  pointer-events: none;
 }
 
 .promo-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-xl);
   border-color: rgba(0, 0, 0, 0.08);
-}
-
-.promo-card.back:hover {
-  transform: rotateY(180deg) translateY(-8px);
 }
 
 .promo-card-media {
@@ -295,7 +298,7 @@
 }
 
 .promo-footer {
-  margin-top: 50px;
+  margin-top: 24px;
   display: flex;
   justify-content: center;
 }
