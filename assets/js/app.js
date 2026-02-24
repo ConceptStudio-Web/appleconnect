@@ -655,7 +655,6 @@
         ${conditionDisplay ? `<div class="detail-row"><span class="detail-label">Condition</span><span class="detail-value">${conditionDisplay}</span></div>` : ''}
         ${warrantyText ? `<div class="detail-row"><span class="detail-label">Warranty</span><span class="detail-value">${warrantyText}</span></div>` : ''}
         ${color ? `<div class="detail-row" data-detail="color"><span class="detail-label">Color</span><span class="detail-value">${color}</span></div>` : ''}
-        ${branch ? `<div class="detail-row"><span class="detail-label">Branch</span><span class="detail-value">${branch}</span></div>` : ''}
       </div>
     `;
 
@@ -2404,7 +2403,7 @@
               ${it.image ? `<div class=\"apple-card-media\"><img src=\"${it.image}\" alt=\"${it.name}\"/></div>` : ''}
               <div class="apple-card-body">
                 <h3>${it.name}</h3>
-                <div class="sub">${it.version} • ${it.branch}</div>
+                <div class="sub">${it.version}</div>
                 ${typeof it.stock === 'number' ? `<div class=\"details\"><div class=\"detail-row\"><span class=\"detail-label\">Stock</span><span class=\"detail-value\">${it.stock}</span></div></div>` : ''}
                 <div class="price-line">${currency('USD', it.price)}</div>
                 <div class="apple-card-actions">
@@ -2523,7 +2522,7 @@
           </div>
           <div class="promo-card-body">
             <h3>${p.model}</h3>
-            <div class="sub" style="font-size: 11px; margin-bottom: 4px;">${branch}</div>
+            <div class="sub" style="font-size: 11px; margin-bottom: 4px;"></div>
             <div style="font-size: 12px; color: var(--text-muted); display: grid; gap: 4px;">
               <div>Storage: <b>${storage}</b></div>
               <div>Color: <b>${p.color || ''}</b></div>
