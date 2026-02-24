@@ -2539,10 +2539,13 @@
 
     function renderPromo() {
       const pList = getPromoProducts();
+      const section = document.getElementById('promo-preview');
       if (!pList.length) {
+        if (section) section.style.display = 'none';
         container.innerHTML = '<div class="muted">No promo items.</div>';
         return;
       }
+      if (section) section.style.display = 'block';
 
       container.innerHTML = '';
       for (let i = 0; i < itemsPerPage; i++) {

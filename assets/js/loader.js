@@ -10,12 +10,22 @@
       document.head && document.head.appendChild(preload);
     } catch (_) { }
 
+    const messages = [
+      "Free Delivery within 72 hours",
+      "You can trade in your apple products anytime",
+      "Brand new iPhones available",
+      "Authorized Apple Reseller",
+      "Buy genuine Apple Products"
+    ];
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+
     if (!document.getElementById('ac-loader')) {
       var wrap = document.createElement('div');
       wrap.id = 'ac-loader';
       wrap.innerHTML = `
         <div class="ac-loader-inner">
           <img class="ac-logo" src="assets/load.png" alt="Loading" decoding="async" fetchpriority="high" />
+          <div class="ac-loader-text">${randomMessage}</div>
           <div class="line-loader"></div>
         </div>`;
       document.documentElement.appendChild(wrap);
