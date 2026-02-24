@@ -56,7 +56,8 @@ window.PRODUCTS = [
     "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 1850 },
-      { "size": "512GB", "price": 2200 }
+      { "size": "512GB", "price": 2200 },
+      { "size": "1TB", "price": 2600 }
     ],
     "variants": [
       { "color": "Cosmic Orange", "image": "assets/Product Images/iPhones/iPhone 17 Pro - Cosmic Orange.webp", "hex": "#e66e25" },
@@ -111,6 +112,126 @@ window.PRODUCTS = [
     ]
   },
   {
+    "id": "ip-iphone-17-pro-max-preowned-1",
+    "category": "iphone",
+    "model": "iPhone 17 Pro Max",
+    "storage": "256GB",
+    "batteryHealth": "100%",
+    "color": "Cosmic Orange",
+    "price": 1550.0,
+    "currency": "USD",
+    "promo": false,
+    "condition": "Pre-owned",
+    "image": "assets/Product Images/iPhones/iPhone 17 Pro - Cosmic Orange.webp",
+    "branch": "Bulawayo Centre",
+    "storageOptions": [
+      { "size": "256GB", "price": 1550 },
+      { "size": "512GB", "price": 1650 }
+    ],
+    "variants": [
+      { "color": "Cosmic Orange", "image": "assets/Product Images/iPhones/iPhone 17 Pro - Cosmic Orange.webp", "hex": "#e66e25" },
+      { "color": "Deep Blue", "image": "assets/Product Images/iPhones/iPhone 17 Pro - Deep Blue.png", "hex": "#1c2e4a" },
+      { "color": "Silver", "image": "assets/Product Images/iPhones/iPhone 17 Pro - Silver.avif", "hex": "#e2e4e1" }
+    ]
+  },
+  {
+    "id": "ip-iphone-17-pro-preowned-1",
+    "category": "iphone",
+    "model": "iPhone 17 Pro",
+    "storage": "256GB",
+    "batteryHealth": "100%",
+    "color": "Silver",
+    "price": 1300.0,
+    "currency": "USD",
+    "promo": false,
+    "condition": "Pre-owned",
+    "image": "assets/Product Images/iPhones/iPhone 17 Pro - Silver.avif",
+    "branch": "Bulawayo Centre",
+    "storageOptions": [
+      { "size": "256GB", "price": 1300 }
+    ],
+    "variants": [
+      { "color": "Silver", "image": "assets/Product Images/iPhones/iPhone 17 Pro - Silver.avif", "hex": "#e2e4e1" },
+      { "color": "Deep Blue", "image": "assets/Product Images/iPhones/iPhone 17 Pro - Deep Blue.png", "hex": "#1c2e4a" },
+      { "color": "Cosmic Orange", "image": "assets/Product Images/iPhones/iPhone 17 Pro - Cosmic Orange.webp", "hex": "#e66e25" }
+    ]
+  },
+  {
+    "id": "ip-iphone-17-preowned-1",
+    "category": "iphone",
+    "model": "iPhone 17",
+    "storage": "256GB",
+    "batteryHealth": "100%",
+    "color": "Black",
+    "price": 1000.0,
+    "currency": "USD",
+    "promo": false,
+    "condition": "Pre-owned",
+    "image": "assets/Product Images/iPhones/iPhone 17 - Black.jpg",
+    "branch": "Bulawayo Centre",
+    "storageOptions": [
+      { "size": "256GB", "price": 1000 }
+    ],
+    "variants": [
+      { "color": "Black", "image": "assets/Product Images/iPhones/iPhone 17 - Black.jpg", "hex": "#1f2020" },
+      { "color": "White", "image": "assets/Product Images/iPhones/iPhone 17 - White.jpg", "hex": "#f5f5f7" },
+      { "color": "Sage", "image": "assets/Product Images/iPhones/iPhone 17 - Sage.jpg", "hex": "#9caf88" },
+      { "color": "Mist Blue", "image": "assets/Product Images/iPhones/iPhone 17 - Mist Blue.jpg", "hex": "#b3c8d1" },
+      { "color": "Lavender", "image": "assets/Product Images/iPhones/iPhone 17 - Lavender.jpg", "hex": "#d5d5e1" }
+    ]
+  },
+  {
+    "id": "ip-iphone-15-preowned-toggle-1",
+    "category": "iphone",
+    "model": "iPhone 15",
+    "storage": "128GB",
+    "batteryHealth": "100%",
+    "color": "Green",
+    "price": 750.0,
+    "currency": "USD",
+    "promo": false,
+    "condition": "Pre-owned",
+    "image": "assets/Product Images/iPhones/iPhone 15 - Green.jpg",
+    "branch": "Bulawayo Centre",
+    "storageOptions": [
+      { "size": "128GB", "price": 750 },
+      { "size": "256GB", "price": 700 }
+    ],
+    "variants": [
+      { "color": "Green", "image": "assets/Product Images/iPhones/iPhone 15 - Green.jpg", "hex": "#d1ead1" },
+      { "color": "Pink", "image": "assets/Product Images/iPhones/iPhone 15 - Pink.jpg", "hex": "#f4d3d9" },
+      { "color": "Yellow", "image": "assets/Product Images/iPhones/iPhone 15 - Yellow.jpg", "hex": "#f5e488" },
+      { "color": "Blue", "image": "assets/Product Images/iPhones/iPhone 15 - Blue.jpg", "hex": "#d2e0eb" },
+      { "color": "Black", "image": "assets/Product Images/iPhones/iPhone 15 - Black.jpg", "hex": "#3c3d3a" }
+    ]
+  },
+  {
+    "id": "ip-iphone-13-preowned-toggle-1",
+    "category": "iphone",
+    "model": "iPhone 13",
+    "storage": "128GB",
+    "batteryHealth": "100%",
+    "color": "Pink",
+    "price": 530.0,
+    "currency": "USD",
+    "promo": false,
+    "condition": "Pre-owned",
+    "image": "assets/Product Images/iPhones/iPhone 13 - Pink.jpg",
+    "branch": "Bulawayo Centre",
+    "storageOptions": [
+      { "size": "128GB", "price": 530 },
+      { "size": "256GB", "price": 560 }
+    ],
+    "variants": [
+      { "color": "Pink", "image": "assets/Product Images/iPhones/iPhone 13 - Pink.jpg", "hex": "#faddd7" },
+      { "color": "Green", "image": "assets/Product Images/iPhones/iPhone 13 - Green.jpg", "hex": "#d1e8d5" },
+      { "color": "Blue", "image": "assets/Product Images/iPhones/iPhone 13 - Blue.jpg", "hex": "#437792" },
+      { "color": "Starlight White", "image": "assets/Product Images/iPhones/iPhone 13 - Starlight White.jpg", "hex": "#f9f6ef" },
+      { "color": "Midnight Black", "image": "assets/Product Images/iPhones/iPhone 13 - Midnight Black.jpg", "hex": "#1f2020" },
+      { "color": "Red Edition", "image": "assets/Product Images/iPhones/iPhone 13 - Red Edition.jpg", "hex": "#a50011" }
+    ]
+  },
+  {
     "id": "ip-iphone-17-air-toggle-1",
     "category": "iphone",
     "model": "iPhone 17 Air",
@@ -147,8 +268,9 @@ window.PRODUCTS = [
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max - Desert Titanium.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
-      { "size": "256GB", "price": 1500 },
-      { "size": "512GB", "price": 1600 }
+      { "size": "256GB", "price": 1550 },
+      { "size": "512GB", "price": 1650 },
+      { "size": "1TB", "price": 1350 }
     ],
     "variants": [
       { "color": "Desert Titanium", "image": "assets/Product Images/iPhones/iPhone 16 Pro Max - Desert Titanium.jpg", "hex": "#c9b1a1" },
@@ -172,7 +294,7 @@ window.PRODUCTS = [
     "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 950 },
-      { "size": "256GB", "price": 960 }
+      { "size": "256GB", "price": 1000 }
     ],
     "variants": [
       { "color": "Black Titanium", "image": "assets/Product Images/iPhones/iPhone 16 Pro Max - Black Titanium.jpg", "hex": "#3b3b3c" },
@@ -220,8 +342,8 @@ window.PRODUCTS = [
     "image": "assets/Product Images/iPhones/iPhone 16 - Pink.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
-      { "size": "128GB", "price": 880 },
-      { "size": "256GB", "price": 930 }
+      { "size": "128GB", "price": 900 },
+      { "size": "256GB", "price": 950 }
     ],
     "variants": [
       { "color": "Pink", "image": "assets/Product Images/iPhones/iPhone 16 - Pink.jpg", "hex": "#f472b6" },
@@ -291,8 +413,8 @@ window.PRODUCTS = [
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max - White Titanium.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
-      { "size": "128GB", "price": 730 },
-      { "size": "256GB", "price": 780 }
+      { "size": "128GB", "price": 780 },
+      { "size": "256GB", "price": 830 }
     ],
     "variants": [
       { "color": "White Titanium", "image": "assets/Product Images/iPhones/iPhone 15 Pro Max - White Titanium.jpg", "hex": "#f2f2f2" },
@@ -315,8 +437,8 @@ window.PRODUCTS = [
     "image": "assets/Product Images/iPhones/iPhone 15 - Black.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
-      { "size": "256GB", "price": 690 },
-      { "size": "512GB", "price": 730 }
+      { "size": "128GB", "price": 730 },
+      { "size": "256GB", "price": 760 }
     ],
     "variants": [
       { "color": "Black", "image": "assets/Product Images/iPhones/iPhone 15 - Black.jpg", "hex": "#3c3d3a" },
@@ -365,7 +487,8 @@ window.PRODUCTS = [
     "image": "assets/Product Images/iPhones/iPhone 14 Pro - Space Black.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
-      { "size": "128GB", "price": 700 }
+      { "size": "128GB", "price": 750 },
+      { "size": "256GB", "price": 800 }
     ],
     "variants": [
       { "color": "Space Black", "image": "assets/Product Images/iPhones/iPhone 14 Pro - Space Black.jpg", "hex": "#2e2e2e" },
@@ -388,7 +511,8 @@ window.PRODUCTS = [
     "image": "assets/Product Images/iPhones/iPhone 14 Pro - Silver.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
-      { "size": "128GB", "price": 680 }
+      { "size": "256GB", "price": 730 },
+      { "size": "512GB", "price": 750 }
     ],
     "variants": [
       { "color": "Silver", "image": "assets/Product Images/iPhones/iPhone 14 Pro - Silver.jpg", "hex": "#f5f5f7" },
@@ -411,7 +535,8 @@ window.PRODUCTS = [
     "image": "assets/Product Images/iPhones/iPhone 14 - Starlight White.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
-      { "size": "256GB", "price": 600 }
+      { "size": "128GB", "price": 550 },
+      { "size": "256GB", "price": 800 }
     ],
     "variants": [
       { "color": "Starlight White", "image": "assets/Product Images/iPhones/iPhone 14 - Starlight White.jpg", "hex": "#f9f6ef" },
@@ -488,7 +613,7 @@ window.PRODUCTS = [
     "image": "assets/Product Images/iPhones/iPhone 13 Pro Max - Alpine Green.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
-      { "size": "128GB", "price": 600 }
+      { "size": "256GB", "price": 650 }
     ],
     "variants": [
       { "color": "Alpine Green", "image": "assets/Product Images/iPhones/iPhone 13 Pro Max - Alpine Green.jpg", "hex": "#505f4f" },
@@ -537,7 +662,7 @@ window.PRODUCTS = [
     "image": "assets/Product Images/iPhones/iPhone 13 - Green.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
-      { "size": "128GB", "price": 480 }
+      { "size": "128GB", "price": 330 }
     ],
     "variants": [
       { "color": "Green", "image": "assets/Product Images/iPhones/iPhone 13 - Green.jpg", "hex": "#d1e8d5" },
@@ -562,7 +687,7 @@ window.PRODUCTS = [
     "image": "assets/Product Images/iPhones/iPhone 12 Pro Max - Pacific Blue.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
-      { "size": "128GB", "price": 500 }
+      { "size": "128GB", "price": 540 }
     ],
     "variants": [
       { "color": "Pacific Blue", "image": "assets/Product Images/iPhones/iPhone 12 Pro Max - Pacific Blue.jpg", "hex": "#283c4b" },
@@ -608,7 +733,8 @@ window.PRODUCTS = [
     "image": "assets/Product Images/iPhones/iPhone 12 - Purple.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
-      { "size": "128GB", "price": 330 }
+      { "size": "128GB", "price": 380 },
+      { "size": "256GB", "price": 430 }
     ],
     "variants": [
       { "color": "Purple", "image": "assets/Product Images/iPhones/iPhone 12 - Purple.jpg", "hex": "#e5d7f2" },
