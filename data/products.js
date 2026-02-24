@@ -52,7 +52,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 17 pro max brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 17 Pro - Cosmic Orange.webp",
     "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 1850 },
@@ -75,7 +75,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 17 pro max brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 17 Pro - Silver.avif",
     "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 1650 }
@@ -97,7 +97,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 17 brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 17 - Black.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 1250 }
@@ -121,7 +121,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 17 Air brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 17 Air - Cloud White.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 1300 }
@@ -192,7 +192,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 16 brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 16 - Teal.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 1000 },
@@ -337,7 +337,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 15 brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 15 - Green.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 800 },
@@ -433,7 +433,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 13 brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 14 - Blue.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 700 },
@@ -509,7 +509,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 13 brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 13 - Pink.jpg",
     "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 600 }
@@ -1468,7 +1468,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 16 brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 16.jpg",
     "branch": "Haddon & Sly"
   },
   {
@@ -1524,7 +1524,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 17 pro brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 17 Pro.jpg",
     "branch": "Haddon & Sly"
   },
   {
@@ -1538,7 +1538,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 17 pro max brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
     "branch": "Haddon & Sly"
   },
   {
@@ -1552,7 +1552,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 13 brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 13.jpg",
     "branch": "Haddon & Sly"
   },
   {
@@ -1566,7 +1566,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 14 brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 14.jpg",
     "branch": "Haddon & Sly"
   },
   {
@@ -1580,7 +1580,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 17 pro max brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
     "branch": "Haddon & Sly"
   },
   {
@@ -1594,7 +1594,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 17 pro max brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
     "branch": "Haddon & Sly"
   },
   {
@@ -1608,7 +1608,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 17 pro max brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
     "branch": "Haddon & Sly"
   },
   {
@@ -1622,7 +1622,7 @@ window.PRODUCTS = [
     "currency": "USD",
     "promo": false,
     "condition": "Brand New",
-    "image": "assets/Product Images/iPhones/iPhone 17 pro max brand new.jpg",
+    "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
     "branch": "Haddon & Sly"
   },
   // --- New Accessories from Chat ---
