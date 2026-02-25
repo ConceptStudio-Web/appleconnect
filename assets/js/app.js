@@ -460,7 +460,7 @@
 
     // Prioritize window.PRODUCTS (from data/products.js)
     if (Array.isArray(window.PRODUCTS) && window.PRODUCTS.length > 0) {
-      state.products = sortProductsByModel(window.PRODUCTS.map(ensureProductId).filter(p => p.variants && p.variants.length > 0));
+      state.products = sortProductsByModel(window.PRODUCTS.map(ensureProductId));
     } else {
       try {
         let data = await tryLoad('data/products.json');
@@ -470,10 +470,10 @@
           } catch (e2) { }
         }
         if (!data || !data.length) throw new Error('Empty dataset');
-        state.products = sortProductsByModel(data.map(ensureProductId).filter(p => p.variants && p.variants.length > 0));
+        state.products = sortProductsByModel(data.map(ensureProductId));
       } catch (err) {
         console.warn('Failed to load products JSON, using fallback dataset.', err);
-        state.products = sortProductsByModel(fallbackProducts.map(ensureProductId).filter(p => p.variants && p.variants.length > 0));
+        state.products = sortProductsByModel(fallbackProducts.map(ensureProductId));
       }
     }
     // Apply query filter from URL if present
