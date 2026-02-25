@@ -9,7 +9,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/iPads/iPad Pro M5 - Silver.jpg",
-    "branch": "Bulawayo Centre",
     "size": "11-inch",
     "sizeOptions": [
       { "size": "11-inch", "price": 1200 },
@@ -30,7 +29,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/iPads/iPad Pro M5 - Space Black.jpg",
-    "branch": "Bulawayo Centre",
     "size": "11-inch",
     "sizeOptions": [
       { "size": "11-inch", "price": 1200 },
@@ -53,7 +51,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro - Cosmic Orange.webp",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 1850 },
       { "size": "512GB", "price": 2200 },
@@ -77,7 +74,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro - Silver.avif",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 1650 }
     ],
@@ -99,7 +95,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 17 - Black.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 1250 }
     ],
@@ -123,7 +118,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro - Cosmic Orange.webp",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 1550 },
       { "size": "512GB", "price": 1650 }
@@ -146,7 +140,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro - Silver.avif",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 1300 }
     ],
@@ -168,7 +161,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 17 - Black.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 1000 }
     ],
@@ -192,7 +184,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 - Green.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 750 },
       { "size": "256GB", "price": 700 }
@@ -217,7 +208,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 13 - Pink.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 530 },
       { "size": "256GB", "price": 560 }
@@ -243,7 +233,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 17 Air - Cloud White.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 1300 }
     ],
@@ -266,7 +255,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max - Desert Titanium.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 1550 },
       { "size": "512GB", "price": 1650 },
@@ -291,7 +279,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max - Black Titanium.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 950 },
       { "size": "256GB", "price": 1000 }
@@ -315,7 +302,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 16 - Teal.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 1000 },
       { "size": "256GB", "price": 1100 }
@@ -340,7 +326,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16 - Pink.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 900 },
       { "size": "256GB", "price": 950 }
@@ -365,7 +350,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16e - White.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 600 }
     ],
@@ -386,7 +370,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max - Black Titanium.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 930 },
       { "size": "512GB", "price": 1000 },
@@ -411,7 +394,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max - White Titanium.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 780 },
       { "size": "256GB", "price": 830 }
@@ -435,7 +417,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 - Black.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 730 },
       { "size": "256GB", "price": 760 }
@@ -460,7 +441,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 15 - Green.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 800 },
       { "size": "256GB", "price": 900 }
@@ -485,7 +465,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 14 Pro - Space Black.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 750 },
       { "size": "256GB", "price": 800 }
@@ -509,7 +488,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 14 Pro - Silver.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 730 },
       { "size": "512GB", "price": 750 }
@@ -533,7 +511,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 14 - Starlight White.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 550 },
       { "size": "256GB", "price": 800 }
@@ -559,7 +536,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 14 - Blue.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 700 },
       { "size": "256GB", "price": 800 },
@@ -586,7 +562,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 13 Pro Max - Sierra Blue.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 650 },
       { "size": "256GB", "price": 680 }
@@ -611,7 +586,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 13 Pro Max - Alpine Green.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 650 }
     ],
@@ -635,7 +609,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 13 - Pink.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 600 }
     ],
@@ -660,7 +633,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 13 - Green.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 330 }
     ],
@@ -685,7 +657,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 12 Pro Max - Pacific Blue.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 540 }
     ],
@@ -708,7 +679,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 12 Pro Max - Silver.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 480 }
     ],
@@ -731,7 +701,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 12 - Purple.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 380 },
       { "size": "256GB", "price": 430 }
@@ -757,7 +726,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 12 - White.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 280 }
     ],
@@ -782,7 +750,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 11 Pro Max - Gold.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 440 }
     ],
@@ -805,7 +772,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 11 Pro Max - Midnight Green.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "256GB", "price": 350 }
     ],
@@ -828,7 +794,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 11 - Red Edition.jpg",
-    "branch": "Bulawayo Centre",
     "storageOptions": [
       { "size": "128GB", "price": 330 }
     ],
@@ -853,7 +818,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone X.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-x-1",
@@ -867,7 +831,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone X.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-11-2",
@@ -881,7 +844,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 11.png",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-11-3",
@@ -895,7 +857,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 11.png",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-11-4",
@@ -909,7 +870,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 11.png",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-11-5",
@@ -923,7 +883,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 11.png",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-12-6",
@@ -937,7 +896,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 12.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-12-7",
@@ -951,7 +909,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 12.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-12-8",
@@ -965,7 +922,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 12.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-12-pro-max-9",
@@ -979,7 +935,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 12 Pro Max.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-13-10",
@@ -993,7 +948,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 13.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-13-11",
@@ -1007,7 +961,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 13.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-13-12",
@@ -1021,7 +974,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 13.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-14-13",
@@ -1035,7 +987,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 14.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-14-pro-14",
@@ -1049,7 +1000,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 14 Pro.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-14-pro-15",
@@ -1063,7 +1013,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 14 Pro.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-14-pro-max-16",
@@ -1077,7 +1026,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 14 Pro Max.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-15-17",
@@ -1091,7 +1039,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-15-18",
@@ -1105,7 +1052,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-15-pro-max-19",
@@ -1119,7 +1065,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-15-pro-max-20",
@@ -1133,7 +1078,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-15-pro-max-21",
@@ -1147,7 +1091,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-15-pro-max-22",
@@ -1161,7 +1104,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-23",
@@ -1175,7 +1117,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 16.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-24",
@@ -1189,7 +1130,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 16.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16e-25",
@@ -1203,7 +1143,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16e.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-pro-26",
@@ -1217,7 +1156,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-pro-max-27",
@@ -1231,7 +1169,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-pro-max-28",
@@ -1245,7 +1182,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-pro-max-29",
@@ -1259,7 +1195,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-16-pro-max-30",
@@ -1273,7 +1208,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-17-pro-max-31",
@@ -1287,7 +1221,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-17-pro-max-32",
@@ -1301,7 +1234,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "ip-iphone-x-33",
@@ -1315,7 +1247,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone X.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-x-34",
@@ -1329,7 +1260,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone X.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-11-35",
@@ -1343,7 +1273,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 11.png",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-11-pro-max-36",
@@ -1357,7 +1286,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 11 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-12-37",
@@ -1371,7 +1299,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 12.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-12-38",
@@ -1385,7 +1312,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 12.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-12-pro-39",
@@ -1399,7 +1325,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 12 Pro.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-12-pro-max-40",
@@ -1413,7 +1338,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 12 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-13-41",
@@ -1427,7 +1351,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 13.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-13-42",
@@ -1441,7 +1364,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 13.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-14-43",
@@ -1455,7 +1377,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 14.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-14-pro-max-44",
@@ -1469,7 +1390,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 14 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-15-45",
@@ -1483,7 +1403,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-15-pro-46",
@@ -1497,7 +1416,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-15-pro-47",
@@ -1511,7 +1429,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-15-pro-max-48",
@@ -1525,7 +1442,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-15-pro-max-49",
@@ -1539,7 +1455,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-15-pro-max-50",
@@ -1553,7 +1468,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-15-pro-max-51",
@@ -1567,7 +1481,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-16e-52",
@@ -1581,7 +1494,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16e.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-16-53",
@@ -1595,7 +1507,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 16.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-16-pro-54",
@@ -1609,7 +1520,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-16-pro-max-55",
@@ -1623,7 +1533,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-16-pro-max-56",
@@ -1637,7 +1546,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Pre-owned",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-17-pro-57",
@@ -1651,7 +1559,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-17-pro-max-58",
@@ -1665,7 +1572,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-13-59",
@@ -1679,7 +1585,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 13.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-14-60",
@@ -1693,7 +1598,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 14.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-17-pro-max-61",
@@ -1707,7 +1611,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-17-pro-max-62",
@@ -1721,7 +1624,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-17-pro-max-63",
@@ -1735,7 +1637,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "ip-iphone-17-pro-max-64",
@@ -1749,7 +1650,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro Max.jpg",
-    "branch": "Haddon & Sly"
   },
   // --- New Accessories from Chat ---
   {
@@ -1760,7 +1660,6 @@ window.PRODUCTS = [
     "price": 12,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1771,7 +1670,6 @@ window.PRODUCTS = [
     "price": 20,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1782,7 +1680,6 @@ window.PRODUCTS = [
     "price": 30,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1793,7 +1690,6 @@ window.PRODUCTS = [
     "price": 45,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1804,7 +1700,6 @@ window.PRODUCTS = [
     "price": 50,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1815,7 +1710,6 @@ window.PRODUCTS = [
     "price": 60,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1826,7 +1720,6 @@ window.PRODUCTS = [
     "price": 80,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1837,7 +1730,6 @@ window.PRODUCTS = [
     "price": 25,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1848,7 +1740,6 @@ window.PRODUCTS = [
     "price": 30,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1859,7 +1750,6 @@ window.PRODUCTS = [
     "price": 20,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1870,7 +1760,6 @@ window.PRODUCTS = [
     "price": 10,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1881,7 +1770,6 @@ window.PRODUCTS = [
     "price": 15,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1892,7 +1780,6 @@ window.PRODUCTS = [
     "price": 20,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1903,7 +1790,6 @@ window.PRODUCTS = [
     "price": 10,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1914,7 +1800,6 @@ window.PRODUCTS = [
     "price": 20,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1925,7 +1810,6 @@ window.PRODUCTS = [
     "price": 10,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1936,7 +1820,6 @@ window.PRODUCTS = [
     "price": 10,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1947,7 +1830,6 @@ window.PRODUCTS = [
     "price": 10,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1958,7 +1840,6 @@ window.PRODUCTS = [
     "price": 15,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   {
@@ -1969,7 +1850,6 @@ window.PRODUCTS = [
     "price": 10,
     "currency": "USD",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre",
     "condition": "New"
   },
   // --- MacBooks from Chat ---
@@ -1984,7 +1864,6 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "Brand New",
     "image": "assets/Image Assets/MacBook Lead.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "mac-m4-air",
@@ -1997,7 +1876,6 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "Brand New",
     "image": "assets/Image Assets/MacBook Lead.jpg",
-    "branch": "Bulawayo Centre"
   },
   // --- Flash Drives ---
   { "id": "usb-c-16gb", "category": "accessory", "type": "Storage", "model": "USB-C Flash Drive 16GB", "price": 5, "currency": "USD", "image": "assets/Image Assets/Accessory Lead.jpg", "branch": "Bulawayo Centre", "condition": "New" },
@@ -2020,7 +1898,6 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "Brand New",
     "image": "assets/Image Assets/iPad Lead.jpg",
-    "branch": "Bulawayo Centre",
     "tags": ["new_stock", "back_to_school"]
   },
   {
@@ -2034,7 +1911,6 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "Brand New",
     "image": "assets/Image Assets/iPad Lead.jpg",
-    "branch": "Haddon & Sly",
     "tags": ["new_stock", "back_to_school"]
   },
   {
@@ -2048,7 +1924,6 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "Brand New",
     "image": "assets/Image Assets/iPad Lead.jpg",
-    "branch": "Bulawayo Centre",
     "tags": ["new_stock", "back_to_school"]
   },
   // --- iPad Keyboard Covers ---
@@ -2062,7 +1937,6 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "New",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "acc-ipad-kb-blue",
@@ -2074,7 +1948,6 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "New",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "acc-ipad-kb-pink",
@@ -2086,7 +1959,6 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "New",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre"
   },
   // --- iPad Standard Covers ---
   {
@@ -2099,7 +1971,6 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "New",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre"
   },
   {
     "id": "acc-ipad-cover-blue",
@@ -2111,7 +1982,6 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "New",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Haddon & Sly"
   },
   {
     "id": "acc-ipad-cover-pink",
@@ -2123,7 +1993,6 @@ window.PRODUCTS = [
     "currency": "USD",
     "condition": "New",
     "image": "assets/Image Assets/Accessory Lead.jpg",
-    "branch": "Bulawayo Centre"
   },
   // --- Africa Day Deals ---
   {
@@ -2135,7 +2004,6 @@ window.PRODUCTS = [
     "promo": false,
     "condition": "Brand New",
     "image": "assets/Game Shop/PS5 DualSense Controller (Controller).jpg",
-    "branch": "Bulawayo Centre",
     "tags": ["hot_deal", "africa_day"]
   }
 ];

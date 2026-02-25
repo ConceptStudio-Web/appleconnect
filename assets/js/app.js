@@ -629,7 +629,7 @@
 
     const battery = p.batteryHealth || '';
     const color = p.color || productColor(p);
-    const branch = p.branch || '';
+
 
     let conditionDisplay = '';
     let warrantyText = p.warranty || ''; // Use explicit warranty if available
@@ -2512,7 +2512,7 @@
       const img = p.image || '';
       const price = typeof p.price === 'number' ? currency(p.currency, p.price) : '';
       const storage = p.storage || '';
-      const branch = p.branch || '';
+
 
       return `
         <div class="promo-card apple-card" data-id="${p.id}">
