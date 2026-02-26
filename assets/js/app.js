@@ -621,7 +621,7 @@
     const isIpad = p.category === 'ipad';
     const isMacbook = p.category === 'macbook';
     const storageLabel = isMacbook ? 'RAM' : (isIpad ? 'Size' : 'Storage');
-    const currentStorage = p.size || p.storage || p.ram || '';
+    const currentStorage = isMacbook ? (p.ram || '') : (p.size || p.storage || '');
 
     // Subtext parts
     const subParts = [];
