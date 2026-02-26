@@ -862,6 +862,7 @@ window.PRODUCTS = [
     "price": 950.0,
     "currency": "USD",
     "condition": "Brand New",
+    "storage": "256GB",
     "image": "assets/MacBooks/MacBook Air M1.jpg",
     "ramOptions": [
       { "size": "8GB", "price": 950 }
@@ -876,6 +877,7 @@ window.PRODUCTS = [
     "price": 1250.0,
     "currency": "USD",
     "condition": "Brand New",
+    "storage": "256GB",
     "image": "assets/MacBooks/MacBook Air M2.jpg",
     "ramOptions": [
       { "size": "8GB", "price": 1250 }
@@ -889,6 +891,7 @@ window.PRODUCTS = [
     "price": 1350.0,
     "currency": "USD",
     "condition": "Brand New",
+    "storage": "256GB",
     "image": "assets/MacBooks/MacBook Air M3.jpg",
     "ramOptions": [
       { "size": "8GB", "price": 1350 }
@@ -902,6 +905,7 @@ window.PRODUCTS = [
     "price": 1650.0,
     "currency": "USD",
     "condition": "Brand New",
+    "storage": "256GB",
     "image": "assets/MacBooks/MacBook Air M4.jpg",
     "ramOptions": [
       { "size": "16GB", "price": 1650 }
@@ -915,6 +919,7 @@ window.PRODUCTS = [
     "price": 1800.0,
     "currency": "USD",
     "condition": "Brand New",
+    "storage": "256GB",
     "image": "assets/MacBooks/MacBook Pro M4.jpg",
     "ramOptions": [
       { "size": "16GB", "price": 1800 }
@@ -928,6 +933,7 @@ window.PRODUCTS = [
     "price": 2300.0,
     "currency": "USD",
     "condition": "Brand New",
+    "storage": "256GB",
     "image": "assets/MacBooks/MacBook Pro M4.jpg",
     "ramOptions": [
       { "size": "16GB", "price": 2300 }
