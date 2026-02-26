@@ -648,7 +648,7 @@
       if (!warrantyText) warrantyText = '6 Month Warranty';
     }
 
-    const detailsHTML = `
+    const detailsHTML = p.category === 'accessory' ? '' : `
       <div class="details" role="group" aria-label="Product details">
         ${p.year ? `<div class="detail-row"><span class="detail-label">Year</span><span class="detail-value">${p.year}</span></div>` : ''}
         ${currentStorage ? `<div class="detail-row" data-detail="storage"><span class="detail-label">${storageLabel}</span><span class="detail-value">${currentStorage}</span></div>` : ''}
