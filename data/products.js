@@ -1,42 +1,69 @@
 window.PRODUCTS = [
   {
-    "id": "ipad-pro-m5-2025-silver-1",
+    "id": "ipad-10th-gen",
     "category": "ipad",
-    "model": "iPad Pro M5",
-    "year": "2025",
-    "price": 1200.0,
+    "model": "iPad 10th Generation",
+    "storage": "64GB",
+    "price": 450.0,
     "currency": "USD",
-    "promo": false,
     "condition": "Brand New",
-    "image": "assets/iPads/iPad Pro M5 - Silver.jpg",
-    "size": "11-inch",
-    "sizeOptions": [
-      { "size": "11-inch", "price": 1200 },
-      { "size": "13-inch", "price": 1400 }
-    ],
-    "variants": [
-      { "color": "Silver", "image": "assets/iPads/iPad Pro M5 - Silver.jpg", "hex": "#e2e4e1" },
-      { "color": "Space Black", "image": "assets/iPads/iPad Pro M5 - Space Black.jpg", "hex": "#2e2e2e" }
+    "image": "assets/iPads/iPad 10th Generation.jpg",
+    "storageOptions": [
+      { "size": "64GB", "price": 450 },
+      { "size": "256GB", "price": 500 }
     ]
   },
   {
-    "id": "ipad-pro-m5-2025-spaceblack-1",
+    "id": "ipad-11th-gen",
+    "category": "ipad",
+    "model": "iPad 11th Generation (A16)",
+    "storage": "128GB",
+    "price": 580.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "image": "assets/iPads/iPad 10th Generation.jpg",
+    "storageOptions": [
+      { "size": "128GB", "price": 580 },
+      { "size": "256GB", "price": 750 }
+    ]
+  },
+  {
+    "id": "ipad-air-m3",
+    "category": "ipad",
+    "model": "iPad Air M3",
+    "storage": "128GB",
+    "price": 1080.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "image": "assets/iPads/iPad Air M3.jpg",
+    "storageOptions": [
+      { "size": "128GB", "price": 1080 }
+    ]
+  },
+  {
+    "id": "ipad-pro-m4",
+    "category": "ipad",
+    "model": "iPad Pro M4",
+    "storage": "256GB",
+    "price": 1250.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "image": "assets/iPads/iPad Air M4.jpg",
+    "storageOptions": [
+      { "size": "256GB", "price": 1250 }
+    ]
+  },
+  {
+    "id": "ipad-pro-m5",
     "category": "ipad",
     "model": "iPad Pro M5",
-    "year": "2025",
-    "price": 1200.0,
+    "storage": "256GB",
+    "price": 1500.0,
     "currency": "USD",
-    "promo": false,
     "condition": "Brand New",
-    "image": "assets/iPads/iPad Pro M5 - Space Black.jpg",
-    "size": "11-inch",
-    "sizeOptions": [
-      { "size": "11-inch", "price": 1200 },
-      { "size": "13-inch", "price": 1400 }
-    ],
-    "variants": [
-      { "color": "Space Black", "image": "assets/iPads/iPad Pro M5 - Space Black.jpg", "hex": "#2e2e2e" },
-      { "color": "Silver", "image": "assets/iPads/iPad Pro M5 - Silver.jpg", "hex": "#e2e4e1" }
+    "image": "assets/iPads/iPad Air M5.jpg",
+    "storageOptions": [
+      { "size": "256GB", "price": 1500 }
     ]
   },
   {
