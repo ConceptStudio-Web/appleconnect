@@ -856,7 +856,7 @@ window.PRODUCTS = [
   {
     "id": "mac-air-m1",
     "category": "macbook",
-    "model": "MacBook Air M1 (2020)",
+    "model": "MacBook Air M1",
     "year": "2020",
     "ram": "8GB",
     "price": 950.0,
@@ -871,7 +871,7 @@ window.PRODUCTS = [
   {
     "id": "mac-air-m2",
     "category": "macbook",
-    "model": "MacBook Air M2 (2022)",
+    "model": "MacBook Air M2",
     "year": "2022",
     "ram": "8GB",
     "price": 1250.0,
