@@ -654,7 +654,7 @@
         ${currentStorage ? `<div class="detail-row" data-detail="storage"><span class="detail-label">${storageLabel}</span><span class="detail-value">${currentStorage}</span></div>` : ''}
         ${conditionDisplay ? `<div class="detail-row"><span class="detail-label">Condition</span><span class="detail-value">${conditionDisplay}</span></div>` : ''}
         ${warrantyText ? `<div class="detail-row"><span class="detail-label">Warranty</span><span class="detail-value">${warrantyText}</span></div>` : ''}
-        ${color ? `<div class="detail-row" data-detail="color"><span class="detail-label">Color</span><span class="detail-value">${color}</span></div>` : ''}
+        ${color && !isIpad ? `<div class="detail-row" data-detail="color"><span class="detail-label">Color</span><span class="detail-value">${color}</span></div>` : ''}
       </div>
     `;
 
