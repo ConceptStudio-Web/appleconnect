@@ -619,8 +619,9 @@
     const priceText = hasPrice ? `${currency(p.currency, p.price)}` : '';
     const isPromo = p.promo === true;
     const isIpad = p.category === 'ipad';
-    const storageLabel = isIpad ? 'Size' : 'Storage';
-    const currentStorage = p.size || p.storage || '';
+    const isMacbook = p.category === 'macbook';
+    const storageLabel = isMacbook ? 'RAM' : (isIpad ? 'Size' : 'Storage');
+    const currentStorage = p.size || p.storage || p.ram || '';
 
     // Subtext parts
     const subParts = [];
@@ -654,7 +655,7 @@
         ${currentStorage ? `<div class="detail-row" data-detail="storage"><span class="detail-label">${storageLabel}</span><span class="detail-value">${currentStorage}</span></div>` : ''}
         ${conditionDisplay ? `<div class="detail-row"><span class="detail-label">Condition</span><span class="detail-value">${conditionDisplay}</span></div>` : ''}
         ${warrantyText ? `<div class="detail-row"><span class="detail-label">Warranty</span><span class="detail-value">${warrantyText}</span></div>` : ''}
-        ${color && !isIpad ? `<div class="detail-row" data-detail="color"><span class="detail-label">Color</span><span class="detail-value">${color}</span></div>` : ''}
+        ${color && !isIpad && !isMacbook ? `<div class="detail-row" data-detail="color"><span class="detail-label">Color</span><span class="detail-value">${color}</span></div>` : ''}
       </div>
     `;
 
@@ -679,9 +680,9 @@
       `;
     }
 
-    // Storage/Size Options Logic
+    // Storage/Size/RAM Options Logic
     let optionsHTML = '';
-    const optionsData = p.sizeOptions || p.storageOptions;
+    const optionsData = p.ramOptions || p.sizeOptions || p.storageOptions;
     if (optionsData && optionsData.length > 0) {
       const options = optionsData.map((opt, idx) => {
         const isActive = opt.size === currentStorage || idx === 0;

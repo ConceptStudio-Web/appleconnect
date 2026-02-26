@@ -852,4 +852,85 @@ window.PRODUCTS = [
   { "id": "acc-cable-c-to-c", "category": "accessory", "type": "Cable", "model": "USB-C to USB-C Cable", "price": 10, "currency": "USD", "condition": "Brand New", "image": "assets/Product Images/Accessories/C to C Cable - $10.jpg" },
   { "id": "acc-cable-c-to-l", "category": "accessory", "type": "Cable", "model": "USB-C to Lightning Cable", "price": 10, "currency": "USD", "condition": "Brand New", "image": "assets/Product Images/Accessories/C to Lightning Cable - $10.jpg" },
   { "id": "acc-airpods-pro-2", "category": "accessory", "type": "Audio", "model": "Airpods Pro 2nd Gen", "price": 40, "currency": "USD", "condition": "Brand New", "image": "assets/Product Images/Accessories/Airpods Pro 2nd Gen - $40.jpg" },
+  // --- MacBooks ---
+  {
+    "id": "mac-air-m1",
+    "category": "macbook",
+    "model": "MacBook Air M1 (2020)",
+    "year": "2020",
+    "ram": "8GB",
+    "price": 950.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "image": "assets/MacBooks/MacBook Air M1.jpg",
+    "ramOptions": [
+      { "size": "8GB", "price": 950 }
+    ]
+  },
+  {
+    "id": "mac-air-m2",
+    "category": "macbook",
+    "model": "MacBook Air M2 (2022)",
+    "year": "2022",
+    "ram": "8GB",
+    "price": 1250.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "image": "assets/MacBooks/MacBook Air M2.jpg",
+    "ramOptions": [
+      { "size": "8GB", "price": 1250 }
+    ]
+  },
+  {
+    "id": "mac-air-m3",
+    "category": "macbook",
+    "model": "MacBook Air M3",
+    "ram": "8GB",
+    "price": 1350.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "image": "assets/MacBooks/MacBook Air M3.jpg",
+    "ramOptions": [
+      { "size": "8GB", "price": 1350 }
+    ]
+  },
+  {
+    "id": "mac-air-m4",
+    "category": "macbook",
+    "model": "MacBook Air M4",
+    "ram": "16GB",
+    "price": 1650.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "image": "assets/MacBooks/MacBook Air M4.jpg",
+    "ramOptions": [
+      { "size": "16GB", "price": 1650 }
+    ]
+  },
+  {
+    "id": "mac-pro-m4",
+    "category": "macbook",
+    "model": "MacBook Pro M4",
+    "ram": "16GB",
+    "price": 1800.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "image": "assets/MacBooks/MacBook Pro M4.jpg",
+    "ramOptions": [
+      { "size": "16GB", "price": 1800 }
+    ]
+  },
+  {
+    "id": "mac-pro-m5",
+    "category": "macbook",
+    "model": "MacBook Pro M5",
+    "ram": "16GB",
+    "price": 2300.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "image": "assets/MacBooks/MacBook Pro M4.jpg",
+    "ramOptions": [
+      { "size": "16GB", "price": 2300 }
+    ]
+  }
 ];
