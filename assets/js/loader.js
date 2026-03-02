@@ -11,7 +11,7 @@
     } catch (_) { }
 
     const messages = [
-      "Free Delivery within 72 hours",
+      "Free delivery Nationwide",
       "You can trade in your apple products anytime",
       "Brand new iPhones available",
       "Authorized Apple Reseller",

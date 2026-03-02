@@ -663,22 +663,38 @@
     // ... (no changes until the return string)
     // Actually I'll just include the return string too to be safe with the contiguous block requirement
 
-    // Color Swatches Logic
-    let swatchesHTML = '';
+    // Variants Logic (Swatches or Chips)
+    let variantsHTML = '';
     if (p.variants && p.variants.length > 1) {
-      const swatches = p.variants.map((v, idx) => `
-        <button class="color-swatch ${idx === 0 ? 'active' : ''}" 
-                data-image="${v.image}" 
-                data-color="${v.color}" 
-                style="background-color: ${v.hex};" 
-                aria-label="Select ${v.color}"></button>
-      `).join('');
-
-      swatchesHTML = `
-        <div class="color-swatches-container" style="display:flex; gap:8px; justify-content:center; margin:8px 0 12px;">
-          ${swatches}
-        </div>
-      `;
+      if (p.variantStyle === 'chip') {
+        const chips = p.variants.map((v, idx) => {
+          const isActive = v.color === color || (idx === 0 && !p.variants.some(varnt => varnt.color === color));
+          return `
+            <button class="variant-chip ${isActive ? 'active' : ''}" 
+                    data-image="${v.image}" 
+                    data-variant="${v.color}" 
+                    data-price="${v.price || ''}"
+                    aria-label="Select ${v.color}">${v.color}</button>
+          `;
+        }).join('');
+        variantsHTML = `<div class="variant-chips-container" style="display:flex; gap:8px; justify-content:center; margin:8px 0 12px; flex-wrap:wrap;">${chips}</div>`;
+      } else {
+        const swatches = p.variants.map((v, idx) => {
+          const isActive = v.color === color || (idx === 0 && !p.variants.some(varnt => varnt.color === color));
+          return `
+            <button class="color-swatch ${isActive ? 'active' : ''}" 
+                    data-image="${v.image}" 
+                    data-color="${v.color}" 
+                    style="background-color: ${v.hex};" 
+                    aria-label="Select ${v.color}"></button>
+          `;
+        }).join('');
+        variantsHTML = `
+          <div class="color-swatches-container" style="display:flex; gap:8px; justify-content:center; margin:8px 0 12px;">
+            ${swatches}
+          </div>
+        `;
+      }
     }
 
     // Storage/Size/RAM Options Logic
@@ -713,7 +729,7 @@
         <div class="apple-card-body">
           <h3>${p.model}</h3>
           ${sub ? `<div class="sub">${sub}</div>` : ''}
-          ${swatchesHTML}
+          ${variantsHTML}
           ${optionsHTML}
           ${isPromo ? `<div class="promo-text-notice">On Promo</div>` : ''}
           ${detailsHTML}
@@ -944,9 +960,19 @@
           { id: 'game-nba2k26', model: 'NBA 2K26', category: 'game', price: 50, currency: 'USD', image: 'assets/Games To Play/NBA 2K26.jpg' },
           { id: 'game-cod', model: 'Call Of Duty', category: 'game', price: 55, currency: 'USD', image: 'assets/Games To Play/Call of Duty.jpg' },
           { id: 'game-forza', model: 'Forza Horizon', category: 'game', price: 48, currency: 'USD', image: 'assets/Games To Play/Forza.jpg' },
-          { id: 'ctrl-white', model: 'DualSense Controller White', category: 'controller', price: 75, currency: 'USD' },
-          { id: 'ctrl-black', model: 'DualSense Controller Midnight Black', category: 'controller', price: 75, currency: 'USD' },
-          { id: 'ctrl-station', model: 'DualSense Charging Station', category: 'controller', price: 35, currency: 'USD' }
+          {
+            id: 'ps5-dualsense',
+            model: 'PS5 DualSense Controller',
+            category: 'accessory',
+            price: 100,
+            currency: 'USD',
+            image: 'assets/Game Shop/PS5 Controller White.jpg',
+            variants: [
+              { "color": "White", "image": "assets/Game Shop/PS5 Controller White.jpg", "hex": "#ffffff" },
+              { "color": "Black", "image": "assets/Game Shop/PS5 Controller Black.jpg", "hex": "#000000" }
+            ]
+          },
+          { id: 'ctrl-station', model: 'Original PS5 Controller Charging Dock', category: 'controller', price: 50, currency: 'USD', image: 'assets/Game Shop/Original PS5 Controler Charging Dock.jpg' }
         ];
         allProducts = allProducts.concat(gameItems);
       }
@@ -1520,10 +1546,55 @@
             img.classList.add('changing');
             setTimeout(() => {
               img.src = newSrc;
+              img.onmessage = () => { img.classList.remove('changing'); };
               img.onload = () => { img.classList.remove('changing'); };
               // Fallback for cached or instant loads
               setTimeout(() => img.classList.remove('changing'), 50);
             }, 250); // Wait for fade out
+          }
+        }
+
+        // Variant Chip Click Handler (for non-color variants like Wattage/Connector)
+        if (e.target.classList.contains('variant-chip')) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const chip = e.target;
+          const container = chip.closest('.variant-chips-container');
+          const card = chip.closest('.apple-card');
+          const img = card.querySelector('.product-main-img');
+
+          if (!container || !card || !img) return;
+
+          // Update active state
+          container.querySelectorAll('.variant-chip').forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+
+          // Update Variant Detail (if any)
+          const newVariant = chip.dataset.variant;
+          card.dataset.color = newVariant; // Reuse color field for cart consistency
+
+          // Update Price if present
+          const newPrice = parseFloat(chip.dataset.price);
+          if (!isNaN(newPrice)) {
+            card.dataset.price = newPrice;
+            const badge = card.querySelector('.price-badge');
+            if (badge) {
+              badge.textContent = currency('USD', newPrice);
+              badge.style.transform = 'scale(1.1)';
+              setTimeout(() => badge.style.transform = '', 200);
+            }
+          }
+
+          // Transition Image
+          const newSrc = chip.dataset.image;
+          if (newSrc && img.src !== newSrc) {
+            img.classList.add('changing');
+            setTimeout(() => {
+              img.src = newSrc;
+              img.onload = () => { img.classList.remove('changing'); };
+              setTimeout(() => img.classList.remove('changing'), 50);
+            }, 250);
           }
         }
 
@@ -1767,7 +1838,7 @@
             </div>
             <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:10px; padding:10px 14px; display:flex; align-items:center; gap:10px; margin-top:4px;">
               <span style="font-size:20px;">⏱️</span>
-              <span style="font-size:13px; color:#0369a1; line-height:1.4;">Delivery is within <strong>72 hours</strong> of confirmed payment. We'll contact you on WhatsApp to arrange a convenient time.</span>
+              <span style="font-size:13px; color:#0369a1; line-height:1.4;">Delivery is within <strong>72 hours</strong> of confirmed payment. We will contact you to arrange a convenient delivery time.</span>
             </div>
           </div>
           
@@ -2380,27 +2451,70 @@
           branch: 'Bulawayo Centre'
         },
         {
-          id: 'ps5-console',
-          name: 'Playstation 5 Pro',
-          price: 799,
-          image: 'assets/Game Shop/Playstation 5 Console.jpg',
+          id: 'ps5-slim-toggle',
+          name: 'PS5 Slim',
+          price: 750,
+          image: 'assets/Game Shop/PS5 Slim - Disc.jpg',
           version: 'Console',
-          stock: 3,
+          stock: 5,
+          branch: 'Bulawayo Centre',
+          variantStyle: 'chip',
+          variants: [
+            { "color": "Disc", "image": "assets/Game Shop/PS5 Slim - Disc.jpg", "hex": "#ffffff", "price": 750 },
+            { "color": "Digital", "image": "assets/Game Shop/PS5 Slim - Digital.jpg", "hex": "#f5f5f7", "price": 700 }
+          ]
+        },
+        {
+          id: 'vr-headset-128-toggle',
+          name: 'VR Headset (128GB)',
+          price: 580,
+          image: 'assets/Game Shop/VR Headset 128gb.jpg',
+          version: 'Console',
+          stock: 4,
           branch: 'Bulawayo Centre'
         },
         {
           id: 'ps5-dualsense',
-          name: 'Playstation 5 DualSense',
-          price: 90,
-          image: 'assets/Game Shop/PS5 DualSense Controller (Controller).jpg',
+          name: 'PS5 DualSense Controller',
+          price: 100,
+          image: 'assets/Game Shop/PS5 Controller White.jpg',
           version: 'Controller',
           stock: 12,
+          branch: 'Bulawayo Centre',
+          variants: [
+            { "color": "White", "image": "assets/Game Shop/PS5 Controller White.jpg", "hex": "#ffffff" },
+            { "color": "Black", "image": "assets/Game Shop/PS5 Controller Black.jpg", "hex": "#000000" },
+            { "color": "Red", "image": "assets/Game Shop/PS5 Controller Red.jpg", "hex": "#ff0000" }
+          ]
+        },
+        {
+          id: 'ctrl-station',
+          name: 'Original PS5 Controller Charging Dock',
+          price: 50,
+          image: 'assets/Game Shop/Original PS5 Controler Charging Dock.jpg',
+          version: 'Accessory',
+          stock: 8,
           branch: 'Bulawayo Centre'
         }
       ];
       saleEl.innerHTML = `
         <div class="apple-cards grid small shop" role="list">
-          ${items.map(it => `
+          ${items.map(it => {
+        // Use makeCard if it's a controller with variants, otherwise use the existing template
+        if (it.variants) {
+          return makeCard({
+            id: it.id,
+            model: it.name,
+            category: 'accessory',
+            price: it.price,
+            currency: 'USD',
+            image: it.image,
+            variants: it.variants,
+            variantStyle: it.variantStyle || 'swatch',
+            condition: 'Brand New'
+          });
+        }
+        return `
             <article class="apple-card" role="listitem" data-id="${it.id}" data-category="game">
               ${it.image ? `<div class=\"apple-card-media\"><img src=\"${it.image}\" alt=\"${it.name}\"/></div>` : ''}
               <div class="apple-card-body">
@@ -2421,7 +2535,8 @@
                 </div>
               </div>
             </article>
-          `).join('')}
+          `;
+      }).join('')}
         </div>
       `;
       tagForReveal(saleEl);

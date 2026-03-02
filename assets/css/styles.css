@@ -505,7 +505,8 @@ body {
     position: static;
     display: flex !important;
     flex-direction: row;
-    gap: 8px;
+    flex-wrap: nowrap;
+    gap: 4px;
     border: 0;
     box-shadow: none;
     background: transparent;
@@ -513,7 +514,8 @@ body {
   }
 
   .nav-menu li a {
-    padding: 8px 16px;
+    padding: 8px 12px;
+    white-space: nowrap;
     color: rgba(255, 255, 255, 0.85);
     border-radius: var(--radius-full);
     position: relative;
@@ -2231,7 +2233,8 @@ select {
   margin: 12px 0 8px;
 }
 
-.storage-chip {
+.storage-chip,
+.variant-chip {
   background: white;
   border: 1px solid #e2e8f0;
   border-radius: 999px;
@@ -2243,12 +2246,14 @@ select {
   transition: all 0.2s;
 }
 
-.storage-chip:hover {
+.storage-chip:hover,
+.variant-chip:hover {
   border-color: #cbd5e1;
   background: #f8fafc;
 }
 
-.storage-chip.active {
+.storage-chip.active,
+.variant-chip.active {
   background: #1e293b;
   color: white;
   border-color: #1e293b;
