@@ -1,5 +1,84 @@
 window.PRODUCTS = [
   {
+    "id": "iwatch-se-3",
+    "category": "iwatch",
+    "model": "Apple Watch Series SE 3",
+    "size": "42mm",
+    "color": "Jet Black",
+    "price": 480.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "image": "assets/iWatches/Original iWatch Series SE 3.jpg",
+    "storageOptions": [
+      { "size": "42mm", "price": 480 },
+      { "size": "44mm", "price": 530 }
+    ],
+    "variantStyle": "swatch",
+    "variants": [
+      { "color": "Jet Black", "image": "assets/iWatches/Original iWatch Series SE 3.jpg", "hex": "#1a1a1c" },
+      { "color": "Rose Gold", "image": "assets/iWatches/Original iWatch Series SE 3.jpg", "hex": "#b76e79" }
+    ]
+  },
+  {
+    "id": "iwatch-series-10",
+    "category": "iwatch",
+    "model": "Apple Watch Series 10",
+    "size": "42mm",
+    "color": "Jet Black",
+    "price": 580.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "image": "assets/iWatches/Original iWatch Series 10.jpg",
+    "storageOptions": [
+      { "size": "42mm", "price": 580 },
+      { "size": "46mm", "price": 630 }
+    ],
+    "variantStyle": "swatch",
+    "variants": [
+      { "color": "Jet Black", "image": "assets/iWatches/Original iWatch Series 10.jpg", "hex": "#1a1a1c" },
+      { "color": "Rose Gold", "image": "assets/iWatches/Original iWatch Series 10.jpg", "hex": "#b76e79" }
+    ]
+  },
+  {
+    "id": "iwatch-series-11",
+    "category": "iwatch",
+    "model": "Apple Watch Series 11",
+    "size": "42mm",
+    "color": "Jet Black",
+    "price": 640.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "image": "assets/iWatches/Original iWatch Series 11.jpg",
+    "storageOptions": [
+      { "size": "42mm", "price": 640 },
+      { "size": "46mm", "price": 680 }
+    ],
+    "variantStyle": "swatch",
+    "variants": [
+      { "color": "Jet Black", "image": "assets/iWatches/Original iWatch Series 11.jpg", "hex": "#1a1a1c" },
+      { "color": "Rose Gold", "image": "assets/iWatches/Original iWatch Series 11.jpg", "hex": "#b76e79" }
+    ]
+  },
+  {
+    "id": "iwatch-ultra-3",
+    "category": "iwatch",
+    "model": "Apple Watch Ultra 3",
+    "size": "49mm",
+    "color": "Jet Black",
+    "price": 1350.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "image": "assets/iWatches/Original iWatch Ultra 3.jpg",
+    "storageOptions": [
+      { "size": "49mm", "price": 1350 }
+    ],
+    "variantStyle": "swatch",
+    "variants": [
+      { "color": "Jet Black", "image": "assets/iWatches/Original iWatch Ultra 3.jpg", "hex": "#1a1a1c" },
+      { "color": "Rose Gold", "image": "assets/iWatches/Original iWatch Ultra 3.jpg", "hex": "#b76e79" }
+    ]
+  },
+  {
     "id": "ipad-10th-gen",
     "category": "ipad",
     "model": "iPad 10th Generation",
@@ -61,7 +140,7 @@ window.PRODUCTS = [
     "price": 1500.0,
     "currency": "USD",
     "condition": "Brand New",
-    "image": "assets/iPads/iPad Air M5.jpg",
+    "image": "assets/iPads/iPad Pro M4.jpg",
     "storageOptions": [
       { "size": "256GB", "price": 1500 }
     ]
@@ -140,6 +219,9 @@ window.PRODUCTS = [
     "storage": "256GB",
     "batteryHealth": "100%",
     "condition": "Pre-owned",
+    "price": 1550.0,
+    "currency": "USD",
+    "promo": false,
     "color": "Deep Blue",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro - Deep Blue.png",
     "storageOptions": [
@@ -159,6 +241,9 @@ window.PRODUCTS = [
     "storage": "256GB",
     "batteryHealth": "100%",
     "condition": "Pre-owned",
+    "price": 1300.0,
+    "currency": "USD",
+    "promo": false,
     "color": "Deep Blue",
     "image": "assets/Product Images/iPhones/iPhone 17 Pro - Deep Blue.png",
     "storageOptions": [
@@ -177,6 +262,9 @@ window.PRODUCTS = [
     "storage": "256GB",
     "batteryHealth": "100%",
     "condition": "Pre-owned",
+    "price": 1000.0,
+    "currency": "USD",
+    "promo": false,
     "color": "White",
     "image": "assets/Product Images/iPhones/iPhone 17 - White.jpg",
     "storageOptions": [
@@ -197,6 +285,9 @@ window.PRODUCTS = [
     "storage": "128GB",
     "batteryHealth": "100%",
     "condition": "Pre-owned",
+    "price": 750.0,
+    "currency": "USD",
+    "promo": false,
     "color": "Pink",
     "image": "assets/Product Images/iPhones/iPhone 15 - Pink.jpg",
     "storageOptions": [
@@ -218,6 +309,9 @@ window.PRODUCTS = [
     "storage": "128GB",
     "batteryHealth": "100%",
     "condition": "Pre-owned",
+    "price": 530.0,
+    "currency": "USD",
+    "promo": false,
     "color": "Green",
     "image": "assets/Product Images/iPhones/iPhone 13 - Green.jpg",
     "storageOptions": [
@@ -262,6 +356,9 @@ window.PRODUCTS = [
     "storage": "256GB",
     "batteryHealth": "100%",
     "condition": "Pre-owned",
+    "price": 1500.0,
+    "currency": "USD",
+    "promo": false,
     "color": "Natural Titanium",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max - Natural Titanium.jpg",
     "storageOptions": [
@@ -283,6 +380,9 @@ window.PRODUCTS = [
     "storage": "128GB",
     "batteryHealth": "100%",
     "condition": "Pre-owned",
+    "price": 950.0,
+    "currency": "USD",
+    "promo": false,
     "color": "Desert Titanium",
     "image": "assets/Product Images/iPhones/iPhone 16 Pro Max - Desert Titanium.jpg",
     "storageOptions": [
@@ -327,6 +427,9 @@ window.PRODUCTS = [
     "storage": "128GB",
     "batteryHealth": "100%",
     "condition": "Pre-owned",
+    "price": 880.0,
+    "currency": "USD",
+    "promo": false,
     "color": "Teal",
     "image": "assets/Product Images/iPhones/iPhone 16 - Teal.jpg",
     "storageOptions": [
@@ -348,6 +451,9 @@ window.PRODUCTS = [
     "storage": "128GB",
     "batteryHealth": "100%",
     "condition": "Pre-owned",
+    "price": 600.0,
+    "currency": "USD",
+    "promo": false,
     "color": "Black",
     "image": "assets/Product Images/iPhones/iPhone 16e - Black.jpg",
     "storageOptions": [
@@ -365,6 +471,9 @@ window.PRODUCTS = [
     "storage": "256GB",
     "batteryHealth": "100%",
     "condition": "Pre-owned",
+    "price": 930.0,
+    "currency": "USD",
+    "promo": false,
     "color": "Natural Titanium",
     "image": "assets/Product Images/iPhones/iPhone 15 Pro Max - Natural Titanium.jpg",
     "storageOptions": [

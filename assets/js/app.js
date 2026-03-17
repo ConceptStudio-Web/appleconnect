@@ -520,7 +520,7 @@
       : state.products;
 
     if (storageFilter) {
-      const storages = [...new Set(base.map(p => p.storage).filter(Boolean))].sort((a, b) => parseInt(a) - parseInt(b));
+      const storages = [...new Set(base.map(p => p.storage || p.size).filter(Boolean))].sort((a, b) => parseInt(a) - parseInt(b));
       const current = storageFilter.value;
       storageFilter.innerHTML = '<option value="">Any</option>' + storages.map(s => `<option ${s === current ? 'selected' : ''}>${s}</option>`).join('');
     }
@@ -573,7 +573,7 @@
     }
 
     state.filtered = base.filter(p => {
-      const storageOk = !storage || p.storage === storage;
+      const storageOk = !storage || p.storage === storage || p.size === storage;
       const conditionOk = matchesCondition(p.condition, condition);
       const modelOk = !model || p.model === model;
       const accessoriesTypeOk = matchesAccessoryType(p, accessoriesType);
@@ -618,7 +618,7 @@
     const hasPrice = typeof p.price === 'number' && isFinite(p.price);
     const priceText = hasPrice ? `${currency(p.currency, p.price)}` : '';
     const isPromo = p.promo === true;
-    const isIpad = p.category === 'ipad';
+    const isIpad = p.category === 'ipad' || p.category === 'iwatch';
     const isMacbook = p.category === 'macbook';
     const storageLabel = isMacbook ? 'RAM' : (isIpad ? 'Size' : 'Storage');
     const currentStorage = isMacbook ? (p.ram || '') : (p.size || p.storage || '');
@@ -2355,15 +2355,19 @@
         'Call Of Duty': 'assets/Games To Play/Call of Duty.jpg',
         'Forza Horizon': 'assets/Games To Play/Forza.jpg'
       };
-      availableEl.innerHTML = `<div class="apple-cards grid small">${availableGames.map(name => {
+      availableEl.innerHTML = availableGames.map(name => {
         const src = imgMap[name];
-        const media = src ? `<div class=\"apple-card-media\"><img src=\"${src}\" alt=\"${name}\"/></div>` : '';
+        const media = src ? `<div class="apple-card-media"><div class="promo-text-notice" style="position:absolute; bottom:0; left:0; width:100%; text-align:center; background: linear-gradient(90deg, #4f46e5, #7c3aed); color:white; font-size:10px; font-weight:700; padding:6px 0; text-transform:uppercase; letter-spacing:1px; z-index:2;">PLAY IN-STORE ONLY</div><img src="${src}" alt="${name}"/></div>` : '';
         return `
-          <article class=\"apple-card\"> 
+          <article class="apple-card" data-category="game"> 
+            <div class="card-badge price-badge">$2/hr</div>
             ${media}
-            <div class=\"apple-card-body\"><h3>${name}</h3><div class=\"sub\">$2 per hour • PS5 • Bulawayo Centre</div></div>
+            <div class="apple-card-body" style="padding-bottom: 24px;">
+              <h3>${name}</h3>
+              <div style="margin-top: 12px; font-size: 13px; color: var(--text-muted); font-weight: 500;">PS5 • Bulawayo Centre</div>
+            </div>
           </article>`;
-      }).join('')}</div>`;
+      }).join('');
       tagForReveal(availableEl);
     }
 
@@ -2497,11 +2501,9 @@
           branch: 'Bulawayo Centre'
         }
       ];
-      saleEl.innerHTML = `
-        <div class="apple-cards grid small shop" role="list">
-          ${items.map(it => {
-        // Use makeCard if it's a controller with variants, otherwise use the existing template
-        if (it.variants) {
+      saleEl.innerHTML = items.map(it => {
+        // Use makeCard if it's a controller or console with variants (needs the full logic)
+        if (it.variants || it.version === 'Console') {
           return makeCard({
             id: it.id,
             model: it.name,
@@ -2511,20 +2513,22 @@
             image: it.image,
             variants: it.variants,
             variantStyle: it.variantStyle || 'swatch',
-            condition: 'Brand New'
+            condition: 'Brand New',
+            sub: it.version
           });
         }
+        
+        // For simple games, use a clean layout without empty specs
         return `
             <article class="apple-card" role="listitem" data-id="${it.id}" data-category="game">
-              ${it.image ? `<div class=\"apple-card-media\"><img src=\"${it.image}\" alt=\"${it.name}\"/></div>` : ''}
+              <div class="card-badge price-badge">${currency('USD', it.price)}</div>
+              ${it.image ? `<div class="apple-card-media"><div class="promo-text-notice" style="position:absolute; bottom:0; left:0; width:100%; text-align:center; background: #3b82f6; color:white; font-size:10px; font-weight:700; padding:6px 0; text-transform:uppercase; letter-spacing:1px; z-index:2;">BRAND NEW</div><img src="${it.image}" alt="${it.name}"/></div>` : ''}
               <div class="apple-card-body">
                 <h3>${it.name}</h3>
-                <div class="sub">${it.version}</div>
-                ${typeof it.stock === 'number' ? `<div class=\"details\"><div class=\"detail-row\"><span class=\"detail-label\">Stock</span><span class=\"detail-value\">${it.stock}</span></div></div>` : ''}
-                <div class="price-line">${currency('USD', it.price)}</div>
-                <div class="apple-card-actions">
+                <div class="sub" style="margin-bottom: 8px;">${it.version}</div>
+                <div class="apple-card-actions" style="margin-top: 16px;">
                   <button class="buy-btn" aria-label="Buy ${it.name}">Buy now</button>
-                  <button class="cart-btn" aria-label="Add ${it.name} to cart">
+                  <button class="icon-btn cart-btn" aria-label="Add ${it.name} to cart" style="border: 1px solid #e2e8f0; border-radius: 50%; padding: 8px; color: var(--brand-blue);">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                       <path d="M6 6h15l-1.5 9h-12z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
                       <circle cx="9" cy="20" r="1.5" fill="currentColor"/>
@@ -2536,9 +2540,7 @@
               </div>
             </article>
           `;
-      }).join('')}
-        </div>
-      `;
+      }).join('');
       tagForReveal(saleEl);
     }
 
