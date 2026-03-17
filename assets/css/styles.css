@@ -235,7 +235,10 @@ body {
   display: none;
   flex-direction: column;
   min-width: 240px;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
   z-index: 1300;
+  overscroll-behavior: contain;
 }
 
 .nav-menu.open {

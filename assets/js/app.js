@@ -720,7 +720,7 @@
     }
 
     return `
-      <article class="apple-card" role="listitem" data-id="${p.id}" data-category="${p.category}" data-price="${hasPrice ? p.price : ''}" data-name="${p.model}" data-color="${color}">
+      <article class="apple-card" role="listitem" data-id="${p.id}" data-category="${p.category}" data-price="${hasPrice ? p.price : ''}" data-origin-price="${hasPrice ? p.price : ''}" data-name="${p.model}" data-color="${color}">
         <div class="apple-card-media">
           ${img ? `<img alt="${p.model}" src="${img}" class="product-main-img"/>` : ''}
           ${hasPrice ? `<div class="card-badge price-badge">${priceText}</div>` : ''}
@@ -1574,14 +1574,19 @@
           const newVariant = chip.dataset.variant;
           card.dataset.color = newVariant; // Reuse color field for cart consistency
 
-          // Update Price if present
-          const newPrice = parseFloat(chip.dataset.price);
+          // Update Price
+          let newPrice = parseFloat(chip.dataset.price);
+          // Fallback to original price if not in chip
+          if (isNaN(newPrice)) {
+            newPrice = parseFloat(card.dataset.originPrice || card.dataset.price);
+          }
+          
           if (!isNaN(newPrice)) {
             card.dataset.price = newPrice;
             const badge = card.querySelector('.price-badge');
             if (badge) {
               badge.textContent = currency('USD', newPrice);
-              badge.style.transform = 'scale(1.1)';
+              badge.style.transform = 'scale(1.05)';
               setTimeout(() => badge.style.transform = '', 200);
             }
           }
