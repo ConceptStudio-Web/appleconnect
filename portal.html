@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -26,7 +26,7 @@
       </div>
       <nav class="nav" aria-label="Primary">
         <button id="navToggle" class="icon-btn" aria-expanded="false" aria-controls="navMenu"
-          aria-label="Toggle navigation">☰</button>
+          aria-label="Toggle navigation">â˜°</button>
         <ul id="navMenu" class="nav-menu">
           <li><a href="index.html">Home</a></li>
           <li><a href="iphones.html">iPhones</a></li>
@@ -152,7 +152,7 @@
     </div>
     <div class="container">
       <div class="footer-bottom">
-        <div class="copyright">Â© <span id="year"></span> Apple Connect. All rights reserved.</div>
+        <div class="copyright">Ã‚Â© <span id="year"></span> Apple Connect. All rights reserved.</div>
         <div class="footer-legal">
           <a href="#">Privacy Policy</a>
           <a href="#">Terms of Service</a>
@@ -287,7 +287,7 @@
             <article class="apple-card" role="listitem">
               <div class="apple-card-body">
                 <h3>${i.item || 'Lay-By Item'}</h3>
-                <div class="sub">Started: ${i.start || ''} â€¢ Balance: ${i.balance || ''}</div>
+                <div class="sub">Started: ${i.start || ''} Ã¢â‚¬Â¢ Balance: ${i.balance || ''}</div>
               </div>
             </article>
           `).join('');
@@ -313,7 +313,7 @@
               <div class="apple-card-body">
                 ${p.badge ? `<div class="pill">${p.badge}</div>` : ''}
                 <h3>${p.model || p.name}</h3>
-                <div class="sub">${[p.condition, p.storage, p.productId].filter(Boolean).join(' â€¢ ')}</div>
+                <div class="sub">${[p.condition, p.storage, p.productId].filter(Boolean).join(' Ã¢â‚¬Â¢ ')}</div>
               </div>
             </article>
           `).join('');
