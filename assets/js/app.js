@@ -2423,45 +2423,11 @@
     }
 
     async function renderForSale() {
-      if (!saleEl) return;
-      // Render exactly the 5 specified products
-      const items = [
-        {
-          id: 'fc26-disk',
-          name: 'FC 26',
-          price: 45,
-          image: 'assets/Game Shop/FC 26 (Game, Disk).jpg',
-          version: 'Game',
-          stock: 12,
-          branch: 'Bulawayo Centre'
-        },
-        {
-          id: 'cod-disk',
-          name: 'Call Of Duty',
-          price: 55,
-          image: 'assets/Game Shop/Call of Duty (Game, Disk).jpg',
-          version: 'Game',
-          stock: 8,
-          branch: 'Bulawayo Centre'
-        },
-        {
-          id: 'mk1-disk',
-          name: 'Mortal Kombat',
-          price: 50,
-          image: 'assets/Game Shop/Mortal Kombat 1 (Game, Disk).jpg',
-          version: 'Game',
-          stock: 6,
-          branch: 'Bulawayo Centre'
-        },
-        {
-          id: 'nba2k26-disk',
-          name: 'NBA 2K26',
-          price: 60,
-          image: 'assets/Game Shop/NBA 2K26 (Game, Disk).jpg',
-          version: 'Game',
-          stock: 10,
-          branch: 'Bulawayo Centre'
-        },
+      const featuredEl = document.getElementById('gaming-featured');
+      if (!saleEl && !featuredEl) return;
+
+      // PS5 and VR in 2-column grid
+      const featuredItems = [
         {
           id: 'ps5-slim-toggle',
           name: 'PS5 Slim',
@@ -2484,7 +2450,11 @@
           version: 'Console',
           stock: 4,
           branch: 'Bulawayo Centre'
-        },
+        }
+      ];
+
+      // Peripherals and Games (Discs)
+      const saleItems = [
         {
           id: 'ps5-dualsense',
           name: 'PS5 DualSense Controller',
@@ -2507,48 +2477,91 @@
           version: 'Accessory',
           stock: 8,
           branch: 'Bulawayo Centre'
+        },
+        {
+          id: 'fc26-disk',
+          name: 'FC 26',
+          price: 100,
+          image: 'assets/Game Shop/FC 26 (Game, Disk).jpg',
+          version: 'Game (Disc)',
+          stock: 12,
+          branch: 'Bulawayo Centre'
+        },
+        {
+          id: 'cod-disk',
+          name: 'Call Of Duty',
+          price: 100,
+          image: 'assets/Game Shop/Call of Duty (Game, Disk).jpg',
+          version: 'Game (Disc)',
+          stock: 8,
+          branch: 'Bulawayo Centre'
+        },
+        {
+          id: 'mk1-disk',
+          name: 'Mortal Kombat',
+          price: 100,
+          image: 'assets/Game Shop/Mortal Kombat 1 (Game, Disk).jpg',
+          version: 'Game (Disc)',
+          stock: 6,
+          branch: 'Bulawayo Centre'
+        },
+        {
+          id: 'nba2k26-disk',
+          name: 'NBA 2K26',
+          price: 100,
+          image: 'assets/Game Shop/NBA 2K26 (Game, Disk).jpg',
+          version: 'Game (Disc)',
+          stock: 10,
+          branch: 'Bulawayo Centre'
         }
       ];
-      saleEl.innerHTML = items.map(it => {
-        // Use makeCard if it's a controller or console with variants (needs the full logic)
-        if (it.variants || it.version === 'Console') {
-          return makeCard({
-            id: it.id,
-            model: it.name,
-            category: 'accessory',
-            price: it.price,
-            currency: 'USD',
-            image: it.image,
-            variants: it.variants,
-            variantStyle: it.variantStyle || 'swatch',
-            condition: 'Brand New',
-            sub: it.version
-          });
-        }
-        
-        // For simple games, use a clean layout without empty specs
-        return `
-            <article class="apple-card" role="listitem" data-id="${it.id}" data-category="game">
-              <div class="card-badge price-badge">${currency('USD', it.price)}</div>
-              ${it.image ? `<div class="apple-card-media"><div class="promo-text-notice" style="position:absolute; bottom:0; left:0; width:100%; text-align:center; background: #3b82f6; color:white; font-size:10px; font-weight:700; padding:6px 0; text-transform:uppercase; letter-spacing:1px; z-index:2;">BRAND NEW</div><img src="${it.image}" alt="${it.name}"/></div>` : ''}
-              <div class="apple-card-body">
-                <h3>${it.name}</h3>
-                <div class="sub" style="margin-bottom: 8px;">${it.version}</div>
-                <div class="apple-card-actions" style="margin-top: 16px;">
-                  <button class="buy-btn" aria-label="Buy ${it.name}">Buy now</button>
-                  <button class="icon-btn cart-btn" aria-label="Add ${it.name} to cart" style="border: 1px solid #e2e8f0; border-radius: 50%; padding: 8px; color: var(--brand-blue);">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path d="M6 6h15l-1.5 9h-12z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
-                      <circle cx="9" cy="20" r="1.5" fill="currentColor"/>
-                      <circle cx="18" cy="20" r="1.5" fill="currentColor"/>
-                      <path d="M6 6L5 3H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                  </button>
+
+      const renderGrid = (container, list) => {
+        if (!container) return;
+        container.innerHTML = list.map(it => {
+          if (it.variants || it.version === 'Console') {
+            return makeCard({
+              id: it.id,
+              model: it.name,
+              category: 'accessory',
+              price: it.price,
+              currency: 'USD',
+              image: it.image,
+              variants: it.variants,
+              variantStyle: it.variantStyle || 'swatch',
+              condition: 'Brand New',
+              sub: it.version
+            });
+          }
+          
+          return `
+              <article class="apple-card" role="listitem" data-id="${it.id}" data-category="game">
+                <div class="card-badge price-badge">${currency('USD', it.price)}</div>
+                ${it.image ? `<div class="apple-card-media"><div class="promo-text-notice" style="position:absolute; bottom:0; left:0; width:100%; text-align:center; background: #3b82f6; color:white; font-size:10px; font-weight:700; padding:6px 0; text-transform:uppercase; letter-spacing:1px; z-index:2;">BRAND NEW</div><img src="${it.image}" alt="${it.name}"/></div>` : ''}
+                <div class="apple-card-body">
+                  <h3>${it.name}</h3>
+                  <div class="sub" style="margin-bottom: 8px;">${it.version}</div>
+                  <div class="apple-card-actions" style="margin-top: 16px;">
+                    <button class="buy-btn" aria-label="Buy ${it.name}">Buy now</button>
+                    <button class="icon-btn cart-btn" aria-label="Add ${it.name} to cart" style="border: 1px solid #e2e8f0; border-radius: 50%; padding: 8px; color: var(--brand-blue);">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M6 6h15l-1.5 9h-12z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
+                        <circle cx="9" cy="20" r="1.5" fill="currentColor"/>
+                        <circle cx="18" cy="20" r="1.5" fill="currentColor"/>
+                        <path d="M6 6L5 3H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </article>
-          `;
-      }).join('');
+              </article>
+            `;
+        }).join('');
+      };
+
+      if (featuredEl) renderGrid(featuredEl, featuredItems);
+      if (saleEl) renderGrid(saleEl, saleItems);
+
+      tagForReveal(featuredEl);
       tagForReveal(saleEl);
     }
 
