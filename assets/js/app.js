@@ -2423,10 +2423,10 @@
     }
 
     async function renderForSale() {
-      const featuredEl = document.getElementById('gaming-featured');
-      if (!saleEl && !featuredEl) return;
+      const ps5El = document.getElementById('ps5-featured');
+      if (!saleEl && !ps5El) return;
 
-      // PS5 and VR in 2-column grid
+      // PS5 is now highlighted next to the static VR card
       const featuredItems = [
         {
           id: 'ps5-slim-toggle',
@@ -2441,15 +2441,6 @@
             { "color": "Disc", "image": "assets/Game Shop/PS5 Slim - Disc.jpg", "hex": "#ffffff", "price": 750 },
             { "color": "Digital", "image": "assets/Game Shop/PS5 Slim - Digital.jpg", "hex": "#f5f5f7", "price": 700 }
           ]
-        },
-        {
-          id: 'vr-headset-128-toggle',
-          name: 'VR Headset (128GB)',
-          price: 580,
-          image: 'assets/Game Shop/VR Headset 128gb.jpg',
-          version: 'Console',
-          stock: 4,
-          branch: 'Bulawayo Centre'
         }
       ];
 
@@ -2558,10 +2549,10 @@
         }).join('');
       };
 
-      if (featuredEl) renderGrid(featuredEl, featuredItems);
+      if (ps5El) renderGrid(ps5El, featuredItems);
       if (saleEl) renderGrid(saleEl, saleItems);
 
-      tagForReveal(featuredEl);
+      tagForReveal(ps5El);
       tagForReveal(saleEl);
     }
 
