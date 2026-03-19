@@ -501,7 +501,7 @@ body {
   }
 
   .header-inner {
-    gap: var(--header-gap);
+    gap: 16px;
   }
 
   .nav-menu {
@@ -509,7 +509,7 @@ body {
     display: flex !important;
     flex-direction: row;
     flex-wrap: nowrap;
-    gap: 4px;
+    gap: 2px;
     border: 0;
     box-shadow: none;
     background: transparent;
@@ -517,14 +517,14 @@ body {
   }
 
   .nav-menu li a {
-    padding: 8px 12px;
+    padding: 8px 10px;
     white-space: nowrap;
     color: rgba(255, 255, 255, 0.85);
     border-radius: var(--radius-full);
     position: relative;
     overflow: visible;
     transition: var(--transition);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
   }
 

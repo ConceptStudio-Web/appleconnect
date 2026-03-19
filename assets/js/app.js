@@ -482,7 +482,7 @@
     const base = urlQ
       ? state.products
       : ((pageCategory && pageCategory !== 'home')
-        ? state.products.filter(p => p.category === pageCategory)
+        ? state.products.filter(p => p.category === pageCategory || (pageCategory === 'accessory' && p.category === 'giftcard'))
         : state.products);
     // Ensure every product has a badge
     const badgePool = ['New', 'In Stock', 'Deal', 'Clearance', 'Hot', 'Pro'];
@@ -516,7 +516,7 @@
   function initFilters() {
     // Determine the base set of products for the current category
     const base = (pageCategory && pageCategory !== 'home')
-      ? state.products.filter(p => p.category === pageCategory)
+      ? state.products.filter(p => p.category === pageCategory || (pageCategory === 'accessory' && p.category === 'giftcard'))
       : state.products;
 
     if (storageFilter) {
@@ -542,7 +542,7 @@
     const accessoriesType = accessoriesTypeFilter?.value || '';
 
     const base = (pageCategory && pageCategory !== 'home')
-      ? state.products.filter(p => p.category === pageCategory)
+      ? state.products.filter(p => p.category === pageCategory || (pageCategory === 'accessory' && p.category === 'giftcard'))
       : state.products;
 
     function matchesCondition(pCond, selected) {
@@ -560,7 +560,7 @@
 
     function matchesAccessoryType(p, selected) {
       if (!selected) return true;
-      if (p.category !== 'accessory') return false;
+      if (p.category !== 'accessory' && p.category !== 'giftcard') return false;
       const t = (p.type || '').toLowerCase();
       const s = selected.toLowerCase();
       // Map filter values to data types
@@ -635,7 +635,10 @@
     let conditionDisplay = '';
     let warrantyText = p.warranty || ''; // Use explicit warranty if available
 
-    if (p.condition && p.condition.toLowerCase().includes('brand new')) {
+    if (p.category === 'giftcard') {
+      conditionDisplay = p.condition || 'Digital Code';
+      if (!warrantyText) warrantyText = 'Instant Delivery';
+    } else if (p.condition && p.condition.toLowerCase().includes('brand new')) {
       conditionDisplay = 'Brand New';
       if (!warrantyText) warrantyText = '1 Year Warranty';
     } else if (p.condition && p.condition.toLowerCase().includes('pre-owned')) {
@@ -773,7 +776,7 @@
     renderSection('hot-deals-list', p => p.tags?.includes('hot_deal'));
     renderSection('quick-sales-list', p => p.tags?.includes('quick_sale'));
     renderSection('new-stock-list', p => p.tags?.includes('new_stock'));
-    renderSection('accessories-list', p => p.category === 'accessory');
+    renderSection('accessories-list', p => p.category === 'accessory' || p.category === 'giftcard');
     renderSection('macbooks-list', p => p.category === 'macbook');
 
     const all = document.getElementById('all-products-list');

@@ -8,15 +8,15 @@ window.PRODUCTS = [
     "price": 480.0,
     "currency": "USD",
     "condition": "Brand New",
-    "image": "assets/iWatches/Original iWatch Series SE 3.jpg",
+    "image": "assets/iWatches/Original iWatch Series SE 3 Jet Black.jpg",
     "storageOptions": [
       { "size": "42mm", "price": 480 },
       { "size": "44mm", "price": 530 }
     ],
     "variantStyle": "swatch",
     "variants": [
-      { "color": "Jet Black", "image": "assets/iWatches/Original iWatch Series SE 3.jpg", "hex": "#1a1a1c" },
-      { "color": "Rose Gold", "image": "assets/iWatches/Original iWatch Series SE 3.jpg", "hex": "#b76e79" }
+      { "color": "Jet Black", "image": "assets/iWatches/Original iWatch Series SE 3 Jet Black.jpg", "hex": "#1a1a1c" },
+      { "color": "Rose Gold", "image": "assets/iWatches/Original iWatch Series SE 3 Rose Gold.jpg", "hex": "#b76e79" }
     ]
   },
   {
@@ -36,7 +36,7 @@ window.PRODUCTS = [
     "variantStyle": "swatch",
     "variants": [
       { "color": "Jet Black", "image": "assets/iWatches/Original iWatch Series 10.jpg", "hex": "#1a1a1c" },
-      { "color": "Rose Gold", "image": "assets/iWatches/Original iWatch Series 10.jpg", "hex": "#b76e79" }
+      { "color": "Rose Gold", "image": "assets/iWatches/Original iWatch Series 10 Rose Gold.jpg", "hex": "#b76e79" }
     ]
   },
   {
@@ -56,7 +56,7 @@ window.PRODUCTS = [
     "variantStyle": "swatch",
     "variants": [
       { "color": "Jet Black", "image": "assets/iWatches/Original iWatch Series 11.jpg", "hex": "#1a1a1c" },
-      { "color": "Rose Gold", "image": "assets/iWatches/Original iWatch Series 11.jpg", "hex": "#b76e79" }
+      { "color": "Rose Gold", "image": "assets/iWatches/Original iWatch Series 11 Rose Gold.jpg", "hex": "#b76e79" }
     ]
   },
   {
@@ -75,8 +75,68 @@ window.PRODUCTS = [
     "variantStyle": "swatch",
     "variants": [
       { "color": "Jet Black", "image": "assets/iWatches/Original iWatch Ultra 3.jpg", "hex": "#1a1a1c" },
-      { "color": "Rose Gold", "image": "assets/iWatches/Original iWatch Ultra 3.jpg", "hex": "#b76e79" }
+      { "color": "Rose Gold", "image": "assets/iWatches/Original iWatch Ultra 3 Rose Gold.jpg", "hex": "#b76e79" }
     ]
+  },
+  {
+    "id": "itunes-gift-card-10",
+    "category": "giftcard",
+    "model": "$10 iTunes Gift Card",
+    "price": 15.0,
+    "currency": "USD",
+    "condition": "Digital Code",
+    "type": "giftcard",
+    "image": "assets/GiftCards/iTunes Gift Card.jpg"
+  },
+  {
+    "id": "itunes-gift-card-20",
+    "category": "giftcard",
+    "model": "$20 iTunes Gift Card",
+    "price": 26.0,
+    "currency": "USD",
+    "condition": "Digital Code",
+    "type": "giftcard",
+    "image": "assets/GiftCards/iTunes Gift Card.jpg"
+  },
+  {
+    "id": "itunes-gift-card-30",
+    "category": "giftcard",
+    "model": "$30 iTunes Gift Card",
+    "price": 45.0,
+    "currency": "USD",
+    "condition": "Digital Code",
+    "type": "giftcard",
+    "image": "assets/GiftCards/iTunes Gift Card.jpg"
+  },
+  {
+    "id": "itunes-gift-card-40",
+    "category": "giftcard",
+    "model": "$40 iTunes Gift Card",
+    "price": 55.0,
+    "currency": "USD",
+    "condition": "Digital Code",
+    "type": "giftcard",
+    "image": "assets/GiftCards/iTunes Gift Card.jpg"
+  },
+  {
+    "id": "itunes-gift-card-50",
+    "category": "giftcard",
+    "model": "$50 iTunes Gift Card",
+    "price": 66.0,
+    "currency": "USD",
+    "condition": "Digital Code",
+    "image": "assets/GiftCards/iTunes Gift Card.jpg",
+    "type": "giftcard"
+  },
+  {
+    "id": "itunes-gift-card-100",
+    "category": "giftcard",
+    "model": "$100 iTunes Gift Card",
+    "price": 120.0,
+    "currency": "USD",
+    "condition": "Digital Code",
+    "image": "assets/GiftCards/iTunes Gift Card.jpg",
+    "type": "giftcard"
   },
   {
     "id": "ipad-10th-gen",
