@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -75,15 +75,37 @@
         </section>
 
         <section class="container section">
-            <div class="section-head">
+            <div class="section-head" style="text-align: center; margin-bottom: 40px;">
                 <h2>Apple & iTunes Gift Cards</h2>
-                <p style="max-width: 800px; margin-top: 15px; color: #64748b; line-height: 1.6;">
-                    Gift Cards are used to purchase digital content, services, and physical products within the Apple ecosystem. 
-                    They add funds to an Apple Account balance, allowing users to buy apps, games, music, movies, books, and iCloud storage, 
-                    as well as pay for subscriptions like Apple Music and Apple TV+.
+                <p style="max-width: 800px; margin: 15px auto 0; color: #64748b; line-height: 1.6;">
+                    Select your preferred value below. Our gift cards add funds to your Apple Account balance instantly, 
+                    allowing you to buy apps, games, music, movies, and more across the Apple ecosystem.
                 </p>
             </div>
-            <div id="all-products-list" class="apple-cards grid" role="list"></div>
+            <div id="all-products-list" class="apple-cards grid" role="list">
+                <style>
+                    #all-products-list {
+                        display: grid;
+                        grid-template-columns: 1fr;
+                        justify-content: center;
+                        gap: 20px;
+                        padding: 20px 0;
+                    }
+                    #all-products-list .apple-card {
+                        width: 300px !important;
+                        max-width: 300px !important;
+                        margin: 0 auto;
+                    }
+                    @media (min-width: 700px) {
+                        #all-products-list {
+                            grid-template-columns: 1fr 300px 1fr;
+                        }
+                        #all-products-list .apple-card {
+                            grid-column: 2;
+                        }
+                    }
+                </style>
+            </div>
         </section>
     </main>
 

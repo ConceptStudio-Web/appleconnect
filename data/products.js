@@ -79,64 +79,23 @@ window.PRODUCTS = [
     ]
   },
   {
-    "id": "itunes-gift-card-10",
+    "id": "itunes-gift-card-toggle",
     "category": "giftcard",
-    "model": "$10 iTunes Gift Card",
+    "model": "Apple & iTunes Gift Card",
     "price": 15.0,
     "currency": "USD",
     "condition": "Digital Code",
     "type": "giftcard",
-    "image": "assets/GiftCards/iTunes Gift Card.jpg"
-  },
-  {
-    "id": "itunes-gift-card-20",
-    "category": "giftcard",
-    "model": "$20 iTunes Gift Card",
-    "price": 26.0,
-    "currency": "USD",
-    "condition": "Digital Code",
-    "type": "giftcard",
-    "image": "assets/GiftCards/iTunes Gift Card.jpg"
-  },
-  {
-    "id": "itunes-gift-card-30",
-    "category": "giftcard",
-    "model": "$30 iTunes Gift Card",
-    "price": 45.0,
-    "currency": "USD",
-    "condition": "Digital Code",
-    "type": "giftcard",
-    "image": "assets/GiftCards/iTunes Gift Card.jpg"
-  },
-  {
-    "id": "itunes-gift-card-40",
-    "category": "giftcard",
-    "model": "$40 iTunes Gift Card",
-    "price": 55.0,
-    "currency": "USD",
-    "condition": "Digital Code",
-    "type": "giftcard",
-    "image": "assets/GiftCards/iTunes Gift Card.jpg"
-  },
-  {
-    "id": "itunes-gift-card-50",
-    "category": "giftcard",
-    "model": "$50 iTunes Gift Card",
-    "price": 66.0,
-    "currency": "USD",
-    "condition": "Digital Code",
     "image": "assets/GiftCards/iTunes Gift Card.jpg",
-    "type": "giftcard"
-  },
-  {
-    "id": "itunes-gift-card-100",
-    "category": "giftcard",
-    "model": "$100 iTunes Gift Card",
-    "price": 120.0,
-    "currency": "USD",
-    "condition": "Digital Code",
-    "image": "assets/GiftCards/iTunes Gift Card.jpg",
-    "type": "giftcard"
+    "storageOptions": [
+      { "size": "$10", "price": 15 },
+      { "size": "$20", "price": 26 },
+      { "size": "$30", "price": 45 },
+      { "size": "$40", "price": 55 },
+      { "size": "$50", "price": 66 },
+      { "size": "$100", "price": 120 }
+    ],
+    "variantStyle": "chip"
   },
   {
     "id": "ipad-10th-gen",
@@ -1133,6 +1092,21 @@ window.PRODUCTS = [
     ]
   },
   {
+    "id": "mac-pro-m5",
+    "category": "macbook",
+    "model": "MacBook Pro M5",
+    "year": "2025",
+    "ram": "16GB",
+    "price": 2300.0,
+    "currency": "USD",
+    "condition": "Brand New",
+    "storage": "256GB",
+    "image": "assets/MacBooks/MacBook Pro M4.jpg",
+    "ramOptions": [
+      { "size": "16GB", "price": 2300 }
+    ]
+  },
+  {
     "id": "mac-air-m2",
     "category": "macbook",
     "model": "MacBook Air M2",
@@ -1190,21 +1164,6 @@ window.PRODUCTS = [
     "image": "assets/MacBooks/MacBook Pro M4.jpg",
     "ramOptions": [
       { "size": "16GB", "price": 1800 }
-    ]
-  },
-  {
-    "id": "mac-pro-m5",
-    "category": "macbook",
-    "model": "MacBook Pro M5",
-    "year": "2025",
-    "ram": "16GB",
-    "price": 2300.0,
-    "currency": "USD",
-    "condition": "Brand New",
-    "storage": "256GB",
-    "image": "assets/MacBooks/MacBook Pro M4.jpg",
-    "ramOptions": [
-      { "size": "16GB", "price": 2300 }
     ]
   }
 ];
