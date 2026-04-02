@@ -460,7 +460,9 @@
 
     // Prioritize window.PRODUCTS (from data/products.js)
     if (Array.isArray(window.PRODUCTS) && window.PRODUCTS.length > 0) {
-      state.products = sortProductsByModel(window.PRODUCTS.map(ensureProductId));
+      const all = window.PRODUCTS.map(ensureProductId);
+      // Only apply automatic sorting to iPhones; respect manual order for other categories
+      state.products = (pageCategory === 'iphone') ? sortProductsByModel(all) : all;
     } else {
       try {
         let data = await tryLoad('data/products.json');
@@ -470,10 +472,12 @@
           } catch (e2) { }
         }
         if (!data || !data.length) throw new Error('Empty dataset');
-        state.products = sortProductsByModel(data.map(ensureProductId));
+        const all = data.map(ensureProductId);
+        state.products = (pageCategory === 'iphone') ? sortProductsByModel(all) : all;
       } catch (err) {
         console.warn('Failed to load products JSON, using fallback dataset.', err);
-        state.products = sortProductsByModel(fallbackProducts.map(ensureProductId));
+        const all = fallbackProducts.map(ensureProductId);
+        state.products = (pageCategory === 'iphone') ? sortProductsByModel(all) : all;
       }
     }
     // Apply query filter from URL if present
