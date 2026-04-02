@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -7,13 +7,13 @@
   <meta name="theme-color" content="#1e96c8" />
   <title>My Portal | Apple Connect</title>
   <link rel="icon" type="image/png" href="assets/Loading Page Icon 2.png" />
-  <link rel="stylesheet" href="assets/css/loader.css?v=125" />
-  <script src="assets/js/loader.js?v=125"></script>
+  <link rel="stylesheet" href="assets/css/loader.css?v=126" />
+  <script src="assets/js/loader.js?v=126"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=125" />
-  <link rel="stylesheet" href="assets/css/footer.css?v=125" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=126" />
+  <link rel="stylesheet" href="assets/css/footer.css?v=126" />
 
 </head>
 
@@ -26,7 +26,7 @@
       </div>
       <nav class="nav" aria-label="Primary">
         <button id="navToggle" class="icon-btn" aria-expanded="false" aria-controls="navMenu"
-          aria-label="Toggle navigation">â˜°</button>
+          aria-label="Toggle navigation">☰</button>
         <ul id="navMenu" class="nav-menu">
           <li><a href="index.html">Home</a></li>
           <li><a href="iphones.html">iPhones</a></li>
@@ -88,10 +88,10 @@
   <script src="https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore-compat.js"></script>
   <script src="assets\js\firebase-config.js"></script>
 
-  <script src="data/products.js?v=125"></script>
+  <script src="data/products.js?v=126"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase.config.js"></script>
-  <script src="assets/js/app.js?v=125" defer></script>
+  <script src="assets/js/app.js?v=126" defer></script>
   <footer class="site-footer">
     <div class="footer-top">
       <div class="container footer-grid">
@@ -152,7 +152,7 @@
     </div>
     <div class="container">
       <div class="footer-bottom">
-        <div class="copyright">Ã‚Â© <span id="year"></span> Apple Connect. All rights reserved.</div>
+        <div class="copyright">Â© <span id="year"></span> Apple Connect. All rights reserved.</div>
         <div class="footer-legal">
           <a href="#">Privacy Policy</a>
           <a href="#">Terms of Service</a>
@@ -287,7 +287,7 @@
             <article class="apple-card" role="listitem">
               <div class="apple-card-body">
                 <h3>${i.item || 'Lay-By Item'}</h3>
-                <div class="sub">Started: ${i.start || ''} Ã¢â‚¬Â¢ Balance: ${i.balance || ''}</div>
+                <div class="sub">Started: ${i.start || ''} â€¢ Balance: ${i.balance || ''}</div>
               </div>
             </article>
           `).join('');
@@ -313,7 +313,7 @@
               <div class="apple-card-body">
                 ${p.badge ? `<div class="pill">${p.badge}</div>` : ''}
                 <h3>${p.model || p.name}</h3>
-                <div class="sub">${[p.condition, p.storage, p.productId].filter(Boolean).join(' Ã¢â‚¬Â¢ ')}</div>
+                <div class="sub">${[p.condition, p.storage, p.productId].filter(Boolean).join(' â€¢ ')}</div>
               </div>
             </article>
           `).join('');
